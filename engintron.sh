@@ -43,6 +43,11 @@ function install_mod_rpaf {
 		cd mod_rpaf-0.6
 		#/usr/sbin/apxs -i -c -n mod_rpaf-2.0.so mod_rpaf-2.0.c
 		#/usr/local/apache/bin/apxs	 -i -c -n mod_rpaf-2.0.so mod_rpaf-2.0.c
+		HTTPD_VERSION="httpd -V | grep version | cut -d/ -f2 | cut -c-3"
+                if [ "$HTTPD_VERSION"=="2.4" ]; then
+                        sed -i 's/remote_addr/client_addr/' mod_rpaf-2.0.c
+                        sed -i 's/remote_ip/client_ip/' mod_rpaf-2.0.c
+                fi		
 		apxs -i -c -n mod_rpaf-2.0.so mod_rpaf-2.0.c
 
 		cd /
