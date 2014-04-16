@@ -842,9 +842,9 @@ install)
 	cd /
 
 	echo ""
-	echo "====================================="
-	echo "=== Installing Nginx on cPanel... ==="
-	echo "====================================="
+	echo " ****************************************************"
+	echo " *               Installing Engintron               *"
+	echo " ****************************************************"
 
 	install_basics
 	install_mod_rpaf
@@ -858,7 +858,7 @@ install)
 	install_gui_engintron
 
 	echo " ****************************************************"
-	echo " *								Installation Complete							 *"
+	echo " *               Installation Complete              *"
 	echo " ****************************************************"
 	echo ""
 		;;
@@ -880,7 +880,7 @@ remove)
 
 	echo ""
 	echo " ****************************************************"
-	echo " *									Removal Complete								 *"
+	echo " *               Removal Complete                   *"
 	echo " ****************************************************"
 	echo ""
 	;;
