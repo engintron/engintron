@@ -2,7 +2,7 @@
 
 # Package		Engintron
 # Version		1.0.2 Build 20140416
-# Copyright		Nuevvo Webware P.C. All right reserved.
+# Copyright		Nuevvo Webware P.C. All rights reserved.
 # License		Commercial
 
 ############################# HELPER FUCTIONS [start] #############################
