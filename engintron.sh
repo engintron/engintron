@@ -388,10 +388,10 @@ function install_gui_engintron {
 	cat > "/usr/local/cpanel/whostmgr/docroot/cgi/engintron.php" <<EOF
 <?php
 /**
- * @version		1.0
+ * @version		1.0.2
  * @package		Engintron for WHM
  * @author		Fotis Evangelou (Nuevvo) - http://nuevvo.com
- * @copyright	Copyright (c) 2010 - 2012 Nuevvo Webware Ltd. All rights reserved.
+ * @copyright	Copyright (c) 2010 - 2014 Nuevvo Webware P.C. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -404,7 +404,7 @@ if(\$user != "root") {
 
 // *** Common variables to make updating easier ***
 define('PLG_NAME','Engintron for WHM');
-define('PLG_VERSION','1.0');
+define('PLG_VERSION','1.0.2');
 define('NGINX_VERSION',str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1')));
 
 // The function to execute commands
@@ -775,7 +775,7 @@ switch(\$op) {
 			</div>
 			<div class="clr"></div>
 			<hr />
-			<p><a target="_blank" href="http://nuevvo.com/"><?php echo PLG_NAME; ?> v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2010-<?php echo date('Y'); ?> <a target="_blank" href="http://nuevvo.com/">Nuevvo Webware Ltd</a>. Licensed under the <a target="_blank" href="http://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
+			<p><a target="_blank" href="http://nuevvo.com/"><?php echo PLG_NAME; ?> v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2010-<?php echo date('Y'); ?> <a target="_blank" href="http://nuevvo.com/">Nuevvo Webware P.C.</a> Licensed under the <a target="_blank" href="http://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
 		</div>
 	</body>
 </html>
