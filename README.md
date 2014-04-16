@@ -31,6 +31,9 @@ $ sh engintron.sh remove
 
 ==
 ### Using Engintron
+
+![Engintron Backend](http://engintron.com/assets/screenshots/1.0.2_backend.png)
+
 Engintron is not designed for resellers using cPanel. It's designed for agencies, freelancers or individuals that use and manage cPanel on their own, for their or their customers' needs. As such, there is one simple rule for running Engintron on any cPanel based server: whenever a domain is added, modified or deleted on the server via cPanel/WHM, you need to execute virtual host synchronization. In other words, you need to manually "tell" Nginx that new domains have been added and allow it to reconfigure for these new domains. This can be done very easily from the Engintron dashboard, under WHM (it's in the "Plugins" section). Just click "Sync Nginx with Apache vhosts" in there and Nginx will be reconfigured for any domain changes on your server.
 
 Alternatively, you can do this over SSH or via a cron. Assuming engintron.sh resides at the very root path of your server, just do this:
@@ -41,6 +44,8 @@ $ sh engintron.sh sync
 ==
 ### More info
 A proper website will be up soon, featuring short tutorials and videos, a forum and a commercial support channel.
+
+The current backend in WHM is also under redesign.
 
 More at: http://engintron.com
 
