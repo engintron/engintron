@@ -18,7 +18,7 @@ Login as root user in your server using an SSH connection and execute the follow
 
 $ cd /  
 $ wget https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh  
-$ ./engintron.sh install  
+$ sh engintron.sh install  
 
 
 ==
@@ -26,7 +26,7 @@ $ ./engintron.sh install
 Login as root user in your server using an SSH connection and execute the following commands:
 
 $ cd /  
-$ ./engintron.sh remove  
+$ sh engintron.sh remove  
 
 
 ==
@@ -35,7 +35,7 @@ Engintron is not designed for resellers using cPanel. It's designed for agencies
 
 Alternatively, you can do this over SSH or via a cron. Assuming engintron.sh resides at the very root path of your server, just do this:
 
-$ ./engintron.sh sync  
+$ sh engintron.sh sync  
 
 
 ==
