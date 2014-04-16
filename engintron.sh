@@ -360,13 +360,15 @@ EOF
 	if grep -Fxq "permit_unregistered_apps_as_root=" /var/cpanel/cpanel.config
 	then
 		sed -i 's/permit_unregistered_apps_as_root=0$/permit_unregistered_apps_as_root=1/' /var/cpanel/cpanel.config
-		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
-		/usr/local/cpanel/etc/init/startcpsrvd
 	else
 		echo "permit_unregistered_apps_as_root=1" >> /var/cpanel/cpanel.config
 	fi
 	sleep 2
 
+	/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+	/usr/local/cpanel/etc/init/startcpsrvd
+
+	# Not needed?
 	echo ""
 	echo "=== Distill changes in cPanel Apache configuration and restart Apache ==="
 	/usr/local/cpanel/bin/apache_conf_distiller --update
