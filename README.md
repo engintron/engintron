@@ -78,6 +78,7 @@ If you run a busy site on a cPanel server, you can use the same AB test and see 
 ==
 ### Roadmap - What next?
 The next update of Engintron will feature a massively overhauled design. One that will possibly make Engintron your cPanel dashboard page.
+![Engintron v2](http://i.imgur.com/8C5wfqk.png)
 
 We also have planned the following:
 - A way to automatically sync Apache with Nginx vhosts when a new domain is added in cPanel (ideal for resellers)
