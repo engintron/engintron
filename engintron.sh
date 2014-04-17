@@ -84,6 +84,53 @@ RPAFheader X-Real-IP
 
 }
 
+function install_mod_remoteip {
+
+	if [ ! -f /usr/local/apache/conf/includes/remoteip.conf ]; then
+
+		echo ""
+		echo "=== Installing mod_remoteip for Apache ==="
+		cd /usr/local/src
+		wget https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
+		apxs -i -c -n mod_remoteip.so mod_remoteip.c
+
+		cd /
+
+		echo ""
+		echo "=== Get system IPs ==="
+		systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
+
+		touch /usr/local/apache/conf/includes/remoteip.conf
+		echo "
+LoadModule remoteip_module modules/mod_remoteip.so
+
+RemoteIPHeader X-Real-IP
+RemoteIPInternalProxy 127.0.0.1 $systemips
+		" > /usr/local/apache/conf/includes/remoteip.conf
+		sleep 2
+
+		service httpd stop
+
+		echo ""
+		echo "=== Updating Apache configuration to include mod_remoteip ==="
+		cp /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+		sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
+		sleep 2
+
+		service httpd start
+		sleep 2
+
+		echo ""
+		echo "=== Merge changes in cPanel Apache configuration ==="
+		/usr/local/cpanel/bin/apache_conf_distiller --update
+		sleep 2
+
+		/scripts/rebuildhttpdconf --update
+		sleep 2
+	fi
+
+}
+
 function install_update_apache {
 
 	echo ""
@@ -158,7 +205,7 @@ worker_processes			2; # set to the number of CPU cores on your server
 #worker_rlimit_nofile	20480;
 
 error_log							/var/log/nginx/error.log warn;
-pid										/var/run/nginx.pid;
+pid									/var/run/nginx.pid;
 
 events {
 	worker_connections 1024; # increase for busier servers
@@ -166,51 +213,51 @@ events {
 }
 
 http {
-	include												/etc/nginx/mime.types;
-	default_type									application/octet-stream;
-	log_format	 									main	'\$remote_addr - \$remote_user [\$time_local] "\$request" '
-																			'\$status \$body_bytes_sent "\$http_referer" '
-																			'"\$http_user_agent" "\$http_x_forwarded_for"';
-	access_log	 									/var/log/nginx/access.log	 main;
-	client_max_body_size 					256M;
-	client_body_buffer_size 			128k;
-	client_body_in_file_only 			on;
-	client_body_timeout 					3m;
+	include							/etc/nginx/mime.types;
+	default_type					application/octet-stream;
+	log_format	 					main	'\$remote_addr - \$remote_user [\$time_local] "\$request" '
+											'\$status \$body_bytes_sent "\$http_referer" '
+											'"\$http_user_agent" "\$http_x_forwarded_for"';
+	access_log	 					/var/log/nginx/access.log	 main;
+	client_max_body_size 			256M;
+	client_body_buffer_size 		128k;
+	client_body_in_file_only 		on;
+	client_body_timeout 			3m;
 	client_header_buffer_size 		256k;
-	client_header_timeout					3m;
-	connection_pool_size	 				256;
-	ignore_invalid_headers 				on;
-	keepalive_timeout							20;
+	client_header_timeout			3m;
+	connection_pool_size	 		256;
+	ignore_invalid_headers 			on;
+	keepalive_timeout				20;
 	large_client_header_buffers 	4 256k;
-	output_buffers								4 32k;
-	postpone_output								1460;
-	request_pool_size							32k;
-	reset_timedout_connection			on;
-	sendfile											on;
-	send_timeout									3m;
+	output_buffers					4 32k;
+	postpone_output					1460;
+	request_pool_size				32k;
+	reset_timedout_connection		on;
+	sendfile						on;
+	send_timeout					3m;
 	server_names_hash_bucket_size	1024;
 	server_names_hash_max_size		10240;
-	server_name_in_redirect				off;
-	server_tokens									off;
-	tcp_nodelay										on;
-	tcp_nopush										on;
+	server_name_in_redirect			off;
+	server_tokens					off;
+	tcp_nodelay						on;
+	tcp_nopush						on;
 
 	# Proxy Settings
-	proxy_cache_path							/tmp/nginx_cache
-																levels=1:2
-																keys_zone=cpanel:50m
-																inactive=24h
-																max_size=500m;
-	proxy_temp_path								/tmp/nginx_temp;
+	proxy_cache_path			/tmp/nginx_cache
+									levels=1:2
+									keys_zone=cpanel:50m
+									inactive=24h
+									max_size=500m;
+	proxy_temp_path				/tmp/nginx_temp;
 
 	# Gzip Settings
-	gzip 								on;
+	gzip 						on;
 	gzip_vary 					on;
 	gzip_disable 				"MSIE [1-6]\.";
 	gzip_proxied 				any;
-	gzip_http_version 	1.1;
-	gzip_min_length			1000;
-	gzip_comp_level			6;
+	gzip_http_version 			1.1;
+	gzip_min_length				1000;
+	gzip_comp_level				6;
 	gzip_buffers	 			16 8k;
 	gzip_types					application/atom+xml application/json application/x-javascript application/xml application/xml+rss text/css text/javascript text/plain text/xml;
 
@@ -796,6 +843,19 @@ function remove_mod_rpaf {
 
 }
 
+function remove_mod_remoteip {
+
+	if [ -f /usr/local/apache/conf/includes/remoteip.conf ]; then
+		echo ""
+		echo "=== Updating Apache configuration to remove mod_remoteip ==="
+		rm -f /usr/local/apache/conf/includes/remoteip.conf
+		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf":\n:' /usr/local/apache/conf/httpd.conf
+		sleep 2
+		service httpd restart
+	fi
+
+}
+
 function remove_update_apache {
 
 	echo ""
@@ -847,7 +907,15 @@ install)
 	echo " ****************************************************"
 
 	install_basics
-	install_mod_rpaf
+
+	GET_HTTPD_VERSION=`httpd -v | grep "Server version"`;
+	if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]];
+	then
+		install_mod_rpaf
+	else
+		install_mod_remoteip
+	fi
+
 	install_update_apache
 	install_nginx
 	sync_vhosts
@@ -863,7 +931,15 @@ install)
 	echo ""
 		;;
 remove)
-	remove_mod_rpaf
+
+	GET_HTTPD_VERSION=`httpd -v | grep "Server version"`;
+	if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]];
+	then
+		remove_mod_rpaf
+	else
+		remove_mod_remoteip
+	fi
+
 	remove_update_apache
 	remove_nginx
 
