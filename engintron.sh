@@ -169,30 +169,30 @@ function install_nginx {
 # Proxy Cache Settings
 # Change '1m' below to the time in minutes (e.g. '5m' for 5 minutes) you wish for all 200, 301 and 302 replies to be cached.
 # More info here: http://wiki.nginx.org/HttpProxyModule#proxy_cache_valid
-proxy_cache_valid						1m;
-proxy_cache									cpanel;
-proxy_cache_key							\$scheme\$host\$request_method\$request_uri;
-proxy_cache_use_stale				updating;
+proxy_cache_valid				1m;
+proxy_cache						cpanel;
+proxy_cache_key					\$scheme\$host\$request_method\$request_uri;
+proxy_cache_use_stale			updating;
 
 # Timeouts
-proxy_connect_timeout				120s;
-proxy_send_timeout		 			120s;
-proxy_read_timeout		 			120s;
+proxy_connect_timeout			120s;
+proxy_send_timeout		 		120s;
+proxy_read_timeout		 		120s;
 
 # Buffers
-proxy_buffer_size			 			64k;
-proxy_buffers								16 32k;
+proxy_buffer_size			 	64k;
+proxy_buffers					16 32k;
 proxy_busy_buffers_size			64k;
-proxy_temp_file_write_size 	64k;
+proxy_temp_file_write_size 		64k;
 
 # Proxy Headers
-proxy_ignore_headers				Cache-Control Expires Set-Cookie;
-proxy_set_header	 					Host \$host;
-proxy_set_header	 					Referer \$http_referer;
-proxy_set_header 						X-Forwarded-For \$proxy_add_x_forwarded_for;
-proxy_set_header 						X-Forwarded-Host \$host;
-proxy_set_header 						X-Forwarded-Server \$host;
-proxy_set_header	 					X-Real-IP \$remote_addr;
+proxy_ignore_headers			Cache-Control Expires Set-Cookie;
+proxy_set_header	 			Host \$host;
+proxy_set_header	 			Referer \$http_referer;
+proxy_set_header 				X-Forwarded-For \$proxy_add_x_forwarded_for;
+proxy_set_header 				X-Forwarded-Host \$host;
+proxy_set_header 				X-Forwarded-Server \$host;
+proxy_set_header	 			X-Real-IP \$remote_addr;
 
 EOF
 
@@ -754,7 +754,7 @@ switch(\$op) {
 				</ul>
 				<h2>About</h2>
 				<p><a target="_blank" href="http://nuevvo.com/labs/"><?php echo PLG_NAME; ?></a> is a cPanel plugin providing a GUI interface for the Nginx server on your cPanel server.</p>
-				<p><a target="_blank" href="http://nginx.org/">Nginx</a> is a free, open-source, high-performance HTTP server and reverse proxy, as well as an IMAP/POP3 proxy server. Igor Sysoev started development of Nginx in 2002, with the first public release in 2004. Nginx now hosts nearly 6.55% (13.5M) of all domains worldwide. Nginx is known for its high performance, stability, rich feature set, simple configuration, and low resource consumption.</p>
+				<p><a target="_blank" href="http://nginx.org/">Nginx</a> is a free, open-source, high-performance HTTP server and reverse proxy, as well as an IMAP/POP3 proxy server. Igor Sysoev started development of Nginx in 2002, with the first public release in 2004. Nginx now hosts 14% of the web, taking the 2nd position after Apache and putting IIS in the 3rd place (Netcraft April 2014 report). Nginx is known for its high performance, stability, rich feature set, simple configuration and low resource consumption.</p>
 			</div>
 			<div id="ngOutput">
 				<h2>Output</h2>
