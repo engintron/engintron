@@ -271,6 +271,15 @@ EOF
 	echo "=== Registering Nginx as a service... ==="
 	/sbin/chkconfig nginx on
 
+	echo ""
+	echo "=== Check default Nginx webroot and fix if necessary... ==="
+	if [ ! -d /usr/share/nginx/html ]; then
+		mkdir -p /usr/share/nginx/html
+		cd /usr/share/nginx/html
+		wget https://raw.githubusercontent.com/nuevvo/engintron/master/usr/share/nginx/html/index.html
+		wget https://raw.githubusercontent.com/nuevvo/engintron/master/usr/share/nginx/html/50x.html
+	fi
+
 }
 
 function sync_vhosts {
