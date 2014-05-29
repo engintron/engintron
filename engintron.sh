@@ -280,6 +280,17 @@ EOF
 		wget https://raw.githubusercontent.com/nuevvo/engintron/master/usr/share/nginx/html/50x.html
 	fi
 
+	echo ""
+	echo "=== Check if the default vhost exists and fix if necessary... ==="
+	if [ ! -f /etc/nginx/conf.d/default.conf ]; then
+		cd /etc/nginx/conf.d/
+		wget https://raw.githubusercontent.com/nuevvo/engintron/master/etc/nginx/conf.d/default.conf
+	fi
+
+	echo ""
+	echo "=== Restart Nginx... ==="
+	service nginx reload
+
 }
 
 function sync_vhosts {
@@ -453,7 +464,7 @@ function install_gui_engintron {
 	cat > "/usr/local/cpanel/whostmgr/docroot/cgi/engintron.php" <<EOF
 <?php
 /**
- * @version		1.0.2
+ * @version		1.0.3
  * @package		Engintron for WHM
  * @author		Fotis Evangelou (Nuevvo) - http://nuevvo.com
  * @copyright	Copyright (c) 2010 - 2014 Nuevvo Webware P.C. All rights reserved.
@@ -469,7 +480,7 @@ if(\$user != "root") {
 
 // *** Common variables to make updating easier ***
 define('PLG_NAME','Engintron for WHM');
-define('PLG_VERSION','1.0.2');
+define('PLG_VERSION','1.0.3');
 define('NGINX_VERSION',str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1')));
 
 // The function to execute commands
