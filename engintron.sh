@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Package		Engintron
-# Version		1.0.2 Build 20140416
-# Copyright		Nuevvo Webware P.C. All rights reserved.
+# Version		1.0.3 Build 20140529
 # License		Commercial
 
 ############################# HELPER FUCTIONS [start] #############################
@@ -201,7 +200,7 @@ EOF
 	cat > "/etc/nginx/nginx.conf" <<EOF
 user nobody;
 
-worker_processes			2; # set to the number of CPU cores on your server
+worker_processes			auto; # set to the number of CPU cores on your server
 #worker_rlimit_nofile	20480;
 
 error_log							/var/log/nginx/error.log warn;
@@ -274,9 +273,9 @@ EOF
 }
 
 function sync_vhosts {
-
+	rm -f /etc/nginx/conf.d/*.conf # Cleanup configuration files
+	
 	cd /var/cpanel/users
-
 	for USER in *; do
 	 for DOMAIN in `cat $USER | grep ^DNS | cut -d= -f2`; do
 		 IP=`cat $USER|grep ^IP|cut -d= -f2`;
@@ -289,7 +288,7 @@ server {
 	listen $IP:80;
 	server_name $DOMAIN www.$DOMAIN;
 
-	access_log off;
+	access_log /usr/local/apache/domlogs/$DOMAIN;
 	error_log /var/log/nginx/error.$DOMAIN.log warn;
 
 	index index.php index.html index.htm;
@@ -317,7 +316,6 @@ server {
 	# Tell the browser to cache all images for 1 week
 	location ~* \.(gif|ico|jpe?g|png|ico|bmp)(\?[0-9a-zA-Z]+)?\$ {
 		expires					7d;
-		access_log			off;
 		log_not_found		off;
 		try_files \$uri \$uri/ \$uri/$DOMAIN @backend;
 	}
@@ -325,7 +323,6 @@ server {
 	# Tell the browser to cache all video, audio and doc files for 1 week
 	location ~* \.(txt|mp3|mp4|m4v|mov|mpg|mpeg|flv|swf|ogg|ogv|wmv|wma|pdf|doc|docx|xls|xlsx|odf|ods|ppt|pptx|rtf|ttf|otf)\$ {
 		expires					7d;
-		access_log			off;
 		log_not_found		off;
 		try_files \$uri \$uri/ \$uri/$DOMAIN @backend;
 	}
@@ -333,7 +330,6 @@ server {
 	# Tell the browser to cache all CSS and JS files for 1 day
 	location ~* \.(htm|html|css|js)(\?[0-9a-zA-Z]+)?\$ {
 		expires					1d;
-		access_log			off;
 		log_not_found		off;
 		try_files \$uri \$uri/ \$uri/$DOMAIN @backend;
 	}
