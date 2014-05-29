@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Package		Engintron
-# Version		1.0.3 Build 20140529
+# Version		1.0.31 Build 20140530
 # License		Commercial
 
 ############################# HELPER FUCTIONS [start] #############################
@@ -273,7 +273,8 @@ EOF
 }
 
 function sync_vhosts {
-	rm -f /etc/nginx/conf.d/*.conf # Cleanup configuration files
+	# Remove previous config files and leave default.conf:
+	find /etc/nginx/conf.d/ -type f ! -name "default.conf" -exec rm -f {} \;
 	
 	cd /var/cpanel/users
 	for USER in *; do
