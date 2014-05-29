@@ -1,4 +1,4 @@
-![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) (v1.0.3)
+![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.0.3)**
 ***
 
 ##Engintron is Nginx on cPanel
