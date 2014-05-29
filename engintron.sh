@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Package		Engintron
-# Version		1.0.2 Build 20140416
+# Version		1.0.3 Build 20140530
 # Copyright		Nuevvo Webware P.C. All rights reserved.
 # License		Commercial
 
@@ -201,7 +201,7 @@ EOF
 	cat > "/etc/nginx/nginx.conf" <<EOF
 user nobody;
 
-worker_processes			2; # set to the number of CPU cores on your server
+worker_processes			auto; # set to the number of CPU cores on your server
 #worker_rlimit_nofile	20480;
 
 error_log							/var/log/nginx/error.log warn;
@@ -274,6 +274,15 @@ EOF
 }
 
 function sync_vhosts {
+
+	echo ""
+	echo "=== Let's cleanup old vhosts first... ===";
+	echo ""
+
+	cd /etc/nginx/conf.d/
+	mv default.conf default
+	rm -f *.conf
+	mv default default.conf
 
 	cd /var/cpanel/users
 
