@@ -70,17 +70,17 @@ Using Apache Benchmark (AB), we run the following test: $ ab -c 50 -n 5000 -k ht
 
 Apache 2.2 is able to handle 53.21 requests per second.
 
-Because Nginx works in reverse caching proxy mode, when Engintron is installed, the results are simply stunning: 9086.38 requests per second - that's 2000 more serving capacity compared to Apache!
+Because Nginx works in reverse caching proxy mode, when Engintron is installed, the results are simply stunning: 9086.38 requests per second - **that's 2000 times more serving capacity compared to Apache**!
 
 If you run a busy site on a cPanel server, you can use the same AB test and see for yourself what you can gain from using Engintron.
 
 
 ==
 ### Roadmap - What next?
-The next update of Engintron will feature a massively overhauled design. One that will possibly make Engintron your cPanel dashboard page.
+The next update of Engintron (v2) will feature a massively overhauled design. One that will possibly make Engintron your cPanel dashboard page.
 ![Engintron v2](http://i.imgur.com/8C5wfqk.png)
 
-We also have planned the following:
+And I'll make every effort to include the following features:
 - A way to automatically sync Apache with Nginx vhosts when a new domain is added in cPanel (ideal for resellers)
 - A way to disable Nginx entirely on select domains (by way of adding an identifier file or an entry in .htaccess)
 - "Smarter" caching for user generated content in the frontend
