@@ -864,7 +864,7 @@ function add_munin_patch {
 		echo ""
 		echo "=== Updating Munin configuration ==="
 
-		if grep -q "[apache_status]" /etc/munin/plugin-conf.d/cpanel.conf
+		if grep -q "\[apache_status\]" /etc/munin/plugin-conf.d/cpanel.conf
 		then
 			echo "Munin patched already, nothing to do here"
 		else
@@ -889,7 +889,7 @@ function remove_munin_patch {
 		echo ""
 		echo "=== Updating Munin configuration ==="
 
-		if grep -q "[apache_status]" /etc/munin/plugin-conf.d/cpanel.conf
+		if grep -q "\[apache_status\]" /etc/munin/plugin-conf.d/cpanel.conf
 		then
 			sed -i 's:\[apache_status\]::' /etc/munin/plugin-conf.d/cpanel.conf
 			sed -i 's:env\.ports 8081::' /etc/munin/plugin-conf.d/cpanel.conf
