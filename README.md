@@ -99,6 +99,17 @@ https://github.com/nuevvo/engintron/issues
 
 
 ==
+### CHANGELOG
+**May 30th, 2014 - v1.0.3**
+- Fixed compatibility with Munin, added Nginx tracking in Munin
+- Enabled access logs for domains, but static file logging is disabled for performance reasons
+- Switched default Nginx worker process to "auto" (aka CPU/core support), so it won't be required to be set manually
+- Obsolete vhosts are now cleaned up whenever the sync process is performed
+- Added some default Nginx files after setup in case they are not created during Nginx's installation
+- Added default.conf vhost during installation
+
+
+==
 ### More info
 A proper website will be up soon, featuring short tutorials and videos, a forum and a commercial support channel.
 
