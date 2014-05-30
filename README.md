@@ -76,6 +76,21 @@ If you run a busy site on a cPanel server, you can use the same AB test and see 
 
 
 ==
+### Why is Engintron a better solution compared to other Nginx installers for cPanel
+There are 5 key differences when comparing Engintron with other Nginx installers for cPanel.
+
+First, Engintron is a single shell script (weighing only a few KBs) that installs all required software (to make Nginx work as intended) from the official software package vendors' repositories. And the installation is very fast (only a few seconds). And remember - unlike other "solutions", we don't bundle a copy of Nginx and we don't modify its binary files to put our names on it (yeap, true story)...
+
+Second, since we're using the official repositories for Nginx, all Engintron software is updated whenever cPanel (or the server's software) is updated. So you essentially set it and forget it (so to speak). Whenever you perform "yum update/upgrade" or upgrade the server software from within WHM, Nginx will be updated if a new release is available. If something is changed on Engintron and you need to re-install it, you simply install it on top of the previous installation. You don't need to uninstall it first!
+
+Third, you can safely uninstall Engintron and it will revert your entire system to how it was before. That means you can try Engintron and if you don't like it or you find it doesn't fit your needs, you can simply uninstall it.
+
+Fourth, it has a simple dashboard with some handy utilities that make Engintron your day-to-day dashboard for cPanel. And wait till you see the new looks coming in version 2.
+
+And finally, Engintron is open source. You can tear it apart or contribute back to its development. You can fork it, knife it, do whatever you want with it. It's not a black box :)
+
+
+==
 ### Roadmap - What next?
 The next update of Engintron (v2) will feature a massively overhauled design. One that will possibly make Engintron your cPanel dashboard page.
 ![Engintron v2](http://i.imgur.com/8C5wfqk.png)
