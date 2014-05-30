@@ -318,8 +318,8 @@ server {
 	listen $IP:80;
 	server_name $DOMAIN www.$DOMAIN;
 
-	access_log off;
-	error_log /var/log/nginx/error.$DOMAIN.log warn;
+	access_log /var/log/nginx/access.$DOMAIN.log;
+	error_log /var/log/nginx/error.$DOMAIN.log;
 
 	index index.php index.html index.htm;
 
