@@ -111,7 +111,7 @@ https://github.com/nuevvo/engintron/issues
 
 ==
 ### License
-Engintron is licensed under the GNU/GPL license. For more info, have a look here: http://www.gnu.org/copyleft/gpl.html
+Engintron is released under the GNU/GPL license. For more info, have a look here: http://www.gnu.org/copyleft/gpl.html
 
 
 ==
