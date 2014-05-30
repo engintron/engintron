@@ -868,7 +868,7 @@ function add_munin_patch {
 		then
 			echo "Munin patched already, nothing to do here"
 		else
-			cat >> "/var/cpanel/cpanel.config" <<EOF
+			cat >> "/etc/munin/plugin-conf.d/cpanel.conf" <<EOF
 
 [apache_status]
 env.ports 8081
