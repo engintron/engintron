@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# Package		Engintron
 # Version		1.0.3 Build 20140530
+# Package		Engintron
+# Author		Fotis Evangelou
 # Copyright		Nuevvo Webware P.C. All rights reserved.
-# License		Commercial
+# License		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+
+
 
 ############################# HELPER FUCTIONS [start] #############################
 
