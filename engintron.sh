@@ -689,10 +689,10 @@ switch(\$op) {
 }
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta charset="utf-8" />
 		<title><?php echo PLG_NAME; ?></title>
 		<script type="text/javascript">
 			function confirm(id) {
@@ -859,6 +859,46 @@ EOF
 
 }
 
+function add_munin_patch {
+	if [ -f /etc/munin/plugin-conf.d/cpanel.conf ]; then
+		echo ""
+		echo "=== Updating Munin configuration ==="
+
+		if grep -Fxq "[apache_status]" /etc/munin/plugin-conf.d/cpanel.conf
+		then
+			echo "Munin patched already, nothing to do here"
+		else
+			cat >> "/var/cpanel/cpanel.config" <<EOF
+
+[apache_status]
+env.ports 8081
+env.label 8081
+
+EOF
+		fi
+
+		service munin-node restart
+	fi
+}
+
+function remove_munin_patch {
+	if [ -f /etc/munin/plugin-conf.d/cpanel.conf ]; then
+		echo ""
+		echo "=== Updating Munin configuration ==="
+
+		if grep -Fxq "[apache_status]" /etc/munin/plugin-conf.d/cpanel.conf
+		then
+			sed -i 's:[apache_status]::' /etc/munin/plugin-conf.d/cpanel.conf
+			sed -i 's:env.ports 8081::' /etc/munin/plugin-conf.d/cpanel.conf
+			sed -i 's:env.label 8081::' /etc/munin/plugin-conf.d/cpanel.conf
+		else
+			echo "Munin was not found, nothing to do here"
+		fi
+
+		service munin-node restart
+	fi
+}
+
 function remove_mod_rpaf {
 
 	if [ -f /usr/local/apache/conf/includes/rpaf.conf ]; then
@@ -948,6 +988,7 @@ install)
 	install_update_apache
 	install_nginx
 	sync_vhosts
+	add_munin_patch
 
 	echo ""
 	echo "=== Preparing GUI files... ==="
@@ -971,6 +1012,7 @@ remove)
 
 	remove_update_apache
 	remove_nginx
+	remove_munin_patch
 
 	echo ""
 	echo "=== Deleting GUI files... ==="
