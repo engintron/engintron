@@ -880,6 +880,9 @@ env.url http://localhost/nginx_status
 EOF
 		fi
 
+		ln -s /usr/local/cpanel/3rdparty/share/munin/plugins/nginx_request /etc/munin/plugins/nginx_request
+		ln -s /usr/local/cpanel/3rdparty/share/munin/plugins/nginx_status /etc/munin/plugins/nginx_status
+
 		service munin-node restart
 	fi
 }
@@ -899,6 +902,9 @@ function remove_munin_patch {
 		else
 			echo "Munin was not found, nothing to do here"
 		fi
+
+		rm -f /etc/munin/plugins/nginx_request
+		rm -f /etc/munin/plugins/nginx_status
 
 		service munin-node restart
 	fi
