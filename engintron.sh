@@ -170,12 +170,15 @@ function install_nginx {
 # For more info on the settings below, see http://wiki.nginx.org/HttpProxyModule
 
 # Proxy Cache Settings
-# Change '1m' below to the time in minutes (e.g. '5m' for 5 minutes) you wish for all 200, 301 and 302 replies to be cached.
+# Change '2m' below to the time in minutes (e.g. '5m' for 5 minutes) you wish for all 200, 301 and 302 replies to be cached.
 # More info here: http://wiki.nginx.org/HttpProxyModule#proxy_cache_valid
-proxy_cache_valid				1m;
+proxy_cache_valid				any 2m;
 proxy_cache						cpanel;
 proxy_cache_key					\$scheme\$host\$request_method\$request_uri;
 proxy_cache_use_stale			updating;
+proxy_cache_methods				GET HEAD;
+proxy_cache_bypass				\$wordpress \$k2_for_joomla;
+proxy_no_cache					\$wordpress \$k2_for_joomla;
 
 # Timeouts
 proxy_connect_timeout			120s;
@@ -328,6 +331,16 @@ server {
 
 	root /home/$USER/public_html/;
 
+	set \$wordpress "";
+	if (\$http_cookie ~* "wordpress_logged_in_[^=]*=([^%]+)%7C") {
+		set \$wordpress wordpress_logged_in_\$1;
+	}
+
+	set \$k2_for_joomla "";
+	if (\$sent_http_x_logged_in = "true") {
+		set \$k2_for_joomla true;
+	}
+
 	location ~* ^/(administrator|.*/administrator|.*/.*/administrator|wp-admin|.*/wp-admin|.*/.*/wp-admin) {
 		add_header X-Cache \$upstream_cache_status;
 		proxy_pass http://$IP:8081;
@@ -348,7 +361,7 @@ server {
 
 	# Tell the browser to cache all images for 1 week
 	location ~* \.(gif|ico|jpe?g|png|ico|bmp)(\?[0-9a-zA-Z]+)?\$ {
-		expires					7d;
+		expires				7d;
 		access_log			off;
 		log_not_found		off;
 		try_files \$uri \$uri/ \$uri/$DOMAIN @backend;
@@ -356,7 +369,7 @@ server {
 
 	# Tell the browser to cache all video, audio and doc files for 1 week
 	location ~* \.(txt|mp3|mp4|m4v|mov|mpg|mpeg|flv|swf|ogg|ogv|wmv|wma|pdf|doc|docx|xls|xlsx|odf|ods|ppt|pptx|rtf|ttf|otf)\$ {
-		expires					7d;
+		expires				7d;
 		access_log			off;
 		log_not_found		off;
 		try_files \$uri \$uri/ \$uri/$DOMAIN @backend;
@@ -364,7 +377,7 @@ server {
 
 	# Tell the browser to cache all CSS and JS files for 1 day
 	location ~* \.(htm|html|css|js)(\?[0-9a-zA-Z]+)?\$ {
-		expires					1d;
+		expires				1d;
 		access_log			off;
 		log_not_found		off;
 		try_files \$uri \$uri/ \$uri/$DOMAIN @backend;
