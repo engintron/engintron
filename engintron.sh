@@ -192,6 +192,9 @@ proxy_busy_buffers_size			64k;
 proxy_temp_file_write_size 		64k;
 
 # Proxy Headers
+proxy_hide_header				Cache-Control;
+proxy_hide_header				Expires;
+proxy_hide_header				Set-Cookie;
 proxy_ignore_headers			Cache-Control Expires Set-Cookie;
 proxy_set_header	 			Host \$host;
 proxy_set_header	 			Referer \$http_referer;
@@ -341,7 +344,7 @@ server {
 		set \$k2_for_joomla true;
 	}
 
-	location ~* ^/(administrator|.*/administrator|.*/.*/administrator|wp-admin|.*/wp-admin|.*/.*/wp-admin) {
+	location ~* ^/(login|logout|connect|admin|administrator|.*/administrator|.*/.*/administrator|wp-admin|.*/wp-admin|.*/.*/wp-admin) {
 		add_header X-Cache \$upstream_cache_status;
 		proxy_pass http://$IP:8081;
 		proxy_set_header Host \$host;
