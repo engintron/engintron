@@ -39,14 +39,15 @@ function install_mod_rpaf {
 	if [ ! -f /usr/local/apache/conf/includes/rpaf.conf ]; then
 
 		echo ""
-		echo "=== Installing mod_rpaf for Apache ==="
+		echo "=== Installing mod_rpaf (v0.8.4) for Apache ==="
 		cd /usr/local/src
-		wget http://www.stderr.net/apache/rpaf/download/mod_rpaf-0.6.tar.gz
-		tar xzf mod_rpaf-0.6.tar.gz
-		cd mod_rpaf-0.6
-		#/usr/sbin/apxs -i -c -n mod_rpaf-2.0.so mod_rpaf-2.0.c
-		#/usr/local/apache/bin/apxs	 -i -c -n mod_rpaf-2.0.so mod_rpaf-2.0.c
-		apxs -i -c -n mod_rpaf-2.0.so mod_rpaf-2.0.c
+		#wget http://www.stderr.net/apache/rpaf/download/mod_rpaf-0.6.tar.gz - OFFLINE
+		wget https://github.com/gnif/mod_rpaf/archive/v0.8.4.tar.gz
+		tar xzf mod_rpaf-0.8.4.tar.gz
+		cd mod_rpaf-0.8.4
+		#/usr/sbin/apxs -i -c -n mod_rpaf.so mod_rpaf.c
+		#/usr/local/apache/bin/apxs	 -i -c -n mod_rpaf.so mod_rpaf.c
+		apxs -i -c -n mod_rpaf.so mod_rpaf.c
 
 		cd /
 
@@ -56,7 +57,7 @@ function install_mod_rpaf {
 
 		touch /usr/local/apache/conf/includes/rpaf.conf
 		echo "
-LoadModule rpaf_module modules/mod_rpaf-2.0.so
+LoadModule rpaf_module modules/mod_rpaf.so
 
 RPAFenable On
 RPAFsethostname On
