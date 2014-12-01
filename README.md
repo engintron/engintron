@@ -91,6 +91,15 @@ And finally, Engintron is open source. You can tear it apart or contribute back 
 
 
 ==
+### When you may not be able to use Engintron (or at least not use it "out-of-the-box")
+Engintron installs Nginx as a reverse caching proxy in front of your Apache server. Think of it as your little CDN packed inside your cPanel server. This greatly speeds up your site and lowers resource consumption on your server.
+
+But there is one specific drawback to using Nginx in reverse caching proxy mode, the way it's installed by default via Engintron: it does work at all with user generated content in your site's frontend, or at least without modifying Nginx's rules for your domain. When you got users that login in the frontend and are able to browse user-specific content or upload/generate their own content, you need to write additional Nginx rules to make sure you exclude these users pages (e.g. the login/logout pages, the user's dashboard etc.). Additionally you need to setup cookie-based rules so that Nginx "understands" when a user is logged in and therefore does not cache the page output. This way, the user pages are not cached and your users can interact with your site as they did before you installed Engintron. 
+
+Please note that we do already have 2 generic exlusion rules for the backend interface of Joomla and WordPress, built right into Engintron's installation process. But as you can understand, we cannot include such rules for any CMS that can be installed in cPanel. But since Engintron is open source, you can easily hack the vhost generation functions and add your own rules.
+
+
+==
 ### Roadmap - What next?
 The next update of Engintron (v2) will feature a massively overhauled design. One that will possibly make Engintron your cPanel dashboard page.
 ![Engintron v2](http://i.imgur.com/8C5wfqk.png)
