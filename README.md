@@ -1,4 +1,4 @@
-![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.0.3)**
+![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.0.4 - released Dec 3rd, 2014)**
 ***
 
 ##Engintron is Nginx on cPanel
@@ -124,6 +124,11 @@ https://github.com/nuevvo/engintron/issues
 
 ==
 ### CHANGELOG
+**Dec 3rd, 2014 - v1.0.4**
+- Since mod_rpaf was dropped from its original developer, it's now been updated with the fork that's been actively maintained here: https://github.com/gnif/mod_rpaf
+- Moved all static assets of the app dashboard onto GitHub's CDN. This simply results to a cleaner Engintron script.
+- Removed the line "proxy_hide_header Set-Cookie;" from proxy.conf as it was causing issues with WordPress websites not being properly cached (thank you @AgentGod)
+
 **May 30th, 2014 - v1.0.3**
 - Fixed compatibility with Munin, added Nginx tracking in Munin
 - Enabled access logs for domains, but static file logging is disabled for performance reasons

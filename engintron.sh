@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Version		1.0.3 Build 20140530
+# Version		1.0.4 Build 20141203
 # Package		Engintron
 # Author		Fotis Evangelou
 # Copyright		Nuevvo Webware P.C. All rights reserved.
@@ -485,7 +485,7 @@ function install_gui_engintron {
 	cat > "/usr/local/cpanel/whostmgr/docroot/cgi/engintron.php" <<EOF
 <?php
 /**
- * @version		1.0.3
+ * @version		1.0.4
  * @package		Engintron for WHM
  * @author		Fotis Evangelou (Nuevvo) - http://nuevvo.com
  * @copyright	Copyright (c) 2010 - 2014 Nuevvo Webware P.C. All rights reserved.
@@ -501,7 +501,7 @@ if(\$user != "root") {
 
 // *** Common variables to make updating easier ***
 define('PLG_NAME','Engintron for WHM');
-define('PLG_VERSION','1.0.3');
+define('PLG_VERSION','1.0.4');
 define('NGINX_VERSION',str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1')));
 
 // The function to execute commands
