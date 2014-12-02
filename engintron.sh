@@ -43,7 +43,7 @@ function install_mod_rpaf {
 		cd /usr/local/src
 		#wget http://www.stderr.net/apache/rpaf/download/mod_rpaf-0.6.tar.gz - OFFLINE
 		wget https://github.com/gnif/mod_rpaf/archive/v0.8.4.tar.gz
-		tar xzf mod_rpaf-0.8.4.tar.gz
+		tar xzf v0.8.4.tar.gz
 		cd mod_rpaf-0.8.4
 		#/usr/sbin/apxs -i -c -n mod_rpaf.so mod_rpaf.c
 		#/usr/local/apache/bin/apxs	 -i -c -n mod_rpaf.so mod_rpaf.c
