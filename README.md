@@ -144,8 +144,13 @@ Engintron is released under the GNU/GPL license. For more info, have a look here
 
 
 ==
+### Sponsor
+The development & testing cPanel server for Engintron is sponsored by EuroVPS: https://www.eurovps.com/
+
+
+==
 ### More info
-A proper website will be up soon, featuring short tutorials and videos, a forum and a commercial support channel.
+A proper website is on its way, featuring short tutorials and videos, a forum and a commercial support channel.
 
 The current backend in WHM is also under redesign.
 
