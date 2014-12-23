@@ -715,9 +715,9 @@ switch(\$op) {
 	<head>
 		<meta charset="utf-8" />
 		<title><?php echo PLG_NAME; ?></title>
-		<script type="text/javascript" src="http://engintron.com/app/js/engintron.js"></script>
+		<script type="text/javascript" src="https://nuevvo.github.io/engintron.com/app/js/engintron.js"></script>
 		<link rel="stylesheet" type="text/css" href="/themes/x/style_optimized.css" />
-		<link rel="stylesheet" type="text/css" href="http://engintron.com/app/css/engintron.css" />
+		<link rel="stylesheet" type="text/css" href="https://nuevvo.github.io/engintron.com/app/css/engintron.css" />
 	</head>
 	<body class="yui-skin-sam op_<?php echo \$op; ?>">
 		<div id="pageheader">
