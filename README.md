@@ -1,4 +1,4 @@
-![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.0.4 - released Dec 3rd, 2014)**
+![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.0.4 - released Dec 23rd, 2014)**
 ***
 
 ##Engintron is Nginx on cPanel
@@ -124,7 +124,10 @@ https://github.com/nuevvo/engintron/issues
 
 ==
 ### CHANGELOG
-**Dec 3rd, 2014 - v1.0.4**
+**Dec 23rd, 2014 - v1.0.4 Build 20141223**
+- Updated static asset loading from an HTTPS source
+
+**Dec 3rd, 2014 - v1.0.4 Build 20141203**
 - Since mod_rpaf was dropped from its original developer, it's now been updated with the fork that's been actively maintained here: https://github.com/gnif/mod_rpaf
 - Moved all static assets of the app dashboard onto GitHub's CDN. This simply results to a cleaner Engintron script.
 - Removed the line "proxy_hide_header Set-Cookie;" from proxy.conf as it was causing issues with WordPress websites not being properly cached (thank you @AgentGod)
