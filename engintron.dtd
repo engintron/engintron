@@ -1,239 +1,172 @@
 --- 
-Apache: 
-  optmods: 
-    Access: 1
-    Actions: 1
-    Alias: 1
-    Asis: 0
-    AuthAnon: 0
-    AuthDB: 0
-    AuthDBM: 0
-    AuthDigest: 0
-    AuthLDAP: 0
-    AuthnAlias: 0
-    AuthnAnon: 0
-    AuthnDBD: 0
-    AuthnDBM: 0
-    AuthnDefault: 0
-    AuthnzLDAP: 0
-    AuthzDBM: 0
-    AuthzHost: 1
-    AuthzOwner: 0
-    Autoindex: 1
-    Bucketeer: 0
-    Cache: 0
-    CaseFilter: 0
-    CaseFilterIn: 0
-    CernMeta: 0
-    CharsetLite: 0
-    DAVFs: 0
-    DAVLock: 0
-    DBD: 1
-    DIR: 1
-    Dav: 0
-    Deflate: 1
-    DiskCache: 0
-    Distcache: 0
-    Dumpio: 0
-    Echo: 0
-    Env: 0
-    Expires: 1
-    ExtFilter: 0
-    Fastcgi: 1
-    FileCache: 1
-    Fileprotect: 1
-    Frontpage: 0
-    Headers: 1
-    Ident: 0
-    Imagemap: 0
-    LDAP: 0
-    LogAgent: 0
-    LogConfig: 1
-    LogForensic: 0
-    LogReferer: 0
-    MPMEvent: 0
-    MPMLeader: 0
-    MPMPerchild: 0
-    MPMPrefork: 1
-    MPMThreadpool: 0
-    MPMWorker: 0
-    MemCache: 0
-    Mime: 1
-    MimeMagic: 0
-    MmapStatic: 0
-    Negotiation: 1
-    OptionalFnExport: 0
-    OptionalFnImport: 0
-    OptionalHookExport: 0
-    OptionalHookImport: 0
-    PHPAsUser: 0
-    Proxy: 1
-    RaiseFDSetsize: 0
-    RaiseHardServerLimit: 0
-    Rewrite: 0
-    Setenvif: 1
-    Speling: 0
-    Status: 1
-    SymlinkProtection: 0
-    UniqueId: 1
-    Userdir: 1
-    Usertrack: 0
-    Version: 0
-    VhostAlias: 0
-    Watchdog: 0
-  version: 2_2
-Cpanel::Easy::EAccelerator: 0
-Cpanel::Easy::IonCubeLoader: 0
-Cpanel::Easy::ModBandwidth: 0
-Cpanel::Easy::ModGzip: 0
-Cpanel::Easy::ModJk: 0
-Cpanel::Easy::ModJk5: 0
-Cpanel::Easy::ModMono: 0
-Cpanel::Easy::ModMono2: 0
-Cpanel::Easy::ModPerl: 0
-Cpanel::Easy::ModQos: 0
-Cpanel::Easy::ModRuid2: 0
-Cpanel::Easy::ModSec: 1
-Cpanel::Easy::PHP4: 0
-Cpanel::Easy::PHP4::4_6: 0
-Cpanel::Easy::PHP4::4_7: 0
-Cpanel::Easy::PHP4::4_8: 0
-Cpanel::Easy::PHP4::4_9: 0
-Cpanel::Easy::PHP4::Bcmath: 1
-Cpanel::Easy::PHP4::Bz2: 0
-Cpanel::Easy::PHP4::CGI: 0
-Cpanel::Easy::PHP4::Calendar: 1
-Cpanel::Easy::PHP4::Curl: 0
-Cpanel::Easy::PHP4::CurlSSL: 1
-Cpanel::Easy::PHP4::DBX: 0
-Cpanel::Easy::PHP4::Dbase: 0
-Cpanel::Easy::PHP4::DiscardPath: 0
-Cpanel::Easy::PHP4::DomXslt: 0
-Cpanel::Easy::PHP4::Exif: 0
-Cpanel::Easy::PHP4::FTP: 1
-Cpanel::Easy::PHP4::Fastcgi: 0
-Cpanel::Easy::PHP4::ForceCGIRedirect: 0
-Cpanel::Easy::PHP4::GD: 0
-Cpanel::Easy::PHP4::Gettext: 0
-Cpanel::Easy::PHP4::Iconv: 0
-Cpanel::Easy::PHP4::Imap: 1
-Cpanel::Easy::PHP4::Java: 0
-Cpanel::Easy::PHP4::MM: 0
-Cpanel::Easy::PHP4::MagicQuotes: 1
-Cpanel::Easy::PHP4::MailHeaders: 0
-Cpanel::Easy::PHP4::Mbregex: 0
-Cpanel::Easy::PHP4::Mbstring: 0
-Cpanel::Easy::PHP4::Mcrypt: 0
-Cpanel::Easy::PHP4::MemoryLimit: 0
-Cpanel::Easy::PHP4::Mhash: 0
-Cpanel::Easy::PHP4::MimeMagic: 0
-Cpanel::Easy::PHP4::Ming: 0
-Cpanel::Easy::PHP4::MysqlOfSystem: 1
-Cpanel::Easy::PHP4::Openssl: 1
-Cpanel::Easy::PHP4::PDFLib: 0
-Cpanel::Easy::PHP4::POSIX: 0
-Cpanel::Easy::PHP4::PathInfoCheck: 0
-Cpanel::Easy::PHP4::Pear: 0
-Cpanel::Easy::PHP4::Pgsql: 0
-Cpanel::Easy::PHP4::Pspell: 0
-Cpanel::Easy::PHP4::SNMP: 0
-Cpanel::Easy::PHP4::SafeMode: 0
-Cpanel::Easy::PHP4::SafePHPCGI: 0
-Cpanel::Easy::PHP4::Sockets: 1
-Cpanel::Easy::PHP4::Swf: 0
-Cpanel::Easy::PHP4::TTF: 0
-Cpanel::Easy::PHP4::Versioning: 0
-Cpanel::Easy::PHP4::Wddx: 0
-Cpanel::Easy::PHP4::XmlRPC: 0
-Cpanel::Easy::PHP4::XsltSablot: 0
-Cpanel::Easy::PHP4::ZendMultibyte: 0
-Cpanel::Easy::PHP4::Zip: 0
-Cpanel::Easy::PHP4::Zlib: 1
-Cpanel::Easy::PHP5: 1
-Cpanel::Easy::PHP5::2_17: 0
-Cpanel::Easy::PHP5::2_9: 0
-Cpanel::Easy::PHP5::3_26: 0
-Cpanel::Easy::PHP5::3_27: 0
-Cpanel::Easy::PHP5::4_17: 1
-Cpanel::Easy::PHP5::Bcmath: 1
-Cpanel::Easy::PHP5::Bz2: 1
-Cpanel::Easy::PHP5::CGI: 0
-Cpanel::Easy::PHP5::Calendar: 1
-Cpanel::Easy::PHP5::Curl: 0
-Cpanel::Easy::PHP5::CurlSSL: 1
-Cpanel::Easy::PHP5::Curlwrappers: 1
-Cpanel::Easy::PHP5::DBX: 0
-Cpanel::Easy::PHP5::Dbase: 0
-Cpanel::Easy::PHP5::DiscardPath: 0
-Cpanel::Easy::PHP5::Enchant: 1
-Cpanel::Easy::PHP5::Exif: 1
-Cpanel::Easy::PHP5::Expat: 0
-Cpanel::Easy::PHP5::FTP: 1
-Cpanel::Easy::PHP5::Fastcgi: 0
-Cpanel::Easy::PHP5::FileInfo: 0
-Cpanel::Easy::PHP5::ForceCGIRedirect: 0
-Cpanel::Easy::PHP5::GD: 1
-Cpanel::Easy::PHP5::Gettext: 1
-Cpanel::Easy::PHP5::HardPHP: 0
-Cpanel::Easy::PHP5::Iconv: 0
-Cpanel::Easy::PHP5::Imap: 1
-Cpanel::Easy::PHP5::Intl: 1
-Cpanel::Easy::PHP5::Java: 0
-Cpanel::Easy::PHP5::MM: 1
-Cpanel::Easy::PHP5::MagicQuotes: 0
-Cpanel::Easy::PHP5::MailHeaders: 0
-Cpanel::Easy::PHP5::Mbregex: 0
-Cpanel::Easy::PHP5::Mbstring: 1
-Cpanel::Easy::PHP5::Mcrypt: 1
-Cpanel::Easy::PHP5::MemoryLimit: 0
-Cpanel::Easy::PHP5::Mhash: 0
-Cpanel::Easy::PHP5::MimeMagic: 0
-Cpanel::Easy::PHP5::Ming: 0
-Cpanel::Easy::PHP5::Mysql: 1
-Cpanel::Easy::PHP5::MysqlOfSystem: 1
-Cpanel::Easy::PHP5::Mysqli: 1
-Cpanel::Easy::PHP5::Openssl: 1
-Cpanel::Easy::PHP5::PDFLib: 0
-Cpanel::Easy::PHP5::PDO: 1
-Cpanel::Easy::PHP5::PDOMySQL: 1
-Cpanel::Easy::PHP5::POSIX: 1
-Cpanel::Easy::PHP5::PathInfoCheck: 0
-Cpanel::Easy::PHP5::Pear: 0
-Cpanel::Easy::PHP5::Pgsql: 1
-Cpanel::Easy::PHP5::Phar: 0
-Cpanel::Easy::PHP5::Pspell: 1
-Cpanel::Easy::PHP5::SNMP: 1
-Cpanel::Easy::PHP5::SOAP: 1
-Cpanel::Easy::PHP5::SQLite3: 0
-Cpanel::Easy::PHP5::SafeMode: 0
-Cpanel::Easy::PHP5::SafePHPCGI: 0
-Cpanel::Easy::PHP5::SilenceDeprecatedPatch: 1
-Cpanel::Easy::PHP5::Sockets: 1
-Cpanel::Easy::PHP5::Swf: 0
-Cpanel::Easy::PHP5::SysTimezone: 1
-Cpanel::Easy::PHP5::TTF: 1
-Cpanel::Easy::PHP5::Tidy: 1
-Cpanel::Easy::PHP5::Versioning: 0
-Cpanel::Easy::PHP5::Wddx: 1
-Cpanel::Easy::PHP5::WithoutIconv: 0
-Cpanel::Easy::PHP5::XSL: 1
-Cpanel::Easy::PHP5::XmlRPC: 1
-Cpanel::Easy::PHP5::XsltSablot: 0
-Cpanel::Easy::PHP5::ZendMultibyte: 0
-Cpanel::Easy::PHP5::Zip: 1
-Cpanel::Easy::PHP5::Zlib: 1
-Cpanel::Easy::PHP5::cPPHPOpts: 1
-Cpanel::Easy::PHPSuHosin: 0
-Cpanel::Easy::SourceGuardian: 0
-Cpanel::Easy::Tomcat::7_0: 0
-Cpanel::Easy::Xcache: 0
-Cpanel::Easy::Zendopt: 0
-_meta: 
-  implies: 
-    changed: {}
-
-    circles: {}
-
-  name: FastCGI_build_for_Apache_22_PHP_54 (1)
-  note: FastCGI_build_for_Apache_22_PHP_54
-  revision: uBdUja8LB544JGlCPLUDnjFLjxjkvhNuAUf8d0VcZGxJkw19dWXt7ZbiQTGYYCDy
+"Apache": 
+  "optmods": 
+    "Access": 1
+    "Actions": 1
+    "Alias": 1
+    "Asis": 1
+    "AuthAnon": 0
+    "AuthDB": 0
+    "AuthDBM": 0
+    "AuthDigest": 0
+    "AuthLDAP": 0
+    "AuthnAlias": 0
+    "AuthnAnon": 0
+    "AuthnDBD": 0
+    "AuthnDBM": 0
+    "AuthnDefault": 1
+    "AuthnzLDAP": 0
+    "AuthzDBM": 0
+    "AuthzHost": 1
+    "AuthzOwner": 0
+    "Autoindex": 1
+    "Bucketeer": 0
+    "Cache": 0
+    "CaseFilter": 0
+    "CaseFilterIn": 0
+    "CernMeta": 0
+    "CharsetLite": 0
+    "DAVFs": 0
+    "DAVLock": 0
+    "DBD": 0
+    "DIR": 1
+    "Dav": 0
+    "Deflate": 1
+    "DiskCache": 0
+    "Distcache": 0
+    "Dumpio": 0
+    "Echo": 0
+    "Env": 1
+    "Expires": 1
+    "ExtFilter": 0
+    "Fastcgi": 1
+    "FileCache": 0
+    "Fileprotect": 1
+    "Headers": 1
+    "Ident": 0
+    "Imagemap": 0
+    "LDAP": 0
+    "LogAgent": 0
+    "LogConfig": 1
+    "LogForensic": 0
+    "LogReferer": 0
+    "MPMEvent": 0
+    "MPMItk": 0
+    "MPMLeader": 0
+    "MPMPerchild": 0
+    "MPMPrefork": 1
+    "MPMThreadpool": 0
+    "MPMWorker": 0
+    "MemCache": 0
+    "Mime": 1
+    "MimeMagic": 0
+    "MmapStatic": 0
+    "Negotiation": 1
+    "OptionalFnExport": 0
+    "OptionalFnImport": 0
+    "OptionalHookExport": 0
+    "OptionalHookImport": 0
+    "PHPAsUser": 0
+    "Proxy": 1
+    "RaiseFDSetsize": 0
+    "RaiseHardServerLimit": 0
+    "Rewrite": 0
+    "Setenvif": 1
+    "SlowRestartPatch": 0
+    "Speling": 0
+    "Status": 1
+    "SymlinkProtection": 0
+    "UniqueId": 1
+    "Userdir": 1
+    "Usertrack": 0
+    "Version": 1
+    "VhostAlias": 0
+    "Watchdog": 0
+  "version": '2_4'
+"Cpanel::Easy::EAccelerator": 0
+"Cpanel::Easy::IonCubeLoader": 0
+"Cpanel::Easy::ModBandwidth": 0
+"Cpanel::Easy::ModJk": 0
+"Cpanel::Easy::ModJk5": 0
+"Cpanel::Easy::ModMono": 0
+"Cpanel::Easy::ModMono2": 0
+"Cpanel::Easy::ModPerl": 0
+"Cpanel::Easy::ModQos": 0
+"Cpanel::Easy::ModRuid2": 0
+"Cpanel::Easy::ModSec": 1
+"Cpanel::Easy::PHP5": 1
+"Cpanel::Easy::PHP5::3_29": 0
+"Cpanel::Easy::PHP5::4_39": 0
+"Cpanel::Easy::PHP5::5_23": 1
+"Cpanel::Easy::PHP5::Bcmath": 1
+"Cpanel::Easy::PHP5::Bz2": 0
+"Cpanel::Easy::PHP5::CGI": 0
+"Cpanel::Easy::PHP5::Calendar": 1
+"Cpanel::Easy::PHP5::Curl": 0
+"Cpanel::Easy::PHP5::CurlSSL": 1
+"Cpanel::Easy::PHP5::Curlwrappers": 0
+"Cpanel::Easy::PHP5::DBX": 0
+"Cpanel::Easy::PHP5::Dbase": 0
+"Cpanel::Easy::PHP5::DiscardPath": 0
+"Cpanel::Easy::PHP5::Enchant": 0
+"Cpanel::Easy::PHP5::Exif": 1
+"Cpanel::Easy::PHP5::Expat": 0
+"Cpanel::Easy::PHP5::FTP": 1
+"Cpanel::Easy::PHP5::Fastcgi": 0
+"Cpanel::Easy::PHP5::FileInfo": 0
+"Cpanel::Easy::PHP5::ForceCGIRedirect": 0
+"Cpanel::Easy::PHP5::GD": 1
+"Cpanel::Easy::PHP5::Gettext": 1
+"Cpanel::Easy::PHP5::HardPHP": 0
+"Cpanel::Easy::PHP5::Iconv": 0
+"Cpanel::Easy::PHP5::Imap": 1
+"Cpanel::Easy::PHP5::Intl": 0
+"Cpanel::Easy::PHP5::Java": 0
+"Cpanel::Easy::PHP5::MM": 0
+"Cpanel::Easy::PHP5::MagicQuotes": 0
+"Cpanel::Easy::PHP5::MailHeaders": 0
+"Cpanel::Easy::PHP5::Mbregex": 0
+"Cpanel::Easy::PHP5::Mbstring": 1
+"Cpanel::Easy::PHP5::Mcrypt": 1
+"Cpanel::Easy::PHP5::MemoryLimit": 0
+"Cpanel::Easy::PHP5::Mhash": 0
+"Cpanel::Easy::PHP5::MimeMagic": 0
+"Cpanel::Easy::PHP5::Mysql": 1
+"Cpanel::Easy::PHP5::MysqlOfSystem": 0
+"Cpanel::Easy::PHP5::Mysqli": 1
+"Cpanel::Easy::PHP5::Openssl": 1
+"Cpanel::Easy::PHP5::PDO": 1
+"Cpanel::Easy::PHP5::PDOMySQL": 1
+"Cpanel::Easy::PHP5::POSIX": 0
+"Cpanel::Easy::PHP5::Pear": 0
+"Cpanel::Easy::PHP5::Pgsql": 1
+"Cpanel::Easy::PHP5::Phar": 0
+"Cpanel::Easy::PHP5::Pspell": 0
+"Cpanel::Easy::PHP5::SNMP": 0
+"Cpanel::Easy::PHP5::SOAP": 0
+"Cpanel::Easy::PHP5::SQLite3": 0
+"Cpanel::Easy::PHP5::SafeMode": 0
+"Cpanel::Easy::PHP5::SafePHPCGI": 0
+"Cpanel::Easy::PHP5::SilenceDeprecatedPatch": 0
+"Cpanel::Easy::PHP5::Sockets": 1
+"Cpanel::Easy::PHP5::SysTimezone": 1
+"Cpanel::Easy::PHP5::TTF": 1
+"Cpanel::Easy::PHP5::Tidy": 1
+"Cpanel::Easy::PHP5::Versioning": 0
+"Cpanel::Easy::PHP5::Wddx": 0
+"Cpanel::Easy::PHP5::WithoutIconv": 0
+"Cpanel::Easy::PHP5::XSL": 0
+"Cpanel::Easy::PHP5::XmlRPC": 0
+"Cpanel::Easy::PHP5::ZendMultibyte": 0
+"Cpanel::Easy::PHP5::Zip": 1
+"Cpanel::Easy::PHP5::Zlib": 1
+"Cpanel::Easy::PHP5::cPPHPOpts": 1
+"Cpanel::Easy::PHPSuHosin": 0
+"Cpanel::Easy::SourceGuardian": 0
+"Cpanel::Easy::Tomcat::7_0": 0
+"Cpanel::Easy::Xcache": 0
+"Cpanel::Easy::Zendopt": 0
+"_meta": 
+  "name": 'Engintron2015'
+  "note": 'Engintron2015 cPanel setup with Apache 2.4 and FastCGI/PHP.'
+  "revision": 'bWQkQzxOScL1ipZDk65vrcDspFZObP6IXCQzwLJX2gFJvtQRapoR_SseU8NJ4HMz'
