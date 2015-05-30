@@ -150,9 +150,7 @@ function install_update_apache {
 	sleep 2
 
 	echo ""
-	echo "=== Distill changes in cPanel Apache configuration and restart Apache ==="
-	/usr/local/cpanel/bin/apache_conf_distiller --update
-	/scripts/rebuildhttpdconf --update
+	echo "=== Restart Apache ==="
 
 	service httpd restart
 	sleep 2
