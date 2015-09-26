@@ -924,8 +924,13 @@ function remove_update_apache {
 
 	echo ""
 	echo "=== Switch Apache back to port 80 ==="
-	sed -i 's/apache_port=0.0.0.0:8081$//' /var/cpanel/cpanel.config
-	/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
+	then
+		sed -i 's/apache_port=0.0.0.0:8081$/0.0.0.0:80/' /var/cpanel/cpanel.config
+		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+	else
+		echo "apache_port=0.0.0.0:8081" >> /var/cpanel/cpanel.config
+	fi
 	sleep 2
 
 	echo ""
