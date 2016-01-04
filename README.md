@@ -54,12 +54,10 @@ Here are some basic configuration steps after you get a fresh cPanel server read
 - Enable: Home » Security Center » cPHulk Brute Force Protection - make sure to whitelist the IPs through which you'll be logging into your server as root
 - Install CSF (an IPTables frontend and more) and make sure port 8081 is open. More info at: http://www.configserver.com/free/csf/install.txt
 - Update MySQL under Software » MySQL Upgrade
-- Install this EasyApache build https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.dtd under Software » EasyApache (Apache Update) - make sure to select FCGI in the PHP Handler option (if it's not already selected)
-- Symlink for APC (run as root):  
-     $ ln -s /usr/local/lib/php/extensions/no-debug-non-zts-20100525 /usr/lib/php/extensions/no-debug-non-zts-20100525
-- Install APC under Software » Module Installers » PHP Pecl (manage) - search for APC and install it. The previous symlink you set will allow APC to function properly (I still wonder why cPanel hasn't solved this bug in ages!)
+- Install this EasyApache build https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.dtd under Software » EasyApache (Apache Update) - make sure to select FCGI in the PHP Handler option (if it's not already selected) and definitely go for Apache 2.4.
+- Install APC(u) by following this guide: http://www.joomlaworks.net/blog/item/153-install-apc-apcu-on-a-whm-cpanel-server (don't bother installing APC(u) via cPanel's PECL modules installer, it's just broken)
 - Setup your user accounts and domains in cPanel/WHM
-- Install Engintron and enjoy!
+- Install Engintron and profit!
 
 
 ==
