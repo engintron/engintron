@@ -223,7 +223,11 @@ EOF
 
 	echo ""
 	echo "=== Register Nginx as a system service... ==="
-	/sbin/chkconfig nginx on
+	if [ -f /sbin/chkconfig ]; then
+		/sbin/chkconfig nginx on
+	else
+		systemctl enable nginx
+	fi
 
 	echo ""
 	echo "=== Restart Nginx... ==="
@@ -353,7 +357,11 @@ function remove_nginx {
 
 	echo ""
 	echo "=== Unregistering Nginx as a service... ==="
-	/sbin/chkconfig nginx off
+	if [ -f /sbin/chkconfig ]; then
+		/sbin/chkconfig nginx off
+	else
+		systemctl disable nginx
+	fi
 
 	echo ""
 	echo "=== Stopping Nginx... ==="
