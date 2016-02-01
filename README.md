@@ -51,7 +51,7 @@ If something happens, the two Nginx logs are your first source of information. I
 
 ==
 ### Performance Notes
-***(pending update for v1.5.0)***
+**(pending update for v1.5.0)**
 We have run various tests on various server configurations. Here's a typical test on a 2GB RAM VPS server running cPanel (Apache 2.2, FastCGI, APC enabled, MySQL query caching on) hosting a single Joomla! 3.x website (default installation).
 
 Using Apache Benchmark (AB), we run the following test: $ ab -c 50 -n 5000 -k http://url/to/site
@@ -65,7 +65,7 @@ If you run a busy site on a cPanel server, you can use the same AB test and see 
 
 ==
 ### Why is Engintron a better solution compared to other Nginx installers for cPanel
-There are 5 key differences when comparing Engintron with other Nginx installers for cPanel.
+There are 7 key differences when comparing Engintron with other Nginx installers for cPanel.
 
 First, Engintron is a single shell script (weighing only a few KBs) that installs all required software (to make Nginx work as intended) from the official software package vendors' repositories. Both installation and updates are very fast (they take only a few seconds).
 
@@ -76,6 +76,8 @@ Third, you can safely uninstall Engintron and it will revert your entire system 
 Fourth, it has a simple dashboard with some handy utilities that make Engintron your day-to-day dashboard for cPanel.
 
 Fifth, it's CloudFlare friendly. Because both CloudFlare and Engintron use Nginx as reverse caching proxy, unless we properly configure Nginx in cPanel, the use of a secondary proxy (after CloudFlare) causes problems to CloudFlare. If you have domains that use CloudFlare, you can simply uncomment a few lines from "proxy_params_common" and restart Nginx for the changes to take effect. If additionally you use CloudFlare's SSL, by choosing "flexible SSL" in CloudFlare's dashboard you can direct HTTPS traffic to HTTP (=Nginx) thus further improving web serving over HTTPS as well.
+
+Six, it doesn't require Nginx/Apache vhost synchronization when adding new domains via cPanel. That's why you essentially "set it and forget it". 'Nough said :)
 
 And finally, Engintron is open source. You can tear it apart or contribute back to its development. You can fork it, knife it, do whatever you want with it. It's not a black box :)
 
