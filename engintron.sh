@@ -413,8 +413,9 @@ install)
 	cd $APP_PATH
 	wget https://github.com/nuevvo/engintron/archive/master.zip
 	unzip master.zip
-	mv ./engintron-master/* .
-	rm -rvf ./engintron-master/
+	/bin/cp -rf $APP_PATH/engintron-master/* $APP_PATH/
+	rm -rvf $APP_PATH/engintron-master/*
+	rm -f master.zip
 
 	cd /
 
