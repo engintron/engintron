@@ -369,7 +369,7 @@ function remove_engintron_ui {
 case $1 in
 install)
 
-	if [ -f /engintron.sh ]; then
+	if [ ! -f /engintron.sh ]; then
 		echo ""
 		echo ""
 		echo "***********************************************"
