@@ -171,6 +171,21 @@ EOF
 	echo "=== Install Nginx from official repositories ==="
 	yum -y install nginx
 
+	if [ ! -f /etc/nginx/conf.d/default.conf ]; then
+		echo ""
+		echo ""
+		echo "***************************************************"
+		echo ""
+		echo " IMPORTANT"
+		echo " Nginx was not installed (perhaps due to conflicts)"
+		echo " Exiting..."
+		echo ""
+		echo "***************************************************"
+		echo ""
+		echo ""
+		exit 0
+	fi
+
 	echo ""
 	echo "=== Updating Nginx configuration ==="
 
@@ -397,7 +412,7 @@ install)
 	# Get the files
 	cd $APP_PATH
 	wget https://github.com/nuevvo/engintron/archive/master.zip
-	unzip engintron-master.zip
+	unzip master.zip
 	mv ./engintron-master/* .
 	rm -rvf ./engintron-master/
 
