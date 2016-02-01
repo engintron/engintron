@@ -63,7 +63,7 @@ RPAF_SetHostName        On
 RPAF_SetHTTPS           On
 RPAF_SetPort            On
 RPAF_ForbidIfNotProxy   Off
-RPAF_Header             X-Forwarded-For
+RPAF_Header             X-Real-IP
 		" > /usr/local/apache/conf/includes/rpaf.conf
 		sleep 2
 
