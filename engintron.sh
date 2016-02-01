@@ -203,6 +203,7 @@ EOF
 	if [ -f /etc/nginx/conf.d/default.conf ]; then
 		/bin/cp -f /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bak
 	fi
+	/bin/rm -f /etc/nginx/conf.d/*.conf
 	/bin/cp -f $APP_PATH/nginx/conf.d/default.conf /etc/nginx/conf.d/
 
 	echo ""
