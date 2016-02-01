@@ -13,6 +13,11 @@ Installation is easy and features include (among others): Nginx setup in reverse
 
 
 ==
+### Before you install Engintron
+Please note that if you currently use EasyApache 4 in your cPanel server, Nginx will fail to install via Engintron. You must be using EasyApache 3 in order to proceed.
+
+
+==
 ### Install Engintron
 Login as root user in your server using an SSH connection and execute the following commands:
 
