@@ -32,17 +32,17 @@ $ bash engintron.sh remove
 ==
 ### Using Engintron
 ![Engintron Backend](http://engintron.com/assets/screenshots/1.5.0_20160106.png)
-**PREFACE**
+**PREFACE** 
 Unlike version 1.0.x of Engintron, the new 1.5.x version uses a different approach for proxying and caching, which now makes Engintron a perfect fit for any cPanel server - operated by freelancers, agencies or even large hosting companies. Engintron will now cache only static assets by default and if you wish to cache dynamic content as well (for further optimization), it uses the micro-caching concept to significantly boost a site's performance, even if it has user generated content that should not be cached.
 
 By using a different proxying & caching strategy altogether, the previous use of vhost synchronization between Apache and Nginx is now unnecessary. You essentially set and forget Engintron. New domains added in cPanel will work just fine with Nginx and without restarting any service.
 
-**DAY TO DAY TASKS**
+**DAY TO DAY TASKS** 
 After you install Engintron, you will notice it has enabled its own app dashboard in WHM, under the Plugins section. From now on you can fully operate Engintron & Nginx related tasks entirely from the Engintron app dashboard. And we have included controls for Apache, PHP & MySQL as well. The most important configuration files from these services can be directly edited via Engintron's app dashboard and you can even control the status of the 3 main services (Nginx, Apache, MySQL).
 
 You can also check Nginx's main logs (access and error) and we have bundled a few tiny tools for common day-to-day sysadmin tasks, e.g. resource or HTTP traffic monitoring.
 
-**TROUBLESHOOTING**
+**TROUBLESHOOTING** 
 If something happens, the two Nginx logs are your first source of information. If you edit any of the default Nginx files and you're worried if things may "break", you can choose to save any of its configuration files without reloading Nginx and then run the option "Check configuration for errors" to verify if everything is OK.
 
 
