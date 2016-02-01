@@ -401,7 +401,7 @@ switch($op) {
 						<ul>
 							<li><a href="engintron.php?op=mysql_status">Status</a></li>
 							<li><a href="engintron.php?op=mysql_restart">Restart</a></li>
-							<li><a href="engintron.php?op=mysql_processlist">Process list</a></li>
+							<!--<li><a href="engintron.php?op=mysql_processlist">Process list</a></li>-->
 							<li><a href="engintron.php?op=edit&f=/etc/my.cnf&s=mysql">Edit my.cnf</a></li>
 						</ul>
 					</li>
@@ -457,6 +457,7 @@ switch($op) {
 		</div>
 		<div id="ngFooter">
 			<p><a target="_blank" href="http://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2014-<?php echo date('Y'); ?> <a target="_blank" href="http://nuevvo.com/">Nuevvo Webware P.C.</a> Released under the <a target="_blank" href="http://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
+			<img src="https://ga-beacon.appspot.com/UA-16375363-18/engintron/app?pixel" alt="" width="1" height="1" />
 		</div>
 		<?php if($message): ?>
 		<div id="ngMessage"><div class="ngMsgState"></div><?php echo $message; ?></div>
