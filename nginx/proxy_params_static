@@ -1,0 +1,16 @@
+# Proxy Cache Settings for static files ONLY.
+# Preset to a 1 minute internal cache time so file changes on static files that don't use
+# cache busting techniques are visible after 1 minute.
+# To increase, simply adjust the value for "proxy_cache_valid"
+# Respects Expires, Cache-Control & Vary headers already set in default.conf
+# for client-side caching.
+
+# === STATIC FILE CACHING ===
+proxy_cache					engintron_static;
+proxy_cache_key				"$request_method$scheme$host$request_uri";
+proxy_cache_lock			on;
+proxy_cache_min_uses		1;
+proxy_cache_revalidate		on;
+proxy_cache_use_stale		error timeout updating http_500 http_502 http_503 http_504;
+proxy_cache_valid			1m; # In minutes - covers 200, 301 & 302 responses
+proxy_ignore_headers		Set-Cookie;

@@ -18,7 +18,7 @@ Login as root user in your server using an SSH connection and execute the follow
 
 $ cd /  
 $ wget https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh  
-$ sh engintron.sh install  
+$ bash engintron.sh install  
 
 
 ==
@@ -26,18 +26,18 @@ $ sh engintron.sh install
 Login as root user in your server using an SSH connection and execute the following commands:
 
 $ cd /  
-$ sh engintron.sh remove  
+$ bash engintron.sh remove  
 
 
 ==
 ### Using Engintron
 Engintron is (currently) not designed for resellers using cPanel. It's designed for agencies, freelancers or individuals that use and manage cPanel on their own, for their or their customers' needs. As such, there is one simple rule for running Engintron on any cPanel based server: whenever a domain is added, modified or deleted on the server via cPanel/WHM, you need to execute "virtual host" synchronization. In other words, you need to manually "tell" Nginx that new domains have been added and allow it to reconfigure for these new domains. This can be done very easily from the Engintron dashboard, under WHM (it's in the "Plugins" section). Just click "Sync Nginx with Apache vhosts" in there and Nginx will be reconfigured for any domain changes on your server.
 
-![Engintron Backend](http://engintron.com/assets/screenshots/1.0.2_backend.png)
+![Engintron Backend](http://engintron.com/assets/screenshots/1.5.0_20160106.png)
 
 Alternatively, you can do this over SSH or via a cron. Assuming engintron.sh resides at the very root path of your server, just do this:
 
-$ sh engintron.sh sync  
+$ bash engintron.sh sync  
 
 
 ==
@@ -52,12 +52,12 @@ Here are some basic configuration steps after you get a fresh cPanel server read
 - Disable unneeded services (e.g. DNS or mail services or spamd)
 - Enable shell fork bomb protection under: Home » Security Center » Shell Fork Bomb Protection
 - Enable: Home » Security Center » cPHulk Brute Force Protection - make sure to whitelist the IPs through which you'll be logging into your server as root
-- Install CSF (an IPTables frontend and more) and make sure port 8081 is open. More info at: http://www.configserver.com/free/csf/install.txt
+- Install CSF (an IPTables frontend and more) and make sure ports 8080 & 8443 are open. More info at: http://www.configserver.com/free/csf/install.txt
 - Update MySQL under Software » MySQL Upgrade
-- Install this EasyApache build https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.dtd under Software » EasyApache (Apache Update) - make sure to select FCGI in the PHP Handler option (if it's not already selected) and definitely go for Apache 2.4.
+- Install this EasyApache build http://engintron.com/files/cpanel/engintron.dtd under Software » EasyApache (Apache Update) - make sure to select FCGI in the PHP Handler option (if it's not already selected) and definitely go for Apache 2.4.
 - Install APC(u) by following this guide: http://www.joomlaworks.net/blog/item/153-install-apc-apcu-on-a-whm-cpanel-server (don't bother installing APC(u) via cPanel's PECL modules installer, it's just broken)
 - Setup your user accounts and domains in cPanel/WHM
-- Install Engintron and profit!
+- Install Engintron and watch CPU & RAM usage drop!
 
 
 ==
@@ -159,4 +159,4 @@ More at: http://engintron.com
 
 
 ==
-Copyright &copy; 2010-2014 [Nuevvo Webware P.C.](http://nuevvo.com)
+Copyright &copy; 2010-2016 [Nuevvo Webware P.C.](http://nuevvo.com)
