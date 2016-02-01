@@ -223,6 +223,9 @@ function install_engintron_ui {
 	/bin/cp -f $APP_PATH/app/addon_engintron.cgi $CPANEL_PLG_PATH/
 	/bin/cp -f $APP_PATH/app/engintron.php $CPANEL_PLG_PATH/
 
+	chmod +x $CPANEL_PLG_PATH/addon_engintron.cgi
+	chmod +x $CPANEL_PLG_PATH/engintron.php
+
 	echo ""
 	echo "=== Fix ACL requirements in newer cPanel releases ==="
 	if grep -Fxq "permit_unregistered_apps_as_root=" /var/cpanel/cpanel.config
@@ -365,6 +368,21 @@ function remove_engintron_ui {
 case $1 in
 install)
 
+	if [ -f /engintron.sh ]; then
+		echo ""
+		echo ""
+		echo "**************************************"
+		echo ""
+		echo "IMPORTANT"
+		echo "You must place & execute engintron.sh from the very root folder (/) of your server!"
+		echo "Exiting..."
+		echo ""
+		echo "**************************************"
+		echo ""
+		echo ""
+		exit 0
+	fi
+
 	chmod +x /engintron.sh
 	clear
 	cd /
@@ -384,9 +402,9 @@ install)
 	cd /
 
 	echo ""
-	echo " ****************************************************"
-	echo " *        Installing Engintron v$APP_VERSION        *"
-	echo " ****************************************************"
+	echo "**************************************"
+	echo "*        Installing Engintron        *"
+	echo "**************************************"
 
 	install_basics
 
@@ -402,9 +420,9 @@ install)
 	install_munin_patch
 	install_engintron_ui
 
-	echo " ****************************************************"
-	echo " *               Installation Complete              *"
-	echo " ****************************************************"
+	echo "***************************************"
+	echo "*        Installation Complete        *"
+	echo "***************************************"
 	echo ""
 		;;
 remove)
@@ -432,9 +450,9 @@ remove)
 	service httpd restart
 
 	echo ""
-	echo " ****************************************************"
-	echo " *               Removal Complete                   *"
-	echo " ****************************************************"
+	echo "****************************************************"
+	echo "*               Removal Complete                   *"
+	echo "****************************************************"
 	echo ""
 	;;
 *)
