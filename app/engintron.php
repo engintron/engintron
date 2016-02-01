@@ -69,7 +69,7 @@ function execute($act) {
 			break;
 
 		case "nginx_cleanup":
-			$command = shell_exec("find /tmp/engintron/ -type f | xargs rm -rvf");
+			$command = shell_exec("find /tmp/engintron_dynamic/ -type f | xargs rm -rvf; find /tmp/engintron_static/ -type f | xargs rm -rvf");
 			if(empty($command)) {
 				$output = "<p>No output generated. Nginx cache folders are probably empty.</p>";
 			} else {
