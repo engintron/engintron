@@ -14,7 +14,19 @@ Installation is easy and features include (among others): Nginx setup in reverse
 
 ==
 ### Before you install Engintron
+
+** Bug with EasyApache 4 **
+
 Please note that if you currently use EasyApache 4 in your cPanel server, Nginx will fail to install via Engintron. You must be using EasyApache 3 in order to proceed.
+
+This is a bug with EasyApache 4 and the cPanel support team has filed this as a bug. Here's the thread we opened in the cPanel forums for reference:
+
+https://forums.cpanel.net/threads/why-does-easyapache4-block-nginx-installation-using-yum-official-nginx-repos.524241/
+
+
+** Support with CentOS 7 pending test, CentOS 6 fully supported **
+
+Engintron will work flawlessly on the most popular build of CentOS (v6) for which cPanel is fully tested. Engintron on CentOS 7 & cPanel is not yet fully tested, but this is something to be addressed within the first week of February 2016. So, we'll keep everyone posted about this.
 
 
 ==
