@@ -240,19 +240,11 @@ switch($op) {
 		$ret .= shell_exec("mysqladmin processlist 2>&1");
 		break;
 
-	case "utils_top":
-		$ret = "<b>$ top -b -n 1</b><br /><br />";
-		$ret .= shell_exec("top -b -n 1");
-		break;
-
-	case "utils_net_total":
-		$ret = "<b>$ netstat -an | grep :80 | wc -l</b><br /><br />";
-		$ret .= shell_exec("netstat -an | grep :80 | wc -l");
-		break;
-
-	case "utils_net_per_ip":
+	case "utils_80":
 		$ret = "<b>$ netstat -anp | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n</b><br /><br />";
-		$ret .= shell_exec("netstat -anp | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n");
+		$ret .= shell_exec("netstat -anp | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n")."<br /><br />";
+		$ret .= "<b>$ netstat -an | grep :80 | wc -l</b><br /><br />";
+		$ret .= trim(shell_exec("netstat -an | grep :80 | wc -l")).' total concurrent connections';
 		break;
 
 	case "utils_pstree":
@@ -414,8 +406,7 @@ switch($op) {
 							<li><a href="engintron.php?op=utils_top">Show all processes (top)</a></li>
 							<li><a href="engintron.php?op=utils_top_php">Show top PHP processes</a></li>
 							<li><a href="engintron.php?op=utils_pstree">Show current process tree</a></li>
-							<li><a href="engintron.php?op=utils_net_total">Current connections on port 80</a></li>
-							<li><a href="engintron.php?op=utils_net_per_ip">Current connections per IP on port 80</a></li>
+							<li><a href="engintron.php?op=utils_80">Current connections on port 80 (per IP &amp; total)</a></li>
 						</ul>
 					</li>
 				</ul>
