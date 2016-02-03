@@ -5,7 +5,8 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 
 ---
 
-**Engintron is Nginx on cPanel**
+
+### Engintron is Nginx on cPanel
 
 Nginx® is a powerful open source web server that was built to scale websites to millions of visitors. cPanel® is the leading hosting control panel worldwide.
 
@@ -13,7 +14,8 @@ Engintron integrates Nginx into cPanel so you can enjoy amazing performance for 
 
 _And best of all? Engintron is totally free to use!_
 
-**But why should you use Nginx in your cPanel server?**
+
+### But why should you use Nginx in your cPanel server?
 
 cPanel uses the Apache webserver to serve websites by default. Apache however is not known to perform well under heavy web traffic (especially traffic spikes) and it's also CPU/RAM hungry. So how can you mitigate these issues? The answer is simple: by deploying Nginx, another popular web server software, in front of Apache. Nginx acts as a web traffic proxy, directly serving all static assets like CSS, JS, images etc. by default, instead of Apache. This drops significantly the CPU/RAM resources consumed by Apache, leaving your server with more available resources for other tasks or, better still, with room for more websites to host.
 
@@ -25,7 +27,8 @@ If you are facing performance issues with your cPanel server, Engintron is your 
 
 If you can sign up for a cPanel/WHM server on any hosting company and work your way through WHM, then setting up Engintron is a piece of cake of you. If you don't manage your cPanel server, then you can ask your hosting company or system administrator to have a look at Engintron and deploy it on your cPanel for you. It only takes a few minutes.
 
-**OK, I'm sold! How do I install Engintron on my cPanel server?**
+
+### OK, I'm sold! How do I install Engintron on my cPanel server?
 
 Installation is a process that lasts only a few minutes. You'll need root SSH access to your cPanel server. Also check the current requirements (listed lower). If everything is ok, log in as root and type the following commands, one at a time:
 
@@ -40,9 +43,10 @@ In there, you'll find basic options to control Nginx, Apache and MySQL, all in o
 
 Inside the Engintron app dashboard you'll also find some handy utilities to monitor things like your Nginx access & error logs, check processes on your server or see incoming traffic on port 80.
 
-_For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's GitHub repo at:_ [https://github.com/nuevvo/engintron](https://github.com/nuevvo/engintron)
+**For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at:_ [https://github.com/nuevvo/engintron/wiki](https://github.com/nuevvo/engintron/wiki)**
 
-**Why is Engintron a better solution compared to other Nginx installers for cPanel**
+
+### Why is Engintron a better solution compared to other Nginx installers for cPanel
 
 There are 7 key differences when comparing Engintron with other Nginx installers for cPanel.
 
@@ -60,13 +64,15 @@ Six, it doesn't require Nginx/Apache vhost synchronization when adding new domai
 
 And finally, Engintron is open source. You can tear it apart, customize it, fork it, knife it or contribute back to its development. Do whatever you want with it. It's not a black box :)
 
-**Requirements**
+
+### Requirements
 
 1\. At the time of writing (Feb 2, 2016), Engintron is compatible with EasyApache 3 only, as EasyApache 4 is still in beta and there's currently a bug with it that prevents Nginx from installing onto the system. The cPanel team have promised to fix this pretty soon (you can follow this thread in the cPanel forums: [https://forums.cpanel.net/threads/why-does-easyapache4-block-nginx-installation-using-yum-official-nginx-repos.524241/](https://forums.cpanel.net/threads/why-does-easyapache4-block-nginx-installation-using-yum-official-nginx-repos.524241/))
 
 2\. Engintron has been fully tested and working in CentOS 6, the most popular & stable version of CentOS currently in use with cPanel. We are aware of certain installation issues with Cent OS 7 which should be resolved in v1.5.1 of Engintron to be released within the first days of Feb 2016.
 
-**Feedback, bugs, feature requests & rating**
+
+### Feedback, bugs, feature requests & rating
 
 Please post your feedback and any issues or feature requests/suggestions in the project's issue tracker at: [https://github.com/nuevvo/engintron/issues](https://github.com/nuevvo/engintron/issues)
 
@@ -78,7 +84,8 @@ If you wish to go the "extra mile" and optimize your cPanel server both through 
 
 Or you can simply emails us at: engintron [at] nuevvo [dot] com
 
-**CHANGELOG**
+
+### CHANGELOG
 
 _Feb 1st, 2016 - v1.5.0_
 
