@@ -267,7 +267,7 @@ switch($op) {
 		$ret .= "<b>Kernel:</b> ";
 		$ret .= trim(shell_exec("uname -a"))."<br /><br />";
 		$ret .= "<b>Processors:</b> ";
-		$ret .= trim(shell_exec("grep processor /proc/cpuinfo | wc -l"))." CPUs<br /><br />";
+		$ret .= trim(shell_exec("grep processor /proc/cpuinfo | wc -l"))." CPU(s)<br /><br />";
 		$ret .= "<b>RAM:</b> ";
 		$ret .= round(trim(shell_exec("grep MemTotal /proc/meminfo | awk '{print $2}'")/(1024*1024)), 2)."GBs <br /><br />";
 		$ret .= "<b>Memory Usage:</b><br />";
