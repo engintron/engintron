@@ -6,9 +6,7 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 ![Engintron v1.5.x](http://engintron.com/assets/screenshots/1.5.0_20160203.png)
 
 
----
-
-
+==
 ### Engintron is Nginx on cPanel
 
 Nginx® is a powerful open source web server that was built to scale websites to millions of visitors. cPanel® is the leading hosting control panel worldwide.
@@ -68,6 +66,7 @@ Six, it doesn't require Nginx/Apache vhost synchronization when adding new domai
 And finally, Engintron is open source. You can tear it apart, customize it, fork it, knife it or contribute back to its development. Do whatever you want with it. It's not a black box :)
 
 
+==
 ### Requirements
 
 1\. At the time of writing (Feb 2, 2016), Engintron is compatible with EasyApache 3 only, as EasyApache 4 is still in beta and there's currently a bug with it that prevents Nginx from installing onto the system. The cPanel team have promised to fix this pretty soon (you can follow this thread in the cPanel forums: [https://forums.cpanel.net/threads/why-does-easyapache4-block-nginx-installation-using-yum-official-nginx-repos.524241/](https://forums.cpanel.net/threads/why-does-easyapache4-block-nginx-installation-using-yum-official-nginx-repos.524241/))
@@ -94,6 +93,7 @@ If you wish to go the "extra mile" and optimize your cPanel server both through 
 Or you can simply emails us at: engintron [at] nuevvo [dot] com
 
 
+==
 ### Changelog
 
 _Feb 1st, 2016 - v1.5.0_
