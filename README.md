@@ -83,7 +83,7 @@ For more information regarding setup, configuration or uninstallation, as well a
 
 Please post your feedback and any issues or feature requests/suggestions in the project's issue tracker at: [https://github.com/nuevvo/engintron/issues](https://github.com/nuevvo/engintron/issues)
 
-If you use Engintron, please take a moment to post a review here in the cPanel Applications directory.
+If you use Engintron, please take a moment to post a review and/or rating in the cPanel Applications directory at: https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel
 
 
 ### I need commercial support - do you offer such services?
