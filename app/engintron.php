@@ -282,6 +282,8 @@ switch($op) {
 		$ret .= shell_exec("free -m")."<br />";
 		$ret .= "<b>Disk Usage:</b><br />";
 		$ret .= trim(shell_exec("df -hT"))."<br /><br />";
+		$ret .= "<b>Nginx Cache/Temp Disk Usage:</b><br />";
+		$ret .= trim(shell_exec("du -sh /tmp/engintron_*"))."<br /><br />";
 		$ret .= "<b>System Time:</b> ";
 		$ret .= trim(shell_exec("date"))."<br /><br />";
 		$ret .= "<b>System Users Connected:</b><br />";
