@@ -269,7 +269,7 @@ switch($op) {
 		$ret .= "<b>Processors:</b> ";
 		$ret .= trim(shell_exec("grep processor /proc/cpuinfo | wc -l"))." CPU(s)<br /><br />";
 		$ret .= "<b>RAM:</b> ";
-		$ret .= round(trim(shell_exec("grep MemTotal /proc/meminfo | awk '{print $2}'")/(1024*1024)), 2)."GBs <br /><br />";
+		$ret .= round(trim(shell_exec("grep MemTotal /proc/meminfo | awk '{print $2}'")/(1024*1024)), 2)." GB<br /><br />";
 		$ret .= "<b>Memory Usage:</b><br />";
 		$ret .= shell_exec("free -m")."<br />";
 		$ret .= "<b>Disk Usage:</b><br />";
