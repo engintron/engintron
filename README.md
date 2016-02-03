@@ -46,7 +46,7 @@ In there, you'll find basic options to control Nginx, Apache and MySQL, all in o
 
 Inside the Engintron app dashboard you'll also find some handy utilities to monitor things like your Nginx access & error logs, check processes on your server or see incoming traffic on port 80.
 
-**For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at:_ [https://github.com/nuevvo/engintron/wiki](https://github.com/nuevvo/engintron/wiki)**
+_For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://github.com/nuevvo/engintron/wiki](https://github.com/nuevvo/engintron/wiki)_
 
 
 ### Why is Engintron a better solution compared to other Nginx installers for cPanel
@@ -75,20 +75,26 @@ And finally, Engintron is open source. You can tear it apart, customize it, fork
 2\. Engintron has been fully tested and working in CentOS 6, the most popular & stable version of CentOS currently in use with cPanel. We are aware of certain installation issues with Cent OS 7 which should be resolved in v1.5.1 of Engintron to be released within the first days of Feb 2016.
 
 
+### Documentation
+
+For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://github.com/nuevvo/engintron/wiki](https://github.com/nuevvo/engintron/wiki)**
+
+
 ### Feedback, bugs, feature requests & rating
 
 Please post your feedback and any issues or feature requests/suggestions in the project's issue tracker at: [https://github.com/nuevvo/engintron/issues](https://github.com/nuevvo/engintron/issues)
 
 If you use Engintron, please take a moment to post a review here in the cPanel Applications directory.
 
-**I need commercial support - do you offer such services?**
+
+### I need commercial support - do you offer such services?
 
 If you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through other services that directly affect the performance of your cPanel server (MySQL, Apache, PHP, certain system configuration files and more), feel free to use the contact options from within Engintron to get in touch with us.
 
 Or you can simply emails us at: engintron [at] nuevvo [dot] com
 
 
-### CHANGELOG
+### Changelog
 
 _Feb 1st, 2016 - v1.5.0_
 
