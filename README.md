@@ -135,7 +135,7 @@ Engintron is released under the GNU/GPL license. For more info, have a look here
 ### More info
 A proper website is on its way, featuring short tutorials and videos, a forum and a commercial support channel.
 
-If however you require commercial support now, you can contact us via Engintron's app dashboard or simply emails us at: engintron [at] nuevvo [dot] com
+If however you require commercial support now, you can contact us via Engintron's app dashboard or simply email us at: engintron [at] nuevvo [dot] com
 
 http://engintron.com
 
