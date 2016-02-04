@@ -252,6 +252,11 @@ switch($op) {
 		$ret .= shell_exec("pstree");
 		break;
 
+	case "utils_top":
+		$ret = "<b>$ top -b -n 1</b><br /><br />";
+		$ret .= shell_exec("top -b -n 1");
+		break;
+
 	case "utils_top_php":
 		$ret = "<b>$ top -b -n 1 | grep php | sort -k8,8</b><br /><br />";
 		$ret .= shell_exec("top -b -n 1 | grep php | sort -k8,8");
