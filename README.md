@@ -79,12 +79,12 @@ And finally, Engintron is open source. You can tear it apart, customize it, fork
 
 ### Documentation
 
-For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://github.com/nuevvo/engintron/wiki](https://github.com/nuevvo/engintron/wiki)**
+For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: https://github.com/nuevvo/engintron/wiki
 
 
 ### Feedback, bugs, feature requests & rating
 
-Please post your feedback and any issues or feature requests/suggestions in the project's issue tracker at: [https://github.com/nuevvo/engintron/issues](https://github.com/nuevvo/engintron/issues)
+Please post your feedback and any issues or feature requests/suggestions in the project's issue tracker at: https://github.com/nuevvo/engintron/issues
 
 If you use Engintron, please take a moment to post a review and/or rating in the cPanel Applications Directory at: https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel
 
