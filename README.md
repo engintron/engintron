@@ -29,7 +29,7 @@ Not only does your serving capacity increase, the load on your server will also 
 
 If you are facing performance issues with your cPanel server, Engintron is your go-to solution. And in fact it's really a "set & forget" solution as you'll set it up once and then it will just run on your server without any additional maintenance on your side.
 
-If you can sign up for a cPanel/WHM server on any hosting company and work your way through WHM, then setting up Engintron is a piece of cake of you. If you don't manage your cPanel server, then you can ask your hosting company or system administrator to have a look at Engintron and deploy it on your cPanel for you. It only takes a few minutes.
+If you can sign up for a cPanel/WHM server on any hosting company and work your way through WHM, then setting up Engintron should be a piece of cake for you. If you don't manage your cPanel server, then you can always (kindly) ask your hosting company or system administrator to have a look at Engintron and deploy it on your cPanel server. It really only takes a few minutes and there is zero configuration afterwards to get the standard optimizations offered by Nginx.
 
 
 ### OK, I'm sold! How do I install Engintron on my cPanel server?
