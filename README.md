@@ -105,7 +105,11 @@ _Feb 6th, 2016 - v1.5.1_
 *   Improved compatibility with CentOS 5
 *   Added option to enable/disable Engintron without completely uninstalling it. You can control Engintron's state through the WHM app dashboard or via the terminal. Nginx switches to port 8080 and Apache switches to port 80 when you run "$ bash /engintron.sh disable". If you run "$ bash /engintron.sh enable" Nginx reclaims port 80 and Apache takes port 8080.
 *   IPv6 support is now present but it has to be uncommented in order to work properly (in files /etc/nginx/nginx.conf for the resolver & /etc/nginx/conf.d/default.conf for the catch-all rule)
-*   Updated retrieval location for mod_rpaf
+*   Improved help/instructions when executing engintron.sh via terminal
+*   Added some terminal utilities like "restart Apache & Nginx", "restart all important services", "show server info", "show traffic on port 80" and more. From the terminal type "bash /engintron.sh" or just "/engintron.sh" if you have already installed Engintron.
+*   Fixed /nginx_status page - info now also shown under "Nginx Status" option in the WHM app dashboard
+*   Fixed /favicon.ico and /robots.txt loading - previously these files were blocked due to a mismatch in their respective definitions
+*   Updated retrieval location for mod_rpaf to ensure proper installation on all CentOS releases
 
 _Feb 1st, 2016 - v1.5.0_
 
