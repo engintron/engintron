@@ -1,4 +1,4 @@
-![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.5.1 - released Feb 6th, 2016)**
+![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **([v1.5.1 - released Feb 6th, 2016](#changelog)**
 ***
 
 ##### [Engintron.com](http://engintron.com) | [Documentation (Wiki)](https://github.com/nuevvo/engintron/wiki) | [Issues (support & bug reports)](https://github.com/nuevvo/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
