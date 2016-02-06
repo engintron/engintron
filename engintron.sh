@@ -23,38 +23,36 @@ GET_HTTPD_VERSION=$(httpd -v | grep "Server version");
 
 function install_basics {
 
-	echo ""
 	echo "=== Let's upgrade our system first & install a few required packages ==="
 	yum -y update
 	yum -y upgrade
 	yum -y install zip unzip bc htop pcre pcre-devel zlib-devel openssl-devel make curl nano tree
-	# Cleanup
 	yum clean all
+	echo ""
+	echo ""
 
 }
 
 function install_mod_rpaf {
 
+	echo "=== Installing mod_rpaf (v0.8.4) for Apache ==="
+	cd /usr/local/src
+	wget $REPO_CDN_URL/apache/mod_rpaf-0.8.4.zip
+	unzip -o mod_rpaf-0.8.4.zip
+	/bin/rm -f mod_rpaf-0.8.4.zip
+	cd mod_rpaf-0.8.4
+	chmod +x apxs.sh
+	./apxs.sh -i -c -n mod_rpaf.so mod_rpaf.c
+
+	cd /
+
+	systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
+
 	if [ ! -f /usr/local/apache/conf/includes/rpaf.conf ]; then
-
-		echo ""
-		echo "=== Installing mod_rpaf (v0.8.4) for Apache ==="
-		cd /usr/local/src
-		wget $REPO_CDN_URL/apache/mod_rpaf-0.8.4.zip
-		unzip -o mod_rpaf-0.8.4.zip
-		/bin/rm -f mod_rpaf-0.8.4.zip
-		cd mod_rpaf-0.8.4
-		chmod +x apxs.sh
-		./apxs.sh -i -c -n mod_rpaf.so mod_rpaf.c
-
-		cd /
-
-		echo ""
-		echo "=== Get system IPs ==="
-		systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
-
 		touch /usr/local/apache/conf/includes/rpaf.conf
-		cat > "/usr/local/apache/conf/includes/rpaf.conf" <<EOF
+	fi
+
+	cat > "/usr/local/apache/conf/includes/rpaf.conf" <<EOF
 # RPAF
 LoadModule              rpaf_module modules/mod_rpaf.so
 RPAF_Enable             On
@@ -67,45 +65,44 @@ RPAF_Header             X-Real-IP
 
 EOF
 
-		service httpd stop
+	/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+	sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
+	sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/rpaf.conf":' /usr/local/apache/conf/httpd.conf
+	echo ""
+	echo ""
 
-		echo ""
-		echo "=== Updating Apache configuration to include mod_rpaf ==="
-		/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+}
+
+function remove_mod_rpaf {
+
+	if [ -f /usr/local/apache/conf/includes/rpaf.conf ]; then
+		echo "=== Removing mod_rpaf (v0.8.4) for Apache ==="
+		rm -f /usr/local/apache/conf/includes/rpaf.conf
 		sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
-		sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/rpaf.conf":' /usr/local/apache/conf/httpd.conf
-
-		service httpd start
-
 		echo ""
-		echo "=== Distill changes in cPanel Apache configuration and restart Apache ==="
-		/usr/local/cpanel/bin/apache_conf_distiller --update
-		/scripts/rebuildhttpdconf --update
-
-		service httpd restart
-
+		echo ""
 	fi
 
 }
 
 function install_mod_remoteip {
 
+	echo "=== Installing mod_remoteip for Apache ==="
+	cd /usr/local/src
+	wget https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
+	apxs -i -c -n mod_remoteip.so mod_remoteip.c
+	/bin/rm -f mod_remoteip.c
+
+	cd /
+
+	# Get system IPs
+	systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
+
 	if [ ! -f /usr/local/apache/conf/includes/remoteip.conf ]; then
-
-		echo ""
-		echo "=== Installing mod_remoteip for Apache ==="
-		cd /usr/local/src
-		wget https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
-		apxs -i -c -n mod_remoteip.so mod_remoteip.c
-		/bin/rm -f mod_remoteip.c
-
-		cd /
-
-		# Get system IPs
-		systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
-
 		touch /usr/local/apache/conf/includes/remoteip.conf
-		cat > "/usr/local/apache/conf/includes/remoteip.conf" <<EOF
+	fi
+
+	cat > "/usr/local/apache/conf/includes/remoteip.conf" <<EOF
 # RemoteIP
 LoadModule remoteip_module modules/mod_remoteip.so
 RemoteIPInternalProxy 127.0.0.1 $systemips
@@ -113,53 +110,32 @@ RemoteIPHeader X-Real-IP
 
 EOF
 
-		service httpd stop
-
-		echo ""
-		echo "=== Updating Apache configuration to include mod_remoteip ==="
-		/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
-		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
-		sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
-
-		service httpd start
-
-		echo ""
-		echo "=== Distill changes in cPanel Apache configuration and restart Apache ==="
-		/usr/local/cpanel/bin/apache_conf_distiller --update
-		/scripts/rebuildhttpdconf --update
-
-		service httpd restart
-
-	fi
+	/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+	sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
+	sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
+	echo ""
+	echo ""
 
 }
 
-function install_update_apache {
+function remove_mod_remoteip {
 
-	echo ""
-	echo "=== Switch Apache to port 8080 ==="
-	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
-	then
-		sed -i 's/^apache_port=.*/apache_port=0.0.0.0:8080/' /var/cpanel/cpanel.config
-		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
-	else
-		echo "apache_port=0.0.0.0:8080" >> /var/cpanel/cpanel.config
+	if [ -f /usr/local/apache/conf/includes/remoteip.conf ]; then
+		echo "=== Removing mod_remoteip for Apache ==="
+		rm -f /usr/local/apache/conf/includes/remoteip.conf
+		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
+		echo ""
+		echo ""
 	fi
-
-	echo ""
-	echo "=== Distill changes in cPanel Apache configuration and restart Apache ==="
-	/usr/local/cpanel/bin/apache_conf_distiller --update
-	/scripts/rebuildhttpdconf --update
-
-	service httpd restart
 
 }
 
 function install_nginx {
 
-	echo ""
-	echo "=== Adding official Nginx repos for CentOS ==="
-	touch /etc/yum.repos.d/nginx.repo
+	echo "=== Install Nginx from official repositories ==="
+	if [ -f /etc/yum.repos.d/nginx.repo ]; then
+		touch /etc/yum.repos.d/nginx.repo
+	fi
 	cat > "/etc/yum.repos.d/nginx.repo" <<EOF
 [nginx]
 name=nginx repo
@@ -169,16 +145,14 @@ enabled=1
 
 EOF
 
-	echo ""
-	echo "=== Install Nginx from official repositories ==="
 	yum -y install nginx
 
-	if [ ! -f /etc/nginx/conf.d/default.conf ]; then
+	if [ ! -f /etc/nginx/nginx.conf ]; then
 		echo ""
 		echo ""
 		echo "***************************************************"
 		echo ""
-		echo " IMPORTANT"
+		echo " ENGINTRON ERROR:"
 		echo " Nginx was not installed (perhaps due to conflicts)"
 		echo " Exiting..."
 		echo ""
@@ -187,9 +161,6 @@ EOF
 		echo ""
 		exit 0
 	fi
-
-	echo ""
-	echo "=== Updating Nginx configuration ==="
 
 	# Copy Nginx config files
 	if [ -f /etc/nginx/proxy_params_common ]; then
@@ -223,22 +194,94 @@ EOF
 	/bin/rm -f /etc/nginx/conf.d/*.conf
 	/bin/cp -f $APP_PATH/nginx/conf.d/default.conf /etc/nginx/conf.d/
 
-	echo ""
-	echo "=== Register Nginx as a system service... ==="
 	if [ -f /sbin/chkconfig ]; then
 		/sbin/chkconfig nginx on
 	else
 		systemctl enable nginx
 	fi
 
+	if [ "$(pstree | grep 'nginx')" ]; then
+		service nginx stop
+	fi
+
+	echo ""
+	echo ""
+
+}
+
+function remove_nginx {
+
+	echo "=== Removing Nginx... ==="
+	if [ -f /sbin/chkconfig ]; then
+		/sbin/chkconfig nginx off
+	else
+		systemctl disable nginx
+	fi
+
 	service nginx stop
+
+	yum -y remove nginx
+	/bin/rm -rf /etc/nginx/*
+	/bin/rm -f /etc/yum.repos.d/nginx.repo
+
+	echo ""
+	echo ""
+
+}
+
+function install_update_apache {
+
+	echo "=== Switch Apache to port 8080 ==="
+	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
+	then
+		sed -i 's/^apache_port=.*/apache_port=0.0.0.0:8080/' /var/cpanel/cpanel.config
+		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+	else
+		echo "apache_port=0.0.0.0:8080" >> /var/cpanel/cpanel.config
+	fi
+
+	echo ""
+	echo ""
+
+	echo "=== Distill changes in Apache's configuration and restart Apache ==="
+	/usr/local/cpanel/bin/apache_conf_distiller --update
+	/scripts/rebuildhttpdconf --update
+
+	service httpd restart
+
+	echo ""
+	echo ""
+
+}
+
+function remove_update_apache {
+
+	echo "=== Switch Apache back to port 80 ==="
+	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
+	then
+		sed -i 's/^apache_port=.*/apache_port=0.0.0.0:80/' /var/cpanel/cpanel.config
+		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+	else
+		echo "apache_port=0.0.0.0:80" >> /var/cpanel/cpanel.config
+	fi
+
+	echo ""
+	echo ""
+
+	echo "=== Distill changes in Apache's configuration and restart Apache ==="
+	/usr/local/cpanel/bin/apache_conf_distiller --update
+	/scripts/rebuildhttpdconf --update
+
+	service httpd restart
+
+	echo ""
+	echo ""
 
 }
 
 function install_engintron_ui {
 
-	echo ""
-	echo "=== Preparing GUI files... ==="
+	echo "=== Installing Engintron WHM plugin files... ==="
 
 	/bin/cp -f $APP_PATH/app/addon_engintron.cgi $CPANEL_PLG_PATH/
 	/bin/cp -f $APP_PATH/app/engintron.php $CPANEL_PLG_PATH/
@@ -258,17 +301,29 @@ function install_engintron_ui {
 	/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
 	/usr/local/cpanel/etc/init/startcpsrvd
 
+	echo ""
+	echo ""
+
+}
+
+function remove_engintron_ui {
+
+	echo "=== Removing Engintron WHM plugin files... ==="
+	/bin/rm -f $CPANEL_PLG_PATH/addon_engintron.*
+	/bin/rm -f $CPANEL_PLG_PATH/engintron.*
+	echo ""
+	echo ""
+
 }
 
 function install_munin_patch {
 
 	if [ -f /etc/munin/plugin-conf.d/cpanel.conf ]; then
-		echo ""
-		echo "=== Updating Munin configuration ==="
+		echo "=== Updating Munin's configuration for Apache ==="
 
 		if grep -q "\[apache_status\]" /etc/munin/plugin-conf.d/cpanel.conf
 		then
-			echo "Munin patched already, nothing to do here"
+			echo "Munin configuration already updated, nothing to do here"
 		else
 			cat >> "/etc/munin/plugin-conf.d/cpanel.conf" <<EOF
 
@@ -282,6 +337,9 @@ EOF
 		ln -s /usr/local/cpanel/3rdparty/share/munin/plugins/nginx_* /etc/munin/plugins/
 
 		service munin-node restart
+
+		echo ""
+		echo ""
 	fi
 
 }
@@ -290,7 +348,7 @@ function remove_munin_patch {
 
 	if [ -f /etc/munin/plugin-conf.d/cpanel.conf ]; then
 		echo ""
-		echo "=== Updating Munin configuration ==="
+		echo "=== Updating Munin's configuration for Apache ==="
 
 		if grep -q "\[apache_status\]" /etc/munin/plugin-conf.d/cpanel.conf
 		then
@@ -304,83 +362,10 @@ function remove_munin_patch {
 		/bin/rm -f /etc/munin/plugins/nginx_*
 
 		service munin-node restart
-	fi
 
-}
-
-function remove_mod_rpaf {
-
-	if [ -f /usr/local/apache/conf/includes/rpaf.conf ]; then
 		echo ""
-		echo "=== Updating Apache configuration to remove mod_rpaf ==="
-		rm -f /usr/local/apache/conf/includes/rpaf.conf
-		sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
-		service httpd restart
-	fi
-
-}
-
-function remove_mod_remoteip {
-
-	if [ -f /usr/local/apache/conf/includes/remoteip.conf ]; then
 		echo ""
-		echo "=== Updating Apache configuration to remove mod_remoteip ==="
-		rm -f /usr/local/apache/conf/includes/remoteip.conf
-		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
-		service httpd restart
 	fi
-
-}
-
-function remove_update_apache {
-
-	echo ""
-	echo "=== Switch Apache back to port 80 ==="
-	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
-	then
-		sed -i 's/^apache_port=.*/apache_port=0.0.0.0:80/' /var/cpanel/cpanel.config
-		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
-	else
-		echo "apache_port=0.0.0.0:80" >> /var/cpanel/cpanel.config
-	fi
-
-	echo ""
-	echo "=== Distill changes in cPanel Apache configuration and restart Apache ==="
-	/usr/local/cpanel/bin/apache_conf_distiller --update
-	/scripts/rebuildhttpdconf --update
-
-	service httpd restart
-
-}
-
-function remove_nginx {
-
-	echo ""
-	echo "=== Unregistering Nginx as a service... ==="
-	if [ -f /sbin/chkconfig ]; then
-		/sbin/chkconfig nginx off
-	else
-		systemctl disable nginx
-	fi
-
-	echo ""
-	echo "=== Stopping Nginx... ==="
-	service nginx stop
-
-	echo ""
-	echo "=== Removing Nginx... ==="
-	yum -y remove nginx
-	/bin/rm -rf /etc/nginx/*
-	/bin/rm -f /etc/yum.repos.d/nginx.repo
-
-}
-
-function remove_engintron_ui {
-
-	echo ""
-	echo "=== Deleting GUI files... ==="
-	/bin/rm -f $CPANEL_PLG_PATH/addon_engintron.*
-	/bin/rm -f $CPANEL_PLG_PATH/engintron.*
 
 }
 
@@ -397,7 +382,7 @@ install)
 		echo ""
 		echo "***********************************************"
 		echo ""
-		echo " IMPORTANT"
+		echo " ENGINTRON NOTICE:"
 		echo " You must place & execute engintron.sh"
 		echo " from the root directory (/) of your server!"
 		echo " Exiting..."
@@ -408,8 +393,13 @@ install)
 		exit 0
 	fi
 
-	chmod +x /engintron.sh
 	clear
+
+	echo "**************************************"
+	echo "*        Installing Engintron        *"
+	echo "**************************************"
+
+	chmod +x /engintron.sh
 	cd /
 
 	# Set Engintron src file path
@@ -427,13 +417,7 @@ install)
 
 	cd /
 
-	echo ""
-	echo "**************************************"
-	echo "*        Installing Engintron        *"
-	echo "**************************************"
-
 	install_basics
-
 	install_nginx
 
 	if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
@@ -449,15 +433,21 @@ install)
 	echo ""
 	echo "=== Restarting Apache & Nginx... ==="
 	service httpd restart
-	service nginx restart
+	service nginx start
 
 	echo ""
-	echo "***************************************"
-	echo "*        Installation Complete        *"
-	echo "***************************************"
+	echo "**************************************"
+	echo "*       Installation Complete        *"
+	echo "**************************************"
 	echo ""
 		;;
 remove)
+
+	clear
+
+	echo "**************************************"
+	echo "*         Removing Engintron         *"
+	echo "**************************************"
 
 	if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
 		remove_mod_rpaf
@@ -473,22 +463,23 @@ remove)
 	echo ""
 	echo "=== Removing Engintron files... ==="
 	/bin/rm -rvf $APP_PATH
-	/bin/rm /engintron.sh
 
 	echo ""
 	echo "=== Restarting Apache... ==="
 	service httpd restart
 
 	echo ""
-	echo "****************************************************"
-	echo "*               Removal Complete                   *"
-	echo "****************************************************"
+	echo "**************************************"
+	echo "*          Removal Complete          *"
+	echo "**************************************"
 	echo ""
 	;;
 *)
 	echo ""
+	echo ""
 	echo -e "\033[35;1m Please specify an action: install | remove \033[0m"
 	echo -e "\033[35;1m For example: bash engintron.sh install \033[0m"
+	echo ""
 	echo ""
 	;;
 esac
