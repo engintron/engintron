@@ -494,6 +494,7 @@ enable)
 	install_munin_patch
 	service nginx stop
 	sed -i 's:listen 8080 default_server:listen 80 default_server:' /etc/nginx/conf.d/default.conf
+	sed -i 's:\:80; # Apache Status Page:\:8080; # Apache Status Page:' /etc/nginx/conf.d/default.conf
 	apache_change_port
 	service nginx start
 
@@ -521,6 +522,8 @@ disable)
 	remove_munin_patch
 	service nginx stop
 	sed -i 's:listen 80 default_server:listen 8080 default_server:' /etc/nginx/conf.d/default.conf
+	sed -i 's:\:8080; # Apache Status Page:\:80; # Apache Status Page:' /etc/nginx/conf.d/default.conf
+
 	apache_revert_port
 	service nginx start
 
