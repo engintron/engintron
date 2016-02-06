@@ -103,6 +103,8 @@ _Feb 6th, 2016 - v1.5.1_
 
 *   General installer/uninstaller improvements
 *   Improved compatibility with CentOS 5
+*   Added option to enable/disable Engintron without completely uninstalling it. Nginx switches to port 8080 and Apache switches to port 80 when you run "$ bash /engintron.sh disable". If you run "$ bash /engintron.sh enable" Nginx reclaims port 80 and Apache takes port 8080.
+*   IPv6 support is now present but it has to be uncommented in order to work properly (in files /etc/nginx/nginx.conf for the resolver & /etc/nginx/conf.d/default.conf for the catch-all rule)
 *   Updated retrieval location for mod_rpaf
 
 _Feb 1st, 2016 - v1.5.0_

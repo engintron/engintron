@@ -229,7 +229,7 @@ function remove_nginx {
 
 }
 
-function install_update_apache {
+function apache_change_port {
 
 	echo "=== Switch Apache to port 8080 ==="
 	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
@@ -254,7 +254,7 @@ function install_update_apache {
 
 }
 
-function remove_update_apache {
+function apache_revert_port {
 
 	echo "=== Switch Apache back to port 80 ==="
 	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
@@ -426,7 +426,7 @@ install)
 		install_mod_remoteip
 	fi
 
-	install_update_apache
+	apache_change_port
 	install_munin_patch
 	install_engintron_ui
 
@@ -440,7 +440,7 @@ install)
 	echo "*       Installation Complete        *"
 	echo "**************************************"
 	echo ""
-		;;
+	;;
 remove)
 
 	clear
@@ -455,7 +455,7 @@ remove)
 		remove_mod_remoteip
 	fi
 
-	remove_update_apache
+	apache_revert_port
 	remove_nginx
 	remove_munin_patch
 	remove_engintron_ui
@@ -474,10 +474,54 @@ remove)
 	echo "**************************************"
 	echo ""
 	;;
+enable)
+	clear
+
+	echo "**************************************"
+	echo "*         Enabling Engintron         *"
+	echo "**************************************"
+
+	install_munin_patch
+	service nginx stop
+	sed -i 's:listen 8080 default_server:listen 80 default_server:' /etc/nginx/conf.d/default.conf
+	apache_change_port
+	service nginx start
+
+	service httpd restart
+	service nginx restart
+
+	echo ""
+	echo "**************************************"
+	echo "*         Engintron Enabled          *"
+	echo "**************************************"
+	echo ""
+	;;
+disable)
+	clear
+
+	echo "**************************************"
+	echo "*        Disabling Engintron         *"
+	echo "**************************************"
+
+	remove_munin_patch
+	service nginx stop
+	sed -i 's:listen 80 default_server:listen 8080 default_server:' /etc/nginx/conf.d/default.conf
+	apache_revert_port
+	service nginx start
+
+	service httpd restart
+	service nginx restart
+
+	echo ""
+	echo "**************************************"
+	echo "*         Engintron Disabled         *"
+	echo "**************************************"
+	echo ""
+	;;
 *)
 	echo ""
 	echo ""
-	echo -e "\033[35;1m Please specify an action: install | remove \033[0m"
+	echo -e "\033[35;1m Please specify an action: install | remove | enable | disable \033[0m"
 	echo -e "\033[35;1m For example: bash engintron.sh install \033[0m"
 	echo ""
 	echo ""
