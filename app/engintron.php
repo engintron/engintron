@@ -162,7 +162,8 @@ switch($op) {
 
 	case "nginx_status":
 		$ret = "<b>Nginx Status:</b><br /><br />";
-		$ret .= shell_exec("service nginx status 2>&1");
+		$ret .= shell_exec("service nginx status 2>&1")."<br />";
+		$ret .= shell_exec("curl http://localhost/nginx_status");
 		break;
 
 	case "nginx_restart":
