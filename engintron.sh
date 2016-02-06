@@ -1,34 +1,33 @@
 #!/bin/bash
 
 # /**
-#  * @version		1.5.0
+#  * @version		1.5.1
 #  * @package		Engintron for cPanel/WHM
 #  * @author    	Fotis Evangelou
 #  * @copyright		Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
 #  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
 #  */
 
-
-
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.5.0"
+APP_VERSION="1.5.1"
+
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
-REPO_URL="https://raw.githubusercontent.com/nuevvo/engintron/master"
+REPO_CDN_URL="https://cdn.rawgit.com/nuevvo/engintron/master"
+
+GET_HTTPD_VERSION=$(httpd -v | grep "Server version");
+
+
 
 ############################# HELPER FUCTIONS [start] #############################
 
 function install_basics {
 
 	echo ""
-	echo "=== Let's upgrade our system first ==="
+	echo "=== Let's upgrade our system first & install a few required packages ==="
 	yum -y update
 	yum -y upgrade
-
-	echo ""
-	echo "=== Installing a few dependencies ==="
 	yum -y install zip unzip bc htop pcre pcre-devel zlib-devel openssl-devel make curl nano tree
-
 	# Cleanup
 	yum clean all
 
@@ -41,8 +40,9 @@ function install_mod_rpaf {
 		echo ""
 		echo "=== Installing mod_rpaf (v0.8.4) for Apache ==="
 		cd /usr/local/src
-		wget https://github.com/gnif/mod_rpaf/archive/v0.8.4.tar.gz
-		tar xzf v0.8.4.tar.gz
+		wget $REPO_CDN_URL/apache/mod_rpaf-0.8.4.zip
+		unzip -o mod_rpaf-0.8.4.zip
+		/bin/rm -f mod_rpaf-0.8.4.zip
 		cd mod_rpaf-0.8.4
 		chmod +x apxs.sh
 		./apxs.sh -i -c -n mod_rpaf.so mod_rpaf.c
@@ -72,6 +72,7 @@ EOF
 		echo ""
 		echo "=== Updating Apache configuration to include mod_rpaf ==="
 		/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+		sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
 		sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/rpaf.conf":' /usr/local/apache/conf/httpd.conf
 
 		service httpd start
@@ -96,11 +97,11 @@ function install_mod_remoteip {
 		cd /usr/local/src
 		wget https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
 		apxs -i -c -n mod_remoteip.so mod_remoteip.c
+		/bin/rm -f mod_remoteip.c
 
 		cd /
 
-		echo ""
-		echo "=== Get system IPs ==="
+		# Get system IPs
 		systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
 
 		touch /usr/local/apache/conf/includes/remoteip.conf
@@ -117,6 +118,7 @@ EOF
 		echo ""
 		echo "=== Updating Apache configuration to include mod_remoteip ==="
 		/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
 		sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
 
 		service httpd start
@@ -229,9 +231,7 @@ EOF
 		systemctl enable nginx
 	fi
 
-	echo ""
-	echo "=== Restart Nginx... ==="
-	service nginx restart
+	service nginx stop
 
 }
 
@@ -250,7 +250,7 @@ function install_engintron_ui {
 	echo "=== Fix ACL requirements in newer cPanel releases ==="
 	if grep -Fxq "permit_unregistered_apps_as_root=" /var/cpanel/cpanel.config
 	then
-		sed -i 's/permit_unregistered_apps_as_root=0$/permit_unregistered_apps_as_root=1/' /var/cpanel/cpanel.config
+		sed -i 's/^permit_unregistered_apps_as_root=.*/permit_unregistered_apps_as_root=1/' /var/cpanel/cpanel.config
 	else
 		echo "permit_unregistered_apps_as_root=1" >> /var/cpanel/cpanel.config
 	fi
@@ -314,7 +314,7 @@ function remove_mod_rpaf {
 		echo ""
 		echo "=== Updating Apache configuration to remove mod_rpaf ==="
 		rm -f /usr/local/apache/conf/includes/rpaf.conf
-		sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf":\n:' /usr/local/apache/conf/httpd.conf
+		sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
 		service httpd restart
 	fi
 
@@ -326,7 +326,7 @@ function remove_mod_remoteip {
 		echo ""
 		echo "=== Updating Apache configuration to remove mod_remoteip ==="
 		rm -f /usr/local/apache/conf/includes/remoteip.conf
-		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf":\n:' /usr/local/apache/conf/httpd.conf
+		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
 		service httpd restart
 	fi
 
@@ -419,11 +419,11 @@ install)
 
 	# Get the files
 	cd $APP_PATH
-	wget https://github.com/nuevvo/engintron/archive/master.zip
-	unzip master.zip
+	wget -O engintron.zip https://github.com/nuevvo/engintron/archive/master.zip
+	unzip engintron.zip
 	/bin/cp -rf $APP_PATH/engintron-master/* $APP_PATH/
-	rm -rvf $APP_PATH/engintron-master/*
-	rm -f master.zip
+	/bin/rm -rvf $APP_PATH/engintron-master/*
+	/bin/rm -f $APP_PATH/engintron.zip
 
 	cd /
 
@@ -434,7 +434,8 @@ install)
 
 	install_basics
 
-	GET_HTTPD_VERSION=`httpd -v | grep "Server version"`;
+	install_nginx
+
 	if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
 		install_mod_rpaf
 	else
@@ -442,10 +443,15 @@ install)
 	fi
 
 	install_update_apache
-	install_nginx
 	install_munin_patch
 	install_engintron_ui
 
+	echo ""
+	echo "=== Restarting Apache & Nginx... ==="
+	service httpd restart
+	service nginx restart
+
+	echo ""
 	echo "***************************************"
 	echo "*        Installation Complete        *"
 	echo "***************************************"
@@ -453,9 +459,7 @@ install)
 		;;
 remove)
 
-	GET_HTTPD_VERSION=`httpd -v | grep "Server version"`;
-	if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]];
-	then
+	if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
 		remove_mod_rpaf
 	else
 		remove_mod_remoteip

@@ -1,4 +1,4 @@
-![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.5.0 - released Feb 1st, 2016)**
+![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.5.1 - released Feb 6th, 2016)**
 ***
 
 ##### [Engintron.com](http://engintron.com) | [Documentation (Wiki)](https://github.com/nuevvo/engintron/wiki) | [Issues (support & bug reports)](https://github.com/nuevvo/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
@@ -98,6 +98,12 @@ Or you can simply emails us at: engintron [at] nuevvo [dot] com
 
 ==
 ### Changelog
+
+_Feb 6th, 2016 - v1.5.1_
+
+*   General installer/uninstaller improvements
+*   Improved compatibility with CentOS 5
+*   Updated retrieval location for mod_rpaf
 
 _Feb 1st, 2016 - v1.5.0_
 
