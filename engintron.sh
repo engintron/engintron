@@ -435,6 +435,11 @@ install)
 	service httpd restart
 	service nginx start
 
+	if [ -f $APP_PATH/state.conf ]; then
+		touch $APP_PATH/state.conf
+	fi
+	echo "on" > $APP_PATH/state.conf
+
 	echo ""
 	echo "**************************************"
 	echo "*       Installation Complete        *"
@@ -481,6 +486,11 @@ enable)
 	echo "*         Enabling Engintron         *"
 	echo "**************************************"
 
+	if [ -f $APP_PATH/state.conf ]; then
+		touch $APP_PATH/state.conf
+	fi
+	echo "on" > $APP_PATH/state.conf
+
 	install_munin_patch
 	service nginx stop
 	sed -i 's:listen 8080 default_server:listen 80 default_server:' /etc/nginx/conf.d/default.conf
@@ -502,6 +512,11 @@ disable)
 	echo "**************************************"
 	echo "*        Disabling Engintron         *"
 	echo "**************************************"
+
+	if [ -f $APP_PATH/state.conf ]; then
+		touch $APP_PATH/state.conf
+	fi
+	echo "off" > $APP_PATH/state.conf
 
 	remove_munin_patch
 	service nginx stop

@@ -20,6 +20,7 @@ define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_VERSION', '1.5.1');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
+define('ENGINTRON_STATE', trim(file_get_contents("/usr/local/src/engintron/state.conf")));
 
 // Get params
 $op = $_GET['op'];
@@ -262,9 +263,34 @@ switch($op) {
 		$ret .= shell_exec("top -b -n 1 | grep php | sort -k8,8");
 		break;
 
+	case "engintron_toggle":
+		if(file_exists("/usr/local/src/engintron/state.conf")){
+			if(ENGINTRON_STATE=="on") {
+				$ret = shell_exec("bash /engintron.sh disable");
+			} elseif(ENGINTRON_STATE=="off") {
+				$ret = shell_exec("bash /engintron.sh enable");
+			} else {
+				$ret = "Couldn't get state of Engintron - please try again.";
+			}
+		} else {
+			$ret = "Couldn't get state of Engintron - please try again.";
+		}
+		break;
+
 	case "utils_info":
 	default:
-		$ret = "<b class=\"green\">*** System Info ***</b><br /><br />";
+		if(file_exists("/usr/local/src/engintron/state.conf")){
+			if(ENGINTRON_STATE=="on") {
+				$ret = "<b class=\"green\">*** Engintron is ENABLED ***</b><br /><br />---<br /><br />";
+			} elseif(ENGINTRON_STATE=="off") {
+				$ret = "<b>*** Engintron is DISABLED ***</b><br /><br />---<br /><br />";
+			} else {
+				$ret = "*** Couldn't get state of Engintron - please try again. ***<br /><br />---<br /><br />";
+			}
+		} else {
+			$ret = "*** Couldn't get state of Engintron - please try again. ***<br /><br />---<br /><br />";
+		}
+		$ret .= "<b class=\"green\">*** System Info ***</b><br /><br />";
 		$ret .= "<b>Uptime:</b> ";
 		$ret .= trim(shell_exec("uptime"))."<br /><br />";
 		$ret .= "<b>OS:</b> ";
@@ -335,6 +361,7 @@ switch($op) {
 					div#ngOutputWindow {padding:0;margin:0 0 20px 0;border:1px solid #eaeaea;}
 					div#ngOutputWindow pre {font-family:'Source Code Pro',monospace;font-size:13px;white-space:pre-wrap;color:#fff;background:#000;padding:8px;margin:0;min-height:300px;max-height:900px;overflow:auto;}
 						div#ngOutputWindow pre b {color:red;}
+						div#ngOutputWindow pre b.green {color:green;}
 					body.op_edit div#ngOutputWindow {border:1px solid #eaeaea;border-top:0;padding:0;margin:0;}
 					#ngAceEditor {box-sizing:border-box;border:none;width:100%;padding:8px;margin:0;font-family:'Source Code Pro',monospace;font-size:13px;height:360px;overflow:auto;color:#fff;background:#000;outline:0;}
 					div#ngOutput form#fileEditor textarea#data {display:none;}
@@ -412,6 +439,12 @@ switch($op) {
 							<li><a href="engintron.php?op=utils_top_php">Show top PHP processes</a></li>
 							<li><a href="engintron.php?op=utils_pstree">Show current process tree</a></li>
 							<li><a href="engintron.php?op=utils_80">Current connections on port 80 (per IP &amp; total)</a></li>
+						</ul>
+					</li>
+					<li>
+						<h3>Engintron</h3>
+						<ul>
+							<li><a href="engintron.php?op=engintron_toggle">Enable/Disable Engintron</a></li>
 						</ul>
 					</li>
 				</ul>
