@@ -74,7 +74,7 @@ And finally, Engintron is open source. You can tear it apart, customize it, fork
 
 1\. At the time of writing (Feb 2, 2016), Engintron is compatible with EasyApache 3 only, as EasyApache 4 is still in beta and there's currently a bug with it that prevents Nginx from installing onto the system. The cPanel team have promised to fix this pretty soon (you can follow this thread in the cPanel forums: [https://forums.cpanel.net/threads/why-does-easyapache4-block-nginx-installation-using-yum-official-nginx-repos.524241/](https://forums.cpanel.net/threads/why-does-easyapache4-block-nginx-installation-using-yum-official-nginx-repos.524241/))
 
-2\. Engintron has been fully tested and working in CentOS 6, the most popular & stable version of CentOS currently in use with cPanel. We are aware of certain installation issues with Cent OS 7 which should be resolved in v1.5.1 of Engintron to be released within the first days of Feb 2016.
+2\. Engintron has been fully tested and working in both 32 bit & 64 bit versions of CentOS 5 & CentOS 6, the latter being the most popular & stable version of CentOS currently in use with cPanel. We are aware of certain installation issues with Cent OS 7 which should be resolved in v1.5.2 of Engintron to be released by February 8th 2016.
 
 
 ### Documentation
