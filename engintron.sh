@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version		1.5.1
+#  * @version		1.5.2
 #  * @package		Engintron for cPanel/WHM
 #  * @author    	Fotis Evangelou
 #  * @copyright		Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
@@ -10,7 +10,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.5.1"
+APP_VERSION="1.5.2"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/nuevvo/engintron/master"

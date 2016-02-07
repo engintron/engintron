@@ -1,4 +1,4 @@
-![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.5.1 - released Feb 6th, 2016 - [See CHANGELOG](#changelog))**
+![Engintron](http://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.5.2 - released Feb 7th, 2016 - [See CHANGELOG](#changelog))**
 ***
 
 ##### [Engintron.com](http://engintron.com) | [Documentation (Wiki)](https://github.com/nuevvo/engintron/wiki) | [Issues (support & bug reports)](https://github.com/nuevvo/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
@@ -98,6 +98,11 @@ Or you can simply emails us at: engintron [at] nuevvo [dot] com
 
 ==
 ### Changelog
+
+_Feb 7th, 2016 - v1.5.2_
+
+*   Added CentOS 7 support (installer worked fine since 1.5.0, however a few controls in the WHM app did not output the correct messages)
+*   Added option to update or re-install Engintron from within the WHM app dashboard
 
 _Feb 6th, 2016 - v1.5.1_
 
