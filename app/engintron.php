@@ -21,6 +21,7 @@ define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_VERSION', '1.5.1');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('ENGINTRON_STATE', trim(file_get_contents("/usr/local/src/engintron/state.conf")));
+define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 
 // Get params
 $op = $_GET['op'];
@@ -43,25 +44,37 @@ function execute($act) {
 
 	switch($act){
 		case "nginx_restart":
-			$command = shell_exec("/etc/init.d/nginx restart");
-			if(empty($command)) {
-				$output = "<p>Something went wrong, check the Nginx log.</p>";
+			$command = shell_exec("service nginx restart");
+			if(version_compare(CENTOS_RELEASE, '7', '>=')) {
+				$output = "<p>Nginx restarted.</p>";
 			} else {
-				$output = "<p>".nl2br($command)."</p>";
+				if(empty($command)) {
+					$output = "<p>Something went wrong, check the Nginx log.</p>";
+				} else {
+					$output = "<p>".nl2br($command)."</p>";
+				}
 			}
 			break;
 
 		case "nginx_reload":
-			$command = shell_exec("/etc/init.d/nginx reload");
-			if(empty($command)) {
-				$output = "<p>Something went wrong, check the Nginx log.</p>";
+			$command = shell_exec("service nginx reload");
+			if(version_compare(CENTOS_RELEASE, '7', '>=')) {
+				$output = "<p>Nginx configuration reloaded.</p>";
 			} else {
-				$output = "<p>".nl2br($command)."</p>";
+				if(empty($command)) {
+					$output = "<p>Something went wrong, check the Nginx log.</p>";
+				} else {
+					$output = "<p>".nl2br($command)."</p>";
+				}
 			}
 			break;
 
 		case "nginx_config":
-			$command = shell_exec("/etc/init.d/nginx configtest 2>&1");
+			if(version_compare(CENTOS_RELEASE, '7', '>=')) {
+				$command = shell_exec("nginx -t 2>&1");
+			} else {
+				$command = shell_exec("service nginx configtest 2>&1");
+			}
 			if(empty($command)) {
 				$output = "<p>Something went wrong, check the Nginx log.</p>";
 			} else {
@@ -72,14 +85,14 @@ function execute($act) {
 		case "nginx_cleanup":
 			$command = shell_exec("find /tmp/engintron_dynamic/ -type f | xargs rm -rvf; find /tmp/engintron_static/ -type f | xargs rm -rvf; find /tmp/engintron_temp/ -type f | xargs rm -rvf");
 			if(empty($command)) {
-				$output = "<p>No output generated. Nginx cache folders are probably empty.</p>";
+				$output = "<p>No output generated. Nginx cache & temp folders are probably empty.</p>";
 			} else {
 				$output = "<p>".nl2br($command)."</p>";
 			}
 			break;
 
 		case "httpd_restart":
-			$command = shell_exec("/etc/init.d/httpd restart");
+			$command = shell_exec("service httpd restart");
 			if(empty($command)) {
 				$output = "<p>Apache restarted.</p>";
 			} else {
@@ -88,7 +101,7 @@ function execute($act) {
 			break;
 
 		case "httpd_reload":
-			$command = shell_exec("/etc/init.d/httpd reload");
+			$command = shell_exec("service httpd reload");
 			if(empty($command)) {
 				$output = "<p>Apache reloaded.</p>";
 			} else {
@@ -115,7 +128,7 @@ function execute($act) {
 			break;
 
 		case "mysql_restart":
-			$command = shell_exec("/usr/local/cpanel/scripts/restartsrv_mysql");
+			$command = shell_exec("/usr/local/cpanel/scripts/restartsrv_mysql 2>&1");
 			if(empty($command)) {
 				$output = "<p>Something went wrong, check the MySQL log.</p>";
 			} else {
@@ -286,6 +299,10 @@ switch($op) {
 		}
 		break;
 
+	case "engintron_update":
+		$ret = shell_exec("cd /; rm -f /engintron.sh; wget https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install");
+		break;
+
 	case "utils_info":
 	default:
 		if(file_exists("/usr/local/src/engintron/state.conf")){
@@ -454,6 +471,7 @@ switch($op) {
 						<h3>Engintron</h3>
 						<ul>
 							<li><a href="engintron.php?op=engintron_toggle">Enable/Disable Engintron</a></li>
+							<li><a href="engintron.php?op=engintron_update">Update (or re-install Engintron)</a></li>
 						</ul>
 					</li>
 				</ul>
