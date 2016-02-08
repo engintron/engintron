@@ -62,7 +62,6 @@ RPAF_SetHTTPS           On
 RPAF_SetPort            On
 RPAF_ForbidIfNotProxy   Off
 RPAF_Header             X-Real-IP
-
 EOF
 
 	/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
@@ -107,7 +106,6 @@ function install_mod_remoteip {
 LoadModule remoteip_module modules/mod_remoteip.so
 RemoteIPInternalProxy 127.0.0.1 $systemips
 RemoteIPHeader X-Real-IP
-
 EOF
 
 	/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
