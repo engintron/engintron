@@ -300,7 +300,7 @@ switch($op) {
 		break;
 
 	case "engintron_update":
-		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install"));
+		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
 		break;
 
 	case "utils_info":
@@ -373,6 +373,7 @@ switch($op) {
 				div#ngOperations ul li form.displayLogs input {border:none;border-bottom:1px solid #08c;text-align:center;color:#08c;font-size:12px;padding:1px 8px;}
 				div#ngOperations ul li.active form.displayLogs input {font-weight:bold;}
 				div#ngOperations ul li form.displayLogs:hover a {text-decoration:underline;}
+				div#ngOperations ul li#ngUpdate span {font-size:11px;font-weight:normal;font-style:italic;color:#999;display:none;}
 					a#cpAppsLink {background:#f26b32;color:#fff;padding:4px;margin:0;border-radius:3px;font-size:10px;font-weight:bold;vertical-align:super;}
 					a#cpAppsLink:hover {background:#e34806;text-decoration:none;}
 					p#commercialSupport b {}
@@ -387,7 +388,8 @@ switch($op) {
 					div#ngOutputWindow {padding:0;margin:0 0 20px 0;border:1px solid #eaeaea;}
 					div#ngOutputWindow pre {font-family:'Source Code Pro',monospace;font-size:13px;white-space:pre-wrap;color:#fff;background:#000;padding:8px;margin:0;min-height:300px;max-height:900px;overflow:auto;}
 						div#ngOutputWindow pre b {color:red;}
-						div#ngOutputWindow pre b.green {color:green;}
+						div#ngOutputWindow pre b.green,
+						div#ngOutputWindow pre span {color:green;}
 					body.op_edit div#ngOutputWindow {border:1px solid #eaeaea;border-top:0;padding:0;margin:0;}
 					#ngAceEditor {box-sizing:border-box;border:none;width:100%;padding:8px;margin:0;font-family:'Source Code Pro',monospace;font-size:13px;height:360px;overflow:auto;color:#fff;background:#000;outline:0;}
 					div#ngOutput form#fileEditor textarea#data {display:none;}
@@ -410,6 +412,12 @@ switch($op) {
 			<div id="ngOperations">
 				<h2>Operations</h2>
 				<ul>
+					<li>
+						<h3>System</h3>
+						<ul>
+							<li><a href="engintron.php">System Status &amp; Info</a></li>
+						</ul>
+					</li>
 					<li>
 						<h3>Nginx</h3>
 						<ul>
@@ -460,7 +468,6 @@ switch($op) {
 					<li>
 						<h3>Utilities</h3>
 						<ul>
-							<li><a href="engintron.php">System Info</a></li>
 							<li><a href="engintron.php?op=utils_top">Show all processes (top)</a></li>
 							<li><a href="engintron.php?op=utils_top_php">Show top PHP processes</a></li>
 							<li><a href="engintron.php?op=utils_pstree">Show current process tree</a></li>
@@ -471,7 +478,10 @@ switch($op) {
 						<h3>Engintron</h3>
 						<ul>
 							<li><a href="engintron.php?op=engintron_toggle">Enable/Disable Engintron</a></li>
-							<li><a href="engintron.php?op=engintron_update">Update (or re-install Engintron)</a></li>
+							<li id="ngUpdate">
+								<a href="engintron.php?op=engintron_update">Update (or re-install) Engintron</a>
+								<span>[please wait a few minutes...]</span>
+							</li>
 						</ul>
 					</li>
 				</ul>
@@ -566,6 +576,20 @@ switch($op) {
 							menuItems[i].parentNode.parentNode.className = 'active';
 						} else {
 							menuItems[i].parentNode.className = 'active';
+						}
+					}
+				}
+				// Disable the update/re-install link when clicked
+				var updContainer = document.getElementById('ngUpdate');
+				if(updContainer){
+					var updLink = updContainer.getElementsByTagName('a')[0];
+					updLink.onclick = function(){
+						updContainer.getElementsByTagName('span')[0].setAttribute('style', 'display:inline;');
+						if(this.className != "clicked") {
+							this.className = "clicked";
+							return true;
+						} else {
+							return false;
 						}
 					}
 				}
