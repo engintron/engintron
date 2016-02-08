@@ -544,28 +544,37 @@ resall)
 
 	if [ -f "/usr/local/cpanel/cpanel" ]; then
 		service cpanel restart
+		echo ""
 	fi
 	if [ "$(pstree | grep 'crond')" ]; then
 		service crond restart
+		echo ""
 	fi
 	if [[ -f /etc/csf/csf.conf && "$(cat /etc/csf/csf.conf | grep 'TESTING = \"0\"')" ]]; then
-	  		csf -r
+	  	csf -r
+		echo ""
 	fi
 	if [ "$(pstree | grep 'lfd')" ]; then
 		service lfd restart
+		echo ""
 	fi
 	if [ "$(pstree | grep 'munin-node')" ]; then
 		service munin-node restart
+		echo ""
 	fi
 	if [ "$(pstree | grep 'mysql')" ]; then
 		/scripts/restartsrv_mysql
+		echo ""
 	fi
 	if [ "$(pstree | grep 'httpd')" ]; then
-		echo "Apache restarting..."
+		echo "Restarting Apache..."
 		service httpd restart
+		echo ""
 	fi
 	if [ "$(pstree | grep 'nginx')" ]; then
+		echo "Restarting Nginx..."
 		service nginx restart
+		echo ""
 	fi
 	;;
 res)
@@ -576,11 +585,14 @@ res)
 	echo "====================================="
 	echo ""
 	if [ "$(pstree | grep 'httpd')" ]; then
-		echo "Apache restarting..."
+		echo "Restarting Apache..."
 		service httpd restart
+		echo ""
 	fi
 	if [ "$(pstree | grep 'nginx')" ]; then
+		echo "Restarting Nginx..."
 		service nginx restart
+		echo ""
 	fi
 	;;
 clean)

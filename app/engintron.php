@@ -303,18 +303,26 @@ switch($op) {
 		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
 		break;
 
+	case "engintron_res":
+		$ret = shell_exec("bash /usr/local/src/engintron/engintron.sh res 2>&1");
+		break;
+
+	case "engintron_resall":
+		$ret = shell_exec("bash /usr/local/src/engintron/engintron.sh resall 2>&1");
+		break;
+
 	case "utils_info":
 	default:
 		if(file_exists("/usr/local/src/engintron/state.conf")){
 			if(ENGINTRON_STATE=="on") {
-				$ret = "<b class=\"green\">*** Engintron is ENABLED ***</b><br /><br />---<br /><br />";
+				$ret = "<b class=\"green ngStatus\">*** Engintron is ENABLED ***</b><i class=\"ngSep\">########################################</i>";
 			} elseif(ENGINTRON_STATE=="off") {
-				$ret = "<b>*** Engintron is DISABLED ***</b><br /><br />---<br /><br />";
+				$ret = "<b class=\"ngStatus\">*** Engintron is DISABLED ***</b><i class=\"ngSep\">########################################</i>";
 			} else {
-				$ret = "*** Couldn't get state of Engintron - please try again. ***<br /><br />---<br /><br />";
+				$ret = "*** Couldn't get state of Engintron - please try again. ***<i class=\"ngSep\">########################################</i>";
 			}
 		} else {
-			$ret = "*** Couldn't get state of Engintron - please try again. ***<br /><br />---<br /><br />";
+			$ret = "*** Couldn't get state of Engintron - please try again. ***<i class=\"ngSep\">########################################</i>";
 		}
 		$ret .= "<b class=\"green\">*** System Info ***</b><br /><br />";
 		$ret .= "<b>Uptime:</b> ";
@@ -390,6 +398,8 @@ switch($op) {
 						div#ngOutputWindow pre b {color:red;}
 						div#ngOutputWindow pre b.green,
 						div#ngOutputWindow pre span {color:green;}
+						div#ngOutputWindow pre b.ngStatus {font-size:18px;}
+						div#ngOutputWindow pre i.ngSep {color:#aaa;font-size:12px;display:block;padding:0;margin:20px 0;}
 					body.op_edit div#ngOutputWindow {border:1px solid #eaeaea;border-top:0;padding:0;margin:0;}
 					#ngAceEditor {box-sizing:border-box;border:none;width:100%;padding:8px;margin:0;font-family:'Source Code Pro',monospace;font-size:13px;height:360px;overflow:auto;color:#fff;background:#000;outline:0;}
 					div#ngOutput form#fileEditor textarea#data {display:none;}
@@ -398,6 +408,7 @@ switch($op) {
 				div#ngFooter p {margin:0;padding:0;font-size:12px;color:#666;}
 				div#ngFooter a {color:#333;font-weight:bold;text-decoration:none;}
 				div#ngFooter a:hover {text-decoration:underline;}
+					img#ngTracking {display:block;width:1px;height:1px;line-height:1px;margin:0;padding:0;clear:both;float:none;}
 			div#ngMessage {position:fixed;top:16px;right:16px;background:#fff;font-size:12px;line-height:12px;text-align:center;margin:0;padding:16px;border-radius:4px;box-shadow:0 1px 4px 0 #999;}
 				div#ngMessage .ngMsgState {width:16px;height:16px;margin:0 10px 0 0;padding:0;display:inline-block;background:#5fca4a;vertical-align:text-top;}
 			.hidden {opacity:0;transition:opacity 2s linear;}
@@ -416,6 +427,8 @@ switch($op) {
 						<h3>System</h3>
 						<ul>
 							<li><a href="engintron.php">System Status &amp; Info</a></li>
+							<li><a href="engintron.php?op=engintron_res">Restart Apache &amp; Nginx</a></li>
+							<li><a href="engintron.php?op=engintron_resall">Restart all services</a></li>
 						</ul>
 					</li>
 					<li>
@@ -525,7 +538,7 @@ switch($op) {
 		</div>
 		<div id="ngFooter">
 			<p><a target="_blank" href="http://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2014-<?php echo date('Y'); ?> <a target="_blank" href="http://nuevvo.com/">Nuevvo Webware P.C.</a> Released under the <a target="_blank" href="http://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
-			<img src="https://ga-beacon.appspot.com/UA-16375363-18/engintron/app?pixel" alt="" width="1" height="1" />
+			<img id="ngTracking" src="https://ga-beacon.appspot.com/UA-16375363-18/engintron/app?pixel" alt="Engintron WHM App" />
 		</div>
 		<?php if($message): ?>
 		<div id="ngMessage"><div class="ngMsgState"></div><?php echo $message; ?></div>
