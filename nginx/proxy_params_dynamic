@@ -1,5 +1,5 @@
 # === MICRO CACHING ===
-# 1 second (1s) micro-caching enabled for all proxied dynamic content
+# 1 second (1s) micro-caching enabled for all proxied dynamic HTML content
 proxy_cache					engintron_dynamic;
 proxy_cache_key				"$request_method$scheme$host$request_uri";
 proxy_cache_lock			on;
