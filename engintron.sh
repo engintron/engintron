@@ -37,6 +37,7 @@ function install_mod_rpaf {
 
 	echo "=== Installing mod_rpaf (v0.8.4) for Apache ==="
 	cd /usr/local/src
+	/bin/rm -f mod_rpaf-0.8.4.zip
 	wget $REPO_CDN_URL/apache/mod_rpaf-0.8.4.zip
 	unzip -o mod_rpaf-0.8.4.zip
 	/bin/rm -f mod_rpaf-0.8.4.zip
@@ -88,6 +89,7 @@ function install_mod_remoteip {
 
 	echo "=== Installing mod_remoteip for Apache ==="
 	cd /usr/local/src
+	/bin/rm -f mod_remoteip.c
 	wget https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
 	apxs -i -c -n mod_remoteip.so mod_remoteip.c
 	/bin/rm -f mod_remoteip.c
