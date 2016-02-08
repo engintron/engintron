@@ -128,7 +128,7 @@ function execute($act) {
 			break;
 
 		case "mysql_restart":
-			$command = shell_exec("/usr/local/cpanel/scripts/restartsrv_mysql 2>&1");
+			$command = shell_exec("/usr/local/cpanel/scripts/restartsrv_mysql");
 			if(empty($command)) {
 				$output = "<p>Something went wrong, check the MySQL log.</p>";
 			} else {
@@ -300,7 +300,7 @@ switch($op) {
 		break;
 
 	case "engintron_update":
-		$ret = shell_exec("cd /; rm -f /engintron.sh; wget https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install");
+		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
 		break;
 
 	case "utils_info":
