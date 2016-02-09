@@ -542,10 +542,10 @@ resall)
 	echo "========================================="
 	echo ""
 
-	if [ -f "/usr/local/cpanel/cpanel" ]; then
-		service cpanel restart
-		echo ""
-	fi
+	#if [ -f "/usr/local/cpanel/cpanel" ]; then
+	#	service cpanel restart
+	#	echo ""
+	#fi
 	if [ "$(pstree | grep 'crond')" ]; then
 		service crond restart
 		echo ""
