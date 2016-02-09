@@ -677,7 +677,7 @@ info)
 	echo "/_____/_/ |_/\____/___/_/ |_/ /_/ /_/ |_|\____/_/ |_/   ";
 	echo "                                                        ";
 	cat << EOF
-=== http://engintron.com ===
+=== https://engintron.com ===
 
 Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/WHM server.
 

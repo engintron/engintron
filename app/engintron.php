@@ -3,7 +3,7 @@
  * @version		1.5.2
  * @package		Engintron for cPanel/WHM
  * @author		Fotis Evangelou
- * @url			http://engintron.com
+ * @url			https://engintron.com
  * @copyright	Copyright (c) 2014 - 2016 Nuevvo Webware P.C. (http://nuevvo.com). All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
@@ -499,10 +499,10 @@ switch($op) {
 					</li>
 				</ul>
 				<h2>About</h2>
-				<p><a target="_blank" href="http://engintron.com/"><?php echo PLG_NAME; ?></a> is a cPanel plugin that integrates the popular <a target="_blank" href="http://nginx.org/">Nginx</a> web server as a "reverse caching proxy" for cPanel's Apache, with a simple interface to control common tasks related to these services.</p>
+				<p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?></a> is a cPanel plugin that integrates the popular <a target="_blank" href="http://nginx.org/">Nginx</a> web server as a "reverse caching proxy" for cPanel's Apache, with a simple interface to control common tasks related to these services.</p>
 				<p>By using <b><?php echo PLG_NAME; ?></b> you essentially offload most of your content to Nginx (static assets usually occupy more than 85% of a website's size), thus saving system resources like CPU & RAM for other tasks. The result is a faster performing server.</p>
 				<p>Engintron is open source.<br /><a target="_blank" href="https://github.com/engintron/engintron/issues">Report issues/bugs</a> or <a target="_blank" href="https://github.com/engintron/engintron/pulls">help us improve it</a>.</p>
-				<p><a class="github-button" href="https://github.com/engintron/engintron" data-count-href="/nuevvo/engintron/stargazers" data-count-api="/repos/nuevvo/engintron#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star nuevvo/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="http://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel">Rate on cPApps</a>
+				<p><a class="github-button" href="https://github.com/engintron/engintron" data-count-href="/nuevvo/engintron/stargazers" data-count-api="/repos/nuevvo/engintron#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star nuevvo/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel">Rate on cPApps</a>
 </p>
 				<p id="commercialSupport"><b>Looking for commercial support?</b> <a href="mailto:47qycpgl">Get in touch with us</a>.
 			</div>
@@ -537,7 +537,7 @@ switch($op) {
 			<div class="clr"></div>
 		</div>
 		<div id="ngFooter">
-			<p><a target="_blank" href="http://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2014-<?php echo date('Y'); ?> <a target="_blank" href="http://nuevvo.com/">Nuevvo Webware P.C.</a> Released under the <a target="_blank" href="http://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
+			<p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2014-<?php echo date('Y'); ?> <a target="_blank" href="http://nuevvo.com/">Nuevvo Webware P.C.</a> Released under the <a target="_blank" href="http://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
 			<img id="ngTracking" src="https://ga-beacon.appspot.com/UA-16375363-18/engintron/app?pixel" alt="Engintron WHM App" />
 		</div>
 		<?php if($message): ?>
