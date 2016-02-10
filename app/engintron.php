@@ -300,7 +300,7 @@ switch($op) {
 		break;
 
 	case "engintron_update":
-		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
+		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
 		break;
 
 	case "engintron_res":
@@ -368,7 +368,7 @@ switch($op) {
 				div#ngBreadcrumbs a.active {color:#333;}
 			div#ngContainer {margin:0;padding:0 16px 4px;}
 				h1#ngTitle {margin:0;padding:0;text-align:center;}
-				h1#ngTitle a {background:url('https://nuevvo.github.io/engintron.com/app/images/Engintron_Logo_316x98_8.png') no-repeat 0 50%;font-size:20px;padding:36px 0 36px 326px;margin:0 0 8px 0;color:#333;display:inline-block;text-decoration:none;text-align:left;}
+				h1#ngTitle a {background:url('https://engintron.com/app/images/Engintron_Logo_316x98_8.png') no-repeat 0 50%;font-size:20px;padding:36px 0 36px 326px;margin:0 0 8px 0;color:#333;display:inline-block;text-decoration:none;text-align:left;}
 				h1#ngTitle a span {display:block;font-size:11px;font-weight:normal;color:#999;}
 				h2 {border-bottom:2px solid #eaeaea;padding:8px 0;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;font-size:24px;color:#008d23;}
 				div#ngOperations {float:left;width:30%;}
@@ -502,7 +502,7 @@ switch($op) {
 				<p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?></a> is a cPanel plugin that integrates the popular <a target="_blank" href="http://nginx.org/">Nginx</a> web server as a "reverse caching proxy" for cPanel's Apache, with a simple interface to control common tasks related to these services.</p>
 				<p>By using <b><?php echo PLG_NAME; ?></b> you essentially offload most of your content to Nginx (static assets usually occupy more than 85% of a website's size), thus saving system resources like CPU & RAM for other tasks. The result is a faster performing server.</p>
 				<p>Engintron is open source.<br /><a target="_blank" href="https://github.com/engintron/engintron/issues">Report issues/bugs</a> or <a target="_blank" href="https://github.com/engintron/engintron/pulls">help us improve it</a>.</p>
-				<p><a class="github-button" href="https://github.com/engintron/engintron" data-count-href="/nuevvo/engintron/stargazers" data-count-api="/repos/nuevvo/engintron#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star nuevvo/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel">Rate on cPApps</a>
+				<p><a class="github-button" href="https://github.com/engintron/engintron" data-count-href="/engintron/engintron/stargazers" data-count-api="/repos/engintron/engintron#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star engintron/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel">Rate on cPApps</a>
 </p>
 				<p id="commercialSupport"><b>Looking for commercial support?</b> <a href="mailto:47qycpgl">Get in touch with us</a>.
 			</div>

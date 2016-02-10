@@ -13,7 +13,7 @@ APP_PATH="/usr/local/src/engintron"
 APP_VERSION="1.5.2"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
-REPO_CDN_URL="https://cdn.rawgit.com/nuevvo/engintron/master"
+REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
 
 GET_HTTPD_VERSION=$(httpd -v | grep "Server version");
 

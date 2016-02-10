@@ -38,7 +38,7 @@ Installation is a process that lasts only a few minutes. You'll need root SSH ac
 
 _$ cd /  
 $ rm -f engintron.sh  
-$ wget [https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh](https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh)  
+$ wget [https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh](https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh)  
 $ bash engintron.sh install_
 
 The process will take a couple of minutes to complete and after that, Engintron will be installed on your cPanel server. Engintron has a nice user interface which is activated inside WHM, under the Plugins section. After installation, refresh WHM in your browser and you should see Engintron in the Plugins section (it's the absolute last section in WHM's sidebar).
@@ -97,7 +97,7 @@ If you use Engintron, please take a moment to post a review and/or rating in the
 
 If you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through other services that directly affect the performance of your cPanel server (MySQL, Apache, PHP, certain system configuration files and more), feel free to use the contact options from within Engintron to get in touch with us.
 
-Or you can simply emails us at: engintron [at] nuevvo [dot] com
+Or you can simply emails us at: engintron [at] gmail [dot] com
 
 
 ==
@@ -156,7 +156,7 @@ Engintron is released under the GNU/GPL license. For more info, have a look here
 ### More info
 A proper website is on its way, featuring short tutorials and videos, a forum and a commercial support channel.
 
-If however you require commercial support now, you can contact us via Engintron's app dashboard or simply email us at: engintron [at] nuevvo [dot] com
+If however you require commercial support now, you can contact us via Engintron's app dashboard or simply email us at: engintron [at] gmail [dot] com
 
 https://engintron.com
 
