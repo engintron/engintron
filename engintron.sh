@@ -433,6 +433,7 @@ install)
 	echo ""
 	echo "=== Restarting Apache & Nginx... ==="
 	service httpd restart
+	fuser -k 80/tcp
 	service nginx start
 
 	if [ -f $APP_PATH/state.conf ]; then
