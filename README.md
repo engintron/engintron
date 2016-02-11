@@ -75,35 +75,35 @@ And finally, Engintron is 100% open source. You can tear it apart, customize it,
 
 ### FAQ
 
-Q. How do I get started?
+Q. **How do I get started?** 
 A. Installation is pretty straightforward as you may have read above already. There is however extensive documentation available in the wiki: https://github.com/engintron/engintron/wiki - we even include general optimization guides for your cPanel server!
 
-Q. Engintron is awesome! But I have a problem or I want to report a bug! Where do I do that?
+Q. **Engintron is awesome! But I have a problem or I want to report a bug! Where do I do that?** 
 A. The "Issues" section here on GitHub - https://github.com/engintron/engintron/issues - is the right place to report bugs or request for help. We will eventually offer a dedicated support forum when we launch the new Engintron website in Q1 2016.
 
-Q. I have dozens of .htaccess rules in Apache. Will I have to re-write those for Nginx?
+Q. **I have dozens of .htaccess rules in Apache. Will I have to re-write those for Nginx?** 
 A. Of course not! Nginx works as a proxy to Apache, it does not operate as the direct webserver to your content. In other words, you just install Engintron and everything in Apache (and your apps or websites) will function as it did before. Nginx requires no maintenance. It just works.
 
-Q. Is Nginx secure? Will my server be protected as it is now with Apache. I already have [name 20 protection solution for cPanel here] installed. Do I have to configure my cPanel/WHM server additionally?
+Q. **Is Nginx secure? Will my server be protected as it is now with Apache. I already have [name 20 protection solution for cPanel here] installed. Do I have to configure my cPanel/WHM server additionally?** 
 A. Nginx is both reliable and secure. In fact, it can even be used to mitigate attacks on software - see how Nginx can be used to protect vulnerable Joomla 3.x websites for a recently disclosed exploit (CVE): https://www.nginx.com/blog/new-joomla-exploit-cve-2015-8562/ - and when used with micro-caching enabled, it can even handle large DoS (denial of service) attacks by simply doing what it does best: handle huge web traffic! To be more precise, all you need for a secure server is ConfigServer's CSF firewall (essentially a frontend for IPTables) to handle basic firewall functionality for your server and Engintron for web traffic (and the occasional app protection like the above Joomla exploit)
 
-Q. How does Engintron (and Nginx) handle HTTPS traffic?
+Q. **How does Engintron (and Nginx) handle HTTPS traffic?** 
 A. Because of the way SSL certificates are currently setup in cPanel, HTTPS traffic will only go through Apache (for the moment).
 
-Q. Do you plan on having Nginx serve HTTPS traffic in upcoming releases of Engintron?
+Q. **Do you plan on having Nginx serve HTTPS traffic in upcoming releases of Engintron?** 
 A. Glad you asked! Let me briefly explain how HTTPS traffic is currently handled in cPanel. First off, if you need to use SSL/TLS certificate for any of your domains, you need to either have a dedicated IP available per domain or pay a more expensive multidomain certificate (called UCC/SAN) to be able to use your shared IP address with multiple domains. In either case, the domains that don't have a dedicated SSL/TLS certificate or are not preconfigured in your UCC/SAN multi-domain certificate will NOT be served at all! Instead, Apache will just redirect any domain called with "https://" to server's IP, which kinda looks bad, right? So how can all this be solved, "the right way"? We are waiting for the new certificate authority [Let's Encrypt](https://letsencrypt.org/) to be publicly available and flagged as "stable" in order to have Engintron configure a UCC/SAN certificate for **ALL** your domains in cPanel. This way you'll be able to switch all your sites to HTTPS traffic and with valid certificates! Not to mention you'll finally skip the embarrassment of having HTTPS traffic for unsupported domains switch to the server's hostname. And if you need exclusions for certain domains, so you can serve certificates from existing authorities like Comodo, Trust, Verisign and others, you'll be able to easily define your exclusions in Engintron's WHM app.
 
-Q. Will it work with CloudFlare?
+Q. **Will it work with CloudFlare?** 
 A. Why yes of course! However you do need to adjust your "proxy_params_common" file a bit (until we automate the process in v1.6 of Engintron or earlier). If you edit this file via WHM, you'll notice there are comments in place for the procedure, so rest assured you got everything you need there. To briefly explain the process, you need to set your server's shared (main) IP and comment 1 line and uncomment 3 more (all documented in the file). If you can't see visitor IPs in your Apache logs, you'll also need to execute a single line command via the terminal as root user. As a sidenote, let me add that if you use CloudFlare for all your cPanel domains, you can essentially have HTTPS traffic for all your domains by switching CloudFlare's "Crypto" settings to "Flexible SSL". This way, CloudFlare's servers will proxy your HTTPS traffic to your server's HTTP port (Nginx). In other words, you get to have both amazing serving capacity and SSL/TLS support at the same time.
 
-Q. Does Engintron require a certain CentOS release to work?
+Q. **Does Engintron require a certain CentOS release to work?** 
 A. Engintron is fully compatible with the last 3 major releases of CentOS. That means CentOS versions 5, 6 and 7 are fully supported. CentOS 4 has not been tested with Engintron as cPanel ceased support for CentOS 4 back in 2012.
 
-Q. Does Engintron work in CloudLinux?
+Q. **Does Engintron work in CloudLinux?** 
 Yes. It is fully compatible with CloudLinux versions 6 & 7. Although we haven't yet tested CloudLinux version 5, we assume Engintron will also work with that version since CloudLinux is essentially based off CentOS. And Engintron is fully compatible with CentOS 5.
 
-Q. How popular is Engintron?
-A. Version 1.5 which was made available in the early days of February 2016 is by far our most popular release to date. It was installed on more than 300 servers in the first 2 days alone (and still counting at the time of writing - Feb 11th, 2016)!
+Q. **How popular is Engintron?** 
+A. Version 1.5 which was made available in the early days of February 2016 is by far our most popular release to date. It was installed on more than 300 servers in the first 2 days alone (and still counting at the time of writing - Feb 11th, 2016)! For v1.0 we do not really have metrics but we estimate it's below 1000 deployments. However v1.0 had very limited application as it was primarily targeted for websites with no user-generated content (e.g. media/news portals or high traffic blogs). Engintron v1.5 builds upon the knowledge gathered from v1.0 but it has been completely written from the ground up to support any type of website (even those with user generated content like forums, e-shops etc.) and also be easier to use, with little to no configuration after installation.
 
 
 ==
