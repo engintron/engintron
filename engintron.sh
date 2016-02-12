@@ -41,7 +41,7 @@ function install_mod_rpaf {
 	echo "=== Installing mod_rpaf (v0.8.4) for Apache ==="
 	cd /usr/local/src
 	/bin/rm -f mod_rpaf-0.8.4.zip
-	wget $REPO_CDN_URL/apache/mod_rpaf-0.8.4.zip
+	wget --no-check-certificate $REPO_CDN_URL/apache/mod_rpaf-0.8.4.zip
 	unzip -o mod_rpaf-0.8.4.zip
 	/bin/rm -f mod_rpaf-0.8.4.zip
 	cd mod_rpaf-0.8.4
@@ -96,8 +96,8 @@ function install_mod_remoteip {
 	echo "=== Installing mod_remoteip for Apache ==="
 	cd /usr/local/src
 	/bin/rm -f mod_remoteip.c
-	wget https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
-	wget $REPO_CDN_URL/apache/apxs.sh
+	wget --no-check-certificate https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
+	wget --no-check-certificate $REPO_CDN_URL/apache/apxs.sh
 	chmod +x apxs.sh
 	./apxs.sh -i -c -n mod_remoteip.so mod_remoteip.c
 	/bin/rm -f mod_remoteip.c
@@ -390,7 +390,7 @@ install)
 		exit 0
 	fi
 
-	if [ $GET_EA3_VERSION = "" ]; then
+	if [[ $GET_EA3_VERSION == "" ]]; then
 		echo ""
 		echo ""
 		echo "***************************************************"
@@ -424,7 +424,7 @@ install)
 
 	# Get the files
 	cd $APP_PATH
-	wget -O engintron.zip https://github.com/engintron/engintron/archive/master.zip
+	wget --no-check-certificate -O engintron.zip https://github.com/engintron/engintron/archive/master.zip
 	unzip engintron.zip
 	/bin/cp -rf $APP_PATH/engintron-master/* $APP_PATH/
 	/bin/rm -rvf $APP_PATH/engintron-master/*
