@@ -300,7 +300,7 @@ switch($op) {
 		break;
 
 	case "engintron_update":
-		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
+		$ret = strip_tags(shell_exec("rm -f /engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
 		break;
 
 	case "engintron_res":
