@@ -1,4 +1,4 @@
-![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.5.2 - released Feb 7th, 2016 - [See CHANGELOG](#changelog))**
+![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.5.3 - released Feb 12th, 2016 - [See CHANGELOG](#changelog))**
 ***
 
 ##### Quick Nav: [Engintron.com](https://engintron.com) | [FAQ](#faq) | [Documentation (Wiki)](https://github.com/engintron/engintron/wiki) | [Issues (for support requests & bug reports)](https://github.com/engintron/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
@@ -141,10 +141,17 @@ Or you can simply emails us at: engintron [at] gmail [dot] com
 ==
 ### Changelog
 
+_Feb 12th, 2016 - v1.5.3_
+
+*   Micro-caching is now enabled by default. Extensive tests have shown that there are no issues caused when micro-caching is enabled. In fact, performance is exponentially increased when micro-caching is on, which is the reason why Engintron now ships with this option on.
+*   Improvements to the installer - if any of the Apache modules (RPAF or RemoteIP) fail to install, we just skip that part without causing Apache to stop working because of missing .so files.
+*   Increased default timeouts in nginx.conf to minimize 504 errors from slow backends.
+*   Added a more reliable way to restart Nginx if another Nginx plugin for cPanel was previously uninstalled leaving Nginx still binding to port 80.
+
 _Feb 7th, 2016 - v1.5.2_
 
 *   Added CentOS 7 support (installer worked fine since 1.5.0, however a few controls in the WHM app did not output the correct messages)
-*   Added option to update or re-install Engintron from within the WHM app dashboard
+*   Added option to update or re-install Engintron from within WHM, via the Engintron app under "Plugins"
 
 _Feb 6th, 2016 - v1.5.1_
 

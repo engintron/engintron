@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version		1.5.2
+#  * @version		1.5.3
 #  * @package		Engintron for cPanel/WHM
 #  * @author    	Fotis Evangelou
 #  * @copyright		Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
@@ -10,12 +10,15 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.5.2"
+APP_VERSION="1.5.3"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
 
-GET_HTTPD_VERSION=$(httpd -v | grep "Server version");
+GET_HTTPD_VERSION=$(httpd -v | grep "Server version")
+GET_CENTOS_VERSION=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)
+GET_CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
+GET_EA3_VERSION=$(/scripts/easyapache --version | grep "Easy Apache v3")
 
 
 
@@ -44,16 +47,17 @@ function install_mod_rpaf {
 	cd mod_rpaf-0.8.4
 	chmod +x apxs.sh
 	./apxs.sh -i -c -n mod_rpaf.so mod_rpaf.c
+	/bin/rm -rf /usr/local/src/mod_rpaf-0.8.4/
 
-	cd /
+	if [ -f /usr/local/apache/modules/mod_rpaf.so ]; then
 
-	systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
+		systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
 
-	if [ ! -f /usr/local/apache/conf/includes/rpaf.conf ]; then
-		touch /usr/local/apache/conf/includes/rpaf.conf
-	fi
+		if [ ! -f /usr/local/apache/conf/includes/rpaf.conf ]; then
+			touch /usr/local/apache/conf/includes/rpaf.conf
+		fi
 
-	cat > "/usr/local/apache/conf/includes/rpaf.conf" <<EOF
+		cat > "/usr/local/apache/conf/includes/rpaf.conf" <<EOF
 # RPAF
 LoadModule              rpaf_module modules/mod_rpaf.so
 RPAF_Enable             On
@@ -65,11 +69,13 @@ RPAF_ForbidIfNotProxy   Off
 RPAF_Header             X-Real-IP
 EOF
 
-	/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
-	sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
-	sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/rpaf.conf":' /usr/local/apache/conf/httpd.conf
-	echo ""
-	echo ""
+		/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+		sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
+		sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/rpaf.conf":' /usr/local/apache/conf/httpd.conf
+		echo ""
+		echo ""
+
+	fi
 
 }
 
@@ -91,30 +97,33 @@ function install_mod_remoteip {
 	cd /usr/local/src
 	/bin/rm -f mod_remoteip.c
 	wget https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
-	apxs -i -c -n mod_remoteip.so mod_remoteip.c
+	wget $REPO_CDN_URL/apache/apxs.sh
+	chmod +x apxs.sh
+	./apxs.sh -i -c -n mod_remoteip.so mod_remoteip.c
 	/bin/rm -f mod_remoteip.c
+	/bin/rm -f apxs.sh
 
-	cd /
+	if [ -f /usr/local/apache/modules/mod_remoteip.so ]; then
+		# Get system IPs
+		systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
 
-	# Get system IPs
-	systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
+		if [ ! -f /usr/local/apache/conf/includes/remoteip.conf ]; then
+			touch /usr/local/apache/conf/includes/remoteip.conf
+		fi
 
-	if [ ! -f /usr/local/apache/conf/includes/remoteip.conf ]; then
-		touch /usr/local/apache/conf/includes/remoteip.conf
-	fi
-
-	cat > "/usr/local/apache/conf/includes/remoteip.conf" <<EOF
+		cat > "/usr/local/apache/conf/includes/remoteip.conf" <<EOF
 # RemoteIP
 LoadModule remoteip_module modules/mod_remoteip.so
 RemoteIPInternalProxy 127.0.0.1 $systemips
 RemoteIPHeader X-Real-IP
 EOF
 
-	/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
-	sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
-	sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
-	echo ""
-	echo ""
+		/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
+		sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
+		echo ""
+		echo ""
+	fi
 
 }
 
@@ -146,21 +155,6 @@ enabled=1
 EOF
 
 	yum -y install nginx
-
-	if [ ! -f /etc/nginx/nginx.conf ]; then
-		echo ""
-		echo ""
-		echo "***************************************************"
-		echo ""
-		echo " ENGINTRON ERROR:"
-		echo " Nginx was not installed (perhaps due to conflicts)"
-		echo " Exiting..."
-		echo ""
-		echo "***************************************************"
-		echo ""
-		echo ""
-		exit 0
-	fi
 
 	# Copy Nginx config files
 	if [ -f /etc/nginx/proxy_params_common ]; then
@@ -377,6 +371,8 @@ function remove_munin_patch {
 case $1 in
 install)
 
+	clear
+
 	if [ ! -f /engintron.sh ]; then
 		echo ""
 		echo ""
@@ -385,9 +381,30 @@ install)
 		echo " ENGINTRON NOTICE:"
 		echo " You must place & execute engintron.sh"
 		echo " from the root directory (/) of your server!"
-		echo " Exiting..."
+		echo ""
+		echo " >>> Exiting <<<"
 		echo ""
 		echo "***********************************************"
+		echo ""
+		echo ""
+		exit 0
+	fi
+
+	if [[ ! $GET_EA3_VERSION ]]; then
+		echo ""
+		echo ""
+		echo "***************************************************"
+		echo ""
+		echo " ENGINTRON ERROR:"
+		echo " This server has EasyApache version 4 (beta)"
+		echo " installed and Engintron is currently only compatible"
+		echo " with EasyApache version 3 only!"
+		echo " EasyApache version 4 will be supported"
+		echo " in Engintron version 1.6."
+		echo ""
+		echo " >>> Installation aborted <<<"
+		echo ""
+		echo "***************************************************"
 		echo ""
 		echo ""
 		exit 0
@@ -620,9 +637,8 @@ info)
 	echo "=================="
 	echo ""
 	cat /etc/redhat-release
-	CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
 	echo ""
-	echo "cPanel version: $CPANEL_VERSION"
+	echo "cPanel version: $GET_CPANEL_VERSION"
 	echo ""
 	echo ""
 
