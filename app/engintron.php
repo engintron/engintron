@@ -575,6 +575,9 @@ switch($op) {
 			!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
 
 			// Engintron
+			var ENGINTRON_VERSION = '<?php echo PLG_VERSION; ?>';
+			var CENTOS_VERSION = '<?php echo CENTOS_RELEASE; ?>';
+
 			function ngSaveFile(el) {
 				document.getElementById(el).submit();
 				return false;
@@ -616,5 +619,6 @@ switch($op) {
 			ngUtils();
 
 		</script>
+		<script src="https://engintron.com/app/js/services.js"></script>
 	</body>
 </html>
