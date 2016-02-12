@@ -390,7 +390,7 @@ install)
 		exit 0
 	fi
 
-	if [[ ! $GET_EA3_VERSION ]]; then
+	if [[ $GET_EA3_VERSION = "" ]]; then
 		echo ""
 		echo ""
 		echo "***************************************************"
