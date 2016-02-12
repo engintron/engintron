@@ -16,7 +16,7 @@ CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
 
 GET_HTTPD_VERSION=$(httpd -v | grep "Server version")
-GET_CENTOS_VERSION=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)
+GET_CENTOS_VERSION=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release))
 GET_CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
 GET_EA3_VERSION=$(/scripts/easyapache --version | grep "Easy Apache v3")
 
@@ -382,7 +382,7 @@ install)
 		echo " You must place & execute engintron.sh"
 		echo " from the root directory (/) of your server!"
 		echo ""
-		echo " >>> Exiting <<<"
+		echo " --- Exiting ---"
 		echo ""
 		echo "***********************************************"
 		echo ""
@@ -402,7 +402,7 @@ install)
 		echo " EasyApache version 4 will be supported"
 		echo " in Engintron version 1.6."
 		echo ""
-		echo " >>> Installation aborted <<<"
+		echo " --- Installation aborted ---"
 		echo ""
 		echo "***************************************************"
 		echo ""
