@@ -390,7 +390,7 @@ install)
 		exit 0
 	fi
 
-	if [[ $GET_EA3_VERSION = "" ]]; then
+	if [ $GET_EA3_VERSION = "" ]; then
 		echo ""
 		echo ""
 		echo "***************************************************"
@@ -409,8 +409,6 @@ install)
 		echo ""
 		exit 0
 	fi
-
-	clear
 
 	echo "**************************************"
 	echo "*        Installing Engintron        *"
