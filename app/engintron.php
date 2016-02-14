@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		1.5.3
+ * @version		1.6.0
  * @package		Engintron for cPanel/WHM
  * @author		Fotis Evangelou
  * @url			https://engintron.com
@@ -18,7 +18,7 @@ if($user != "root") {
 // *** Common variables to make updating easier ***
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.5.3');
+define('PLG_VERSION', '1.6.0');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('ENGINTRON_STATE', trim(file_get_contents("/usr/local/src/engintron/state.conf")));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
@@ -33,6 +33,7 @@ $allowed_files = array(
 	'/etc/nginx/proxy_params_common',
 	'/etc/nginx/proxy_params_dynamic',
 	'/etc/nginx/proxy_params_static',
+	'/etc/nginx/custom_rules',
 	'/etc/nginx/conf.d/default.conf',
 	'/etc/my.cnf',
 	'/usr/local/apache/conf/php.conf',
@@ -437,11 +438,15 @@ switch($op) {
 							<li><a href="engintron.php?op=nginx_status">Status</a></li>
 							<li><a href="engintron.php?op=nginx_reload">Reload</a></li>
 							<li><a href="engintron.php?op=nginx_restart">Restart</a></li>
-							<li><a href="engintron.php?op=edit&f=/etc/nginx/nginx.conf&s=nginx">Edit nginx.conf</a></li>
+							<li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules&s=nginx">Edit your custom rules for Nginx</a></li>
+							<?php if(file_exists('/etc/nginx/custom_rules.bak')): ?>
+							<li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules.bak&s=nginx">Check your custom rules backup for Nginx</a></li>
+							<?php endif; ?>
+							<li><a href="engintron.php?op=edit&f=/etc/nginx/conf.d/default.conf&s=nginx">Edit default.conf</a></li>
 							<li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_common&s=nginx">Edit proxy_params_common</a></li>
 							<li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_dynamic&s=nginx">Edit proxy_params_dynamic</a></li>
 							<li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_static&s=nginx">Edit proxy_params_static</a></li>
-							<li><a href="engintron.php?op=edit&f=/etc/nginx/conf.d/default.conf&s=nginx">Edit default.conf</a></li>
+							<li><a href="engintron.php?op=edit&f=/etc/nginx/nginx.conf&s=nginx">Edit nginx.conf</a></li>
 							<li><a href="engintron.php?op=nginx_config">Check configuration for errors</a></li>
 							<li><a href="engintron.php?op=nginx_modules">Show compiled modules</a></li>
 							<li>

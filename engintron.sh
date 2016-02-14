@@ -1,16 +1,17 @@
 #!/bin/bash
 
 # /**
-#  * @version		1.5.3
+#  * @version		1.6.0
 #  * @package		Engintron for cPanel/WHM
 #  * @author    	Fotis Evangelou
+#  * @url			https://engintron.com
 #  * @copyright		Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
 #  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
 #  */
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.5.3"
+APP_VERSION="1.6.0"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
@@ -157,6 +158,11 @@ EOF
 	yum -y install nginx
 
 	# Copy Nginx config files
+	if [ -f /etc/nginx/custom_rules ]; then
+		/bin/cp -f /etc/nginx/custom_rules /etc/nginx/custom_rules.bak
+	fi
+	/bin/cp -f $APP_PATH/nginx/custom_rules /etc/nginx/
+
 	if [ -f /etc/nginx/proxy_params_common ]; then
 		/bin/cp -f /etc/nginx/proxy_params_common /etc/nginx/proxy_params_common.bak
 	fi
@@ -511,6 +517,7 @@ enable)
 	service nginx stop
 	sed -i 's:listen 8080 default_server:listen 80 default_server:' /etc/nginx/conf.d/default.conf
 	sed -i 's:\:80; # Apache Status Page:\:8080; # Apache Status Page:' /etc/nginx/conf.d/default.conf
+	sed -i 's:PROXY_DOMAIN_OR_IP\:80:PROXY_DOMAIN_OR_IP\:8080:' /etc/nginx/proxy_params_common
 	apache_change_port
 	service nginx start
 
@@ -539,6 +546,7 @@ disable)
 	service nginx stop
 	sed -i 's:listen 80 default_server:listen 8080 default_server:' /etc/nginx/conf.d/default.conf
 	sed -i 's:\:8080; # Apache Status Page:\:80; # Apache Status Page:' /etc/nginx/conf.d/default.conf
+	sed -i 's:PROXY_DOMAIN_OR_IP\:8080:PROXY_DOMAIN_OR_IP\:80:' /etc/nginx/proxy_params_common
 
 	apache_revert_port
 	service nginx start

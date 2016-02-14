@@ -1,6 +1,15 @@
 #!/usr/local/cpanel/3rdparty/bin/perl
 #WHMADDON:engintron:Engintron for cPanel/WHM
 
+# /**
+#  * @version		1.6.0
+#  * @package		Engintron for cPanel/WHM
+#  * @author    	Fotis Evangelou
+#  * @url			https://engintron.com
+#  * @copyright		Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
+#  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+#  */
+
 use lib '/usr/local/cpanel';
 use Cpanel::cPanelFunctions ();
 use Cpanel::Form ();

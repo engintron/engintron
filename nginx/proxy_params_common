@@ -1,21 +1,17 @@
-# By default proxy traffic to the requesting domain
-set $PROXY_DOMAIN_OR_IP $host;
+# /**
+#  * @version		1.6.0
+#  * @package		Engintron for cPanel/WHM
+#  * @author    	Fotis Evangelou
+#  * @url			https://engintron.com
+#  * @copyright		Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
+#  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+#  */
 
-# By default, Nginx will redirect requests to the right domain IP.
-# However in certain cases (e.g. when a domain has not yet resolved to your server,
-# but you can access it by modifying your computer's "hosts" file) you may want to set
-# the IP for a given domain only manually. Uncomment the following 3 lines and set
-# your domain and IP.
-#if ($host ~ "example.com") {
-#	set $PROXY_DOMAIN_OR_IP "XXX.XXX.XXX.XXX";
-#}
-
-# If you wish to use CloudFlare for any of your sites, you will have
-# to provide your cPanel's shared IP address below otherwise you'll get errors.
-# It is also important to uncomment the 3-line section lower (look at "CloudFlare Headers")
-# so CloudFlare visitor IPs are properly passed on to Apache via Nginx.
-# You will also need to execute a sed command via SSH as root to enable proper logging in Apache.
-#set $PROXY_DOMAIN_OR_IP "XXX.XXX.XXX.XXX";
+# Adjust headers when using CloudFlare
+set $X_REAL_IP $remote_addr;
+if ($http_cf_connecting_ip) {
+    set $X_REAL_IP $http_cf_connecting_ip;
+}
 
 # General Proxy Settings
 proxy_pass			http://$PROXY_DOMAIN_OR_IP:8080;
@@ -29,18 +25,9 @@ proxy_set_header	X-Forwarded-Host $host;
 proxy_set_header	X-Forwarded-Port $server_port;
 proxy_set_header	X-Forwarded-Proto $scheme;
 proxy_set_header	X-Forwarded-Server $host;
-proxy_set_header	X-Real-IP $remote_addr;
-
-# === CLOUDFLARE HEADERS ===
-# When using CloudFlare, comment the line "proxy_set_header X-Real-IP $remote_addr;" above
-# and uncomment the 3 lines below:
-#proxy_set_header	X-Real-IP $http_cf_connecting_ip;
-#proxy_set_header	CF-Connecting-IP $http_cf_connecting_ip;
-#proxy_set_header	Cf-Visitor $http_cf_visitor; # See https://support.cloudflare.com/hc/en-us/articles/200170536-How-do-I-redirect-all-visitors-to-HTTPS-SSL- for more.
-
-# To fix logging of actual visitor IPs in Apache when using CloudFlare (in front of Nginx),
-# execute the following command as root user via SSH:
-# $ sed -i "s@LogFormat \"%h %l@LogFormat \"%h %a %l@" /usr/local/apache/conf/httpd.conf
+proxy_set_header	X-Real-IP $X_REAL_IP;
+proxy_set_header	CF-Connecting-IP $http_cf_connecting_ip;
+proxy_set_header	Cf-Visitor $http_cf_visitor;
 
 # Buffers
 proxy_buffers				256 16k;

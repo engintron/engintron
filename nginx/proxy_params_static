@@ -1,3 +1,12 @@
+# /**
+#  * @version		1.6.0
+#  * @package		Engintron for cPanel/WHM
+#  * @author    	Fotis Evangelou
+#  * @url			https://engintron.com
+#  * @copyright		Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
+#  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+#  */
+
 # Proxy Cache Settings for static files ONLY.
 # Preset to a 1 minute internal cache time so file changes on static files that don't use
 # cache busting techniques are visible after 1 minute.
