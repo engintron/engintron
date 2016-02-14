@@ -387,7 +387,7 @@ switch($op) {
 					a#cpAppsLink:hover {background:#e34806;text-decoration:none;}
 					p#commercialSupport b {}
 				div#ngOutput {float:right;width:68%;}
-					#ngTerminalWindow {text-align:left;width:100%;height:360px;border-radius:10px;margin:auto;}
+					#ngTerminalWindow {text-align:left;width:100%;height:460px;border-radius:10px;margin:auto;}
 					#ngTerminalWindow header {background:#eaeaea;height:30px;border-radius:8px 8px 0 0;padding:0 10px;margin:0;text-align:center;}
 						#ngTerminalWindow header .button {width:12px;height:12px;margin:10px 6px 0 0;border-radius:8px;float:left;}
 						#ngTerminalWindow header .button.green {background:#3BB662;}
@@ -402,7 +402,7 @@ switch($op) {
 						div#ngOutputWindow pre b.ngStatus {font-size:18px;}
 						div#ngOutputWindow pre i.ngSep {color:#aaa;font-size:12px;display:block;padding:0;margin:20px 0;}
 					body.op_edit div#ngOutputWindow {border:1px solid #eaeaea;border-top:0;padding:0;margin:0;}
-					#ngAceEditor {box-sizing:border-box;border:none;width:100%;padding:8px;margin:0;font-family:'Source Code Pro',monospace;font-size:13px;height:360px;overflow:auto;color:#fff;background:#000;outline:0;}
+					#ngAceEditor {box-sizing:border-box;border:none;width:100%;padding:8px;margin:0;font-family:'Source Code Pro',monospace;font-size:13px;height:460px;overflow:auto;color:#fff;background:#000;outline:0;}
 					div#ngOutput form#fileEditor textarea#data {display:none;}
 					div#ngOutput form#fileEditor .editbox {background:#eee;border-top:1px solid #eaeaea;padding:8px;margin:-3px 0 0 0;}
 			div#ngFooter {text-align:center;border-top:2px solid #eaeaea;background:#eee;padding:16px;margin:0;}
