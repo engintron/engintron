@@ -409,7 +409,7 @@ switch($op) {
 				div#ngFooter p {margin:0;padding:0;font-size:12px;color:#666;}
 				div#ngFooter a {color:#333;font-weight:bold;text-decoration:none;}
 				div#ngFooter a:hover {text-decoration:underline;}
-					img#ngTracking {display:block;width:1px;height:1px;line-height:1px;margin:0;padding:0;clear:both;float:none;}
+					img#ngTracking {display:block;width:1px;height:1px;line-height:1px;margin:0;padding:0;clear:both;float:none;visibility:hidden;}
 			div#ngMessage {position:fixed;top:16px;right:16px;background:#fff;font-size:12px;line-height:12px;text-align:center;margin:0;padding:16px;border-radius:4px;box-shadow:0 1px 4px 0 #999;}
 				div#ngMessage .ngMsgState {width:16px;height:16px;margin:0 10px 0 0;padding:0;display:inline-block;background:#5fca4a;vertical-align:text-top;}
 			.hidden {opacity:0;transition:opacity 2s linear;}
