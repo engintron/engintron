@@ -96,6 +96,9 @@ A. Glad you asked! Let me briefly explain how HTTPS traffic is currently handled
 Q. **Will it work with CloudFlare?**  
 A. Why yes of course! However you do need to adjust your "custom_rules" Nginx configuration file a bit. When you edit this file via WHM, you'll notice there are comments in place for the procedure, so rest assured you got everything you need there. To briefly explain the process, you need to set your server's shared (main) IP and/or any additional dedicated IPs matching certain domains (everything is documented with examples in there). If you can't see visitor IPs in your Apache logs, you'll also need to execute a single line command via the terminal as root user (also documented in this file). As a sidenote, let me add that if you use CloudFlare for all your cPanel domains, you can essentially have HTTPS traffic for all your domains by switching CloudFlare's "Crypto" settings to "Flexible SSL". This way, CloudFlare's servers will proxy your HTTPS traffic to your server's HTTP port (Nginx). In other words, you get to have both amazing serving capacity and SSL/TLS support at the same time.
 
+Q. **I have Munin installed on my cPanel server to monitor resources. Does Engintron setup Nginx graphs in Munin as well?**  
+A. Absolutely. Have a look at the "Using Engintron" document in our Wiki for a screenshot of the graphs you get for Nginx in Munin. If you install Munin after you first installed Engintron, simply re-install Engintron via WHM and you'll get the Nginx graphs in your newly set Munin installation.
+
 Q. **Does Engintron require a certain CentOS release to work?**  
 A. Engintron is fully compatible with the last 3 major releases of CentOS. That means CentOS versions 5, 6 and 7 are fully supported. CentOS 4 has not been tested with Engintron as cPanel ceased support for CentOS 4 back in 2012.
 
