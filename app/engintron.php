@@ -560,7 +560,7 @@ switch($op) {
 		<?php endif; ?>
 
 		<!-- JS -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.2/ace.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
 		<script src="https://squaresend.com/squaresend.js"></script>
 		<script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
 		<script>
