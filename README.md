@@ -1,4 +1,4 @@
-![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.6.0 - released Feb 14th, 2016 - [See CHANGELOG](#changelog))**
+![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.6.1 - released Feb 19th, 2016 - [See CHANGELOG](#changelog))**
 ***
 
 ##### Quick Nav: [Engintron.com](https://engintron.com) | [FAQ](#faq) | [Documentation (Wiki)](https://github.com/engintron/engintron/wiki) | [Issues (for support requests & bug reports)](https://github.com/engintron/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
@@ -143,6 +143,10 @@ Or you can simply emails us at: engintron [at] gmail [dot] com
 
 ==
 ### Changelog
+
+_Feb 19th, 2016 - v1.6.1_
+
+*   Engintron will now (be default) modify Apache's log format to allow for the proper inclusion of a visitor's IP in all systems. The change is merged with Apache's configuration so it's protected if Apache settings are modified via WHM. If you uninstall Engintron, Apache's log format is reverted to its previous state.
 
 _Feb 14th, 2016 - v1.6.0_
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version		1.6.0
+#  * @version		1.6.1
 #  * @package		Engintron for cPanel/WHM
 #  * @author    	Fotis Evangelou
 #  * @url			https://engintron.com
@@ -11,7 +11,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.6.0"
+APP_VERSION="1.6.1"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
@@ -73,6 +73,7 @@ EOF
 		/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
 		sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
 		sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/rpaf.conf":' /usr/local/apache/conf/httpd.conf
+		sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /usr/local/apache/conf/httpd.conf
 		echo ""
 		echo ""
 
@@ -86,6 +87,7 @@ function remove_mod_rpaf {
 		echo "=== Removing mod_rpaf (v0.8.4) for Apache ==="
 		rm -f /usr/local/apache/conf/includes/rpaf.conf
 		sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
+		sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
 		echo ""
 		echo ""
 	fi
@@ -122,6 +124,7 @@ EOF
 		/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
 		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
 		sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
+		sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /usr/local/apache/conf/httpd.conf
 		echo ""
 		echo ""
 	fi
@@ -134,9 +137,60 @@ function remove_mod_remoteip {
 		echo "=== Removing mod_remoteip for Apache ==="
 		rm -f /usr/local/apache/conf/includes/remoteip.conf
 		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
+		sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
 		echo ""
 		echo ""
 	fi
+
+}
+
+function apache_change_port {
+
+	echo "=== Switch Apache to port 8080 ==="
+	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
+	then
+		sed -i 's/^apache_port=.*/apache_port=0.0.0.0:8080/' /var/cpanel/cpanel.config
+		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+	else
+		echo "apache_port=0.0.0.0:8080" >> /var/cpanel/cpanel.config
+	fi
+
+	echo ""
+	echo ""
+
+	echo "=== Distill changes in Apache's configuration and restart Apache ==="
+	/usr/local/cpanel/bin/apache_conf_distiller --update
+	/scripts/rebuildhttpdconf --update
+
+	service httpd restart
+
+	echo ""
+	echo ""
+
+}
+
+function apache_revert_port {
+
+	echo "=== Switch Apache back to port 80 ==="
+	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
+	then
+		sed -i 's/^apache_port=.*/apache_port=0.0.0.0:80/' /var/cpanel/cpanel.config
+		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+	else
+		echo "apache_port=0.0.0.0:80" >> /var/cpanel/cpanel.config
+	fi
+
+	echo ""
+	echo ""
+
+	echo "=== Distill changes in Apache's configuration and restart Apache ==="
+	/usr/local/cpanel/bin/apache_conf_distiller --update
+	/scripts/rebuildhttpdconf --update
+
+	service httpd restart
+
+	echo ""
+	echo ""
 
 }
 
@@ -223,56 +277,6 @@ function remove_nginx {
 	yum -y remove nginx
 	/bin/rm -rf /etc/nginx/*
 	/bin/rm -f /etc/yum.repos.d/nginx.repo
-
-	echo ""
-	echo ""
-
-}
-
-function apache_change_port {
-
-	echo "=== Switch Apache to port 8080 ==="
-	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
-	then
-		sed -i 's/^apache_port=.*/apache_port=0.0.0.0:8080/' /var/cpanel/cpanel.config
-		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
-	else
-		echo "apache_port=0.0.0.0:8080" >> /var/cpanel/cpanel.config
-	fi
-
-	echo ""
-	echo ""
-
-	echo "=== Distill changes in Apache's configuration and restart Apache ==="
-	/usr/local/cpanel/bin/apache_conf_distiller --update
-	/scripts/rebuildhttpdconf --update
-
-	service httpd restart
-
-	echo ""
-	echo ""
-
-}
-
-function apache_revert_port {
-
-	echo "=== Switch Apache back to port 80 ==="
-	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
-	then
-		sed -i 's/^apache_port=.*/apache_port=0.0.0.0:80/' /var/cpanel/cpanel.config
-		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
-	else
-		echo "apache_port=0.0.0.0:80" >> /var/cpanel/cpanel.config
-	fi
-
-	echo ""
-	echo ""
-
-	echo "=== Distill changes in Apache's configuration and restart Apache ==="
-	/usr/local/cpanel/bin/apache_conf_distiller --update
-	/scripts/rebuildhttpdconf --update
-
-	service httpd restart
 
 	echo ""
 	echo ""

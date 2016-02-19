@@ -2,7 +2,7 @@
 #WHMADDON:engintron:Engintron for cPanel/WHM
 
 # /**
-#  * @version		1.6.0
+#  * @version		1.6.1
 #  * @package		Engintron for cPanel/WHM
 #  * @author    	Fotis Evangelou
 #  * @url			https://engintron.com

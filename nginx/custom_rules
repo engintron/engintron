@@ -1,35 +1,34 @@
-##################################################################
-# === Place your custom Engintron rules here ===
+#####################################################################
+# === Place your custom Nginx rules here ===
+#
+# [comments used below updated for Engintron v1.6.1]
 #
 # Some examples:
 # - HTTP to HTTPS redirect when using CloudFlare
 # - Setting up domains with dedicated IPs on the system
 # - Any other global rule (redirect or process)
 #
-##################################################################
+#####################################################################
 
 # === FOR USE WITH CLOUDFLARE ===
 # For up to date info see the Engintron wiki at: https://github.com/engintron/engintron/wiki
 #
-# a) To fix logging of actual visitor IPs in Apache when using CloudFlare (in front of Nginx),
-#    execute the following command as root user via SSH:
-# $ sed -i "s@LogFormat \"%h %l@LogFormat \"%h %a %l@" /usr/local/apache/conf/httpd.conf
-#
-# b) If you wish to use CloudFlare for any of your sites that use your server's SHARED IP address, you will have
+# a) If you wish to use CloudFlare for any (or all) of your sites that use your server's SHARED IP address, you will have
 #    to provide this shared IP address below otherwise you'll get errors from CloudFlare.
+#    Uncomment the following line if all your sites on the shared (main) IP of your server are on CloudFlare:
 #set $PROXY_DOMAIN_OR_IP "XXX.XXX.XXX.XXX"; # Use your cPanel's share IP address here
 
-# c) If you utilize CloudFlare for domains with dedicated IPs on your cPanel server, you will also
+# b) If you utilize CloudFlare for domains with dedicated IPs on your cPanel server, you will also
 #    have to set the IP for each such domain at the "Domain Exclusions" section lower in this file.
-#
-# d) It is possible to force-redirect all your domains on CloudFlare to HTTPS if you have SSL enabled
+
+# c) It is possible to force-redirect all your domains on CloudFlare to HTTPS if you have SSL enabled
 #    in CloudFlare's "Crypto" settings page. Make sure you use "Flexible SSL" there so CloudFlare proxies
 #    traffic from HTTPS to Nginx's HTTP port (80). This way you can utilize Nginx's caching & performance
 #    benefits to the fullest. If you use "Strict SSL" in CloudFlare's "Crypto" settings page, then CloudFlare
 #    will proxy all HTTPS requests to your Apache's HTTPS port (443) and therefore you will miss any benefits
 #    from Nginx's caching & overall performance features.
-#    To redirect to HTTPS, simply remove the FIRST # character only from each line below
-#    and make sure you set the domains you want to bypass from automatically redirecting to HTTPS.
+#    To redirect to HTTPS, simply remove ONLY the FIRST # character from each line of the following block
+#    and make sure you set the domains you DO NOT want to automatically redirect to HTTPS.
 
 # # === Protocol redirect handling when using CloudFlare [start] ===
 # set $redirToSSL "";

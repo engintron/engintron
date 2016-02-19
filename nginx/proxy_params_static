@@ -1,5 +1,5 @@
 # /**
-#  * @version		1.6.0
+#  * @version		1.6.1
 #  * @package		Engintron for cPanel/WHM
 #  * @author    	Fotis Evangelou
 #  * @url			https://engintron.com
@@ -7,6 +7,7 @@
 #  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
 #  */
 
+# === STATIC ASSET CACHING ===
 # Proxy Cache Settings for static files ONLY.
 # Preset to a 1 minute internal cache time so file changes on static files that don't use
 # cache busting techniques are visible after 1 minute.
@@ -21,5 +22,5 @@ proxy_cache_lock			on;
 proxy_cache_min_uses		1;
 proxy_cache_revalidate		on;
 proxy_cache_use_stale		error timeout updating http_500 http_502 http_503 http_504;
-proxy_cache_valid			1m; # In minutes - covers 200, 301 & 302 responses
+proxy_cache_valid			200 301 302 1m; # Covers 200, 301 & 302 responses, caching time set to 1 minute
 proxy_ignore_headers		Set-Cookie;
