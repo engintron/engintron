@@ -354,7 +354,7 @@ switch($op) {
 	<head>
 		<meta charset="utf-8" />
 		<title><?php echo PLG_NAME; ?></title>
-		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic|Montserrat:400,700|Source+Code+Pro:400,700" />
+		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic|Montserrat:400,700|Source+Code+Pro:400,700" />
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
 		<link rel="stylesheet" type="text/css" href="https://engintron.com/app/webfonts/style.css" />
 		<style type="text/css">
@@ -412,11 +412,18 @@ switch($op) {
 				div#ngFooter p {margin:0;padding:0;font-size:12px;color:#666;}
 				div#ngFooter a {color:#333;font-weight:bold;text-decoration:none;}
 				div#ngFooter a:hover {text-decoration:underline;}
-					img#ngTracking {display:block;width:1px;height:1px;line-height:1px;margin:0;padding:0;clear:both;float:none;visibility:hidden;}
 			div#ngMessage {position:fixed;top:16px;right:16px;background:#fff;font-size:12px;line-height:12px;text-align:center;margin:0;padding:16px;border-radius:4px;box-shadow:0 1px 4px 0 #999;}
 				div#ngMessage .ngMsgState {width:16px;height:16px;margin:0 10px 0 0;padding:0;display:inline-block;background:#5fca4a;vertical-align:text-top;}
 			.hidden {opacity:0;transition:opacity 2s linear;}
 		</style>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-16375363-18', 'auto');
+			ga('send', 'pageview', '/engintron_whm_app');
+		</script>
 	</head>
 	<body class="op_<?php echo $op; ?>">
 		<div id="ngBreadcrumbs">
@@ -547,7 +554,6 @@ switch($op) {
 		</div>
 		<div id="ngFooter">
 			<p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2014-<?php echo date('Y'); ?> <a target="_blank" href="http://nuevvo.com/">Nuevvo Webware P.C.</a> Released under the <a target="_blank" href="http://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
-			<img id="ngTracking" src="https://ga-beacon.appspot.com/UA-16375363-18/engintron/app?pixel" alt="Engintron WHM App" />
 		</div>
 		<?php if($message): ?>
 		<div id="ngMessage"><div class="ngMsgState"></div><?php echo $message; ?></div>
