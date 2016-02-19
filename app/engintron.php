@@ -355,6 +355,8 @@ switch($op) {
 		<meta charset="utf-8" />
 		<title><?php echo PLG_NAME; ?></title>
 		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic|Montserrat:400,700|Source+Code+Pro:400,700" />
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="https://engintron.com/app/webfonts/style.css" />
 		<style type="text/css">
 			body {margin:0;padding:0;font-family:'Open Sans',sans-serif;font-size:13px;color:#333;}
 			a {color:#08c;text-decoration:none;}
@@ -383,7 +385,8 @@ switch($op) {
 				div#ngOperations ul li.active form.displayLogs input {font-weight:bold;}
 				div#ngOperations ul li form.displayLogs:hover a {text-decoration:underline;}
 				div#ngOperations ul li#ngUpdate span {font-size:11px;font-weight:normal;font-style:italic;color:#999;display:none;}
-					a#cpAppsLink {background:#f26b32;color:#fff;padding:4px;margin:0;border-radius:3px;font-size:10px;font-weight:bold;vertical-align:super;}
+					p#ngSocialIcons a {color:#333;font-size:20px;text-decoration:none;margin:0 20px 0 0;}
+					a#cpAppsLink {background:#f26b32;color:#fff;padding:4px 8px 2px;margin:0;border-radius:3px;font-size:10px;font-weight:bold;vertical-align:super;}
 					a#cpAppsLink:hover {background:#e34806;text-decoration:none;}
 					p#commercialSupport b {}
 				div#ngOutput {float:right;width:68%;}
@@ -504,11 +507,12 @@ switch($op) {
 					</li>
 				</ul>
 				<h2>About</h2>
-				<p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?></a> is a cPanel plugin that integrates the popular <a target="_blank" href="http://nginx.org/">Nginx</a> web server as a "reverse caching proxy" for cPanel's Apache, with a simple interface to control common tasks related to these services.</p>
-				<p>By using <b><?php echo PLG_NAME; ?></b> you essentially offload most of your content to Nginx (static assets usually occupy more than 85% of a website's size), thus saving system resources like CPU & RAM for other tasks. The result is a faster performing server.</p>
-				<p>Engintron is open source.<br /><a target="_blank" href="https://github.com/engintron/engintron/issues">Report issues/bugs</a> or <a target="_blank" href="https://github.com/engintron/engintron/pulls">help us improve it</a>.</p>
-				<p><a class="github-button" href="https://github.com/engintron/engintron" data-count-href="/engintron/engintron/stargazers" data-count-api="/repos/engintron/engintron#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star engintron/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel">Rate on cPApps</a>
+				<p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?></a> integrates the popular <a target="_blank" href="http://nginx.org/">Nginx</a><sup>&reg;</sup> web server as a "reverse caching proxy" in front of Apache in cPanel<sup>&reg;</sup>.</p>
+				<p>Nginx will cache &amp; serve static assets like CSS, JS &amp; images etc. as well as dynamic HTML with a 1 second micro-cache. This process will reduce CPU &amp; RAM usage on your server, while increasing your overall serving capacity. The result is a faster performing cPanel server.</p>
+				<p>Engintron is both free &amp; open source.<br /><br /><a target="_blank" href="https://github.com/engintron/engintron/issues">Report issues/bugs</a> or <a target="_blank" href="https://github.com/engintron/engintron/pulls">help us improve it</a>.</p>
+				<p><a class="github-button" href="https://github.com/engintron/engintron" data-count-href="/engintron/engintron/stargazers" data-count-api="/repos/engintron/engintron#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star engintron/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i> Rate on cPApps</a>
 </p>
+				<p id="ngSocialIcons"><a target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a><a target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a><a target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a><a target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a><a target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a><a href="mailto:47qycpgl"><i class="fa fa-envelope"></i></a></p>
 				<p id="commercialSupport"><b>Looking for commercial support?</b> <a href="mailto:47qycpgl">Get in touch with us</a>.
 			</div>
 			<div id="ngOutput">
