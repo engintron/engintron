@@ -36,10 +36,14 @@ If you can sign up for a cPanel/WHM server on any hosting company and work your 
 
 Installation is a process that lasts only a few minutes. You'll need root SSH access to your cPanel server. Also check the current requirements (listed lower). If everything is ok, log in as root and type the following commands, one at a time:
 
-_$ cd /  
-$ rm -f engintron.sh  
-$ wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh  
-$ bash engintron.sh install_
+    cd /  
+    rm -f engintron.sh  
+    wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh  
+    bash engintron.sh install
+
+Or in one quick command to paste in the terminal:
+
+    cd /; rm -f engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh; bash engintron.sh install
 
 The process will take a couple of minutes to complete and after that, Engintron will be installed on your cPanel server. Engintron has a nice user interface which is activated inside WHM, under the Plugins section. After installation, refresh WHM in your browser and you should see Engintron in the Plugins section (it's the absolute last section in WHM's sidebar).
 
