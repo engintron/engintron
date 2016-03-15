@@ -1,6 +1,16 @@
 Engintron Changelog
 ===================
 
+## TBD - Active development
+
+#### Major changes
+
+*	None
+
+#### Minor changes
+
+*	Engintron now installs to /usr/local/engintron which will make it easier to manage and update.
+
 ## 1.6.1 - Feb 19th, 2016
 
 *   Engintron will now (be default) modify Apache's log format to allow for the proper inclusion of a visitor's IP in all systems. The change is merged with Apache's configuration so it's protected if Apache settings are modified via WHM. If you uninstall Engintron, Apache's log format is reverted to its previous state.
