@@ -1,6 +1,3 @@
-#DEVELOPMENT BRANCH
-***
-
 ![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.6.1 - released Feb 19th, 2016 - [See CHANGELOG](#changelog))**
 ***
 
