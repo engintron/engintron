@@ -1,4 +1,4 @@
-![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.6.1 - released Feb 19th, 2016 - [See CHANGELOG](#changelog))**
+![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png) **(v1.6.1 - released Feb 19th, 2016 - [See CHANGELOG](CHANGELOG.md))**
 ***
 
 ##### Quick Nav: [Engintron.com](https://engintron.com) | [FAQ](#faq) | [Documentation (Wiki)](https://github.com/engintron/engintron/wiki) | [Issues (for support requests & bug reports)](https://github.com/engintron/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
@@ -9,8 +9,7 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 ![Engintron App in WHM](https://engintron.com/assets/screenshots/1.6.0_20160216_ad_2048x1072.png)
 
 
-==
-### Engintron is Nginx on cPanel
+## Engintron is Nginx on cPanel
 
 Nginx® is a powerful open source web server that was built to scale websites to millions of visitors. cPanel® is the leading hosting control panel worldwide.
 
@@ -19,7 +18,7 @@ Engintron integrates Nginx into cPanel so you can enjoy amazing performance for 
 _And best of all? Engintron is totally free to use!_
 
 
-### But why should you use Nginx in your cPanel server?
+## But why should you use Nginx in your cPanel server?
 
 cPanel uses the Apache webserver to serve websites by default. Apache however is not known to perform well under heavy web traffic (especially traffic spikes) and it's also CPU/RAM hungry. So how can you mitigate these issues? The answer is simple: by deploying Nginx, another popular web server software, in front of Apache. Nginx acts as a web traffic proxy, directly serving all static assets like CSS, JS, images etc. by default, instead of Apache. This drops significantly the CPU/RAM resources consumed by Apache, leaving your server with more available resources for other tasks or, better still, with room for more websites to host.
 
@@ -32,7 +31,7 @@ If you are facing performance issues with your cPanel server, Engintron is your 
 If you can sign up for a cPanel/WHM server on any hosting company and work your way through WHM, then setting up Engintron should be a piece of cake for you. If you don't manage your cPanel server, then you can always (kindly) ask your hosting company or system administrator to have a look at Engintron and deploy it on your cPanel server. It really only takes a few minutes and there is zero configuration afterwards to get the standard optimizations offered by Nginx.
 
 
-### OK, I'm sold! How do I install Engintron on my cPanel server?
+## OK, I'm sold! How do I install Engintron on my cPanel server?
 
 Installation is a process that lasts only a few minutes. You'll need root SSH access to your cPanel server. Also check the current requirements (listed lower). If everything is ok, log in as root and type the following commands, one at a time:
 
@@ -52,7 +51,7 @@ Inside the Engintron app dashboard you'll also find some handy utilities to moni
 _For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://github.com/engintron/engintron/wiki](https://github.com/engintron/engintron/wiki)_
 
 
-### Why is Engintron a better solution compared to other Nginx installers for cPanel
+## Why is Engintron a better solution compared to other Nginx installers for cPanel
 
 There are 8 key differences when comparing Engintron with other Nginx installers for cPanel.
 
@@ -73,9 +72,7 @@ Seventh, it doesn't require Nginx/Apache vhost synchronization when adding new d
 And finally, Engintron is 100% open source. You can tear it apart, customize it, fork it, knife it or contribute back to its development. Do whatever you want with it :)
 
 
-==
-
-### FAQ
+## FAQ
 
 Q. **How do I get started?**  
 A. Installation is pretty straightforward as you may have read above already. There is however extensive documentation available in the wiki: https://github.com/engintron/engintron/wiki - we even include general optimization guides for your cPanel server!
@@ -111,9 +108,7 @@ Q. **How popular is Engintron?**
 A. Version 1.5 which was made available in the early days of February 2016 is by far our most popular release to date. It was installed on more than 300 servers in the first 2 days alone (and still counting at the time of writing - Feb 11th, 2016)! For v1.0 we do not really have metrics but we estimate it's below 1000 deployments. However v1.0 had very limited application as it was primarily targeted for websites with no user-generated content (e.g. media/news portals or high traffic blogs). Engintron v1.5 builds upon the knowledge gathered from v1.0 but it has been completely written from the ground up to support any type of website (even those with user generated content like forums, e-shops etc.) and also be easier to use, with little to no configuration after installation.
 
 
-==
-
-### Compatibility & Requirements
+## Compatibility & Requirements
 
 Engintron is fully compatible with CentOS version 5, 6 and 7 on both 32-bit and 64-bit platforms. Additionally, users have already reported a 100% compatibility with CloudLinux versions 6 & 7.
 
@@ -124,96 +119,31 @@ The cPanel team have promised to fix this pretty soon (you can follow this threa
 If this is not resolved soon, we will just have to resort to building Nginx from source in order to support EasyApache 4. This however has the caveat that Nginx will not be updated whenever the system is (automatically) updated by cPanel. In that case, you will simply need to re-run the installer from within WHM whenever a new version of Nginx is available. If we have to resort to this solution, we'll make sure to have an Nginx version update notifier within Engintron's WHM app so you know when to update.
 
 
-### Documentation
+## Documentation
 
 For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: https://github.com/engintron/engintron/wiki
 
 
-### Feedback, bugs, feature requests & rating
+## Feedback, bugs, feature requests & rating
 
 Please post your feedback and any issues or feature requests/suggestions in the project's issue tracker at: https://github.com/engintron/engintron/issues
 
 If you use Engintron, please take a moment to post a review and/or rating in the cPanel Applications Directory at: https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel
 
 
-### I need commercial support - do you offer such services?
+## I need commercial support - do you offer such services?
 
 If you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through other services that directly affect the performance of your cPanel server (MySQL, Apache, PHP, certain system configuration files and more), feel free to use the contact options from within Engintron to get in touch with us.
 
 Or you can simply emails us at: engintron [at] gmail [dot] com
 
 
-==
-### Changelog
-
-_Feb 19th, 2016 - v1.6.1_
-
-*   Engintron will now (be default) modify Apache's log format to allow for the proper inclusion of a visitor's IP in all systems. The change is merged with Apache's configuration so it's protected if Apache settings are modified via WHM. If you uninstall Engintron, Apache's log format is reverted to its previous state.
-
-_Feb 14th, 2016 - v1.6.0_
-
-*   Introducing new "custom_rules" file (fully editable from within WHM) for you to store any custom Nginx rules or redirects. These include custom setup for CloudFlare or for certain domains. The only thing you need to edit to apply any rules from now on is "custom_rules" and that's why upon updates, we keep a copy of that file and display it within WHM so you can easily copy/paste your custom Nginx rules before the update to the new "custom_rules" file being installed. We could simply keep that file for you, but breaking changes may be introduced so it's always good to be able to keep up to date.
-*   CloudFlare integration is now easier than ever. All you have to do is set your shared or any dedicated IPs. We also include some handy redirect rules for CloudFlare, for HTTP to HTTPS. Just uncomment whatever you want to use.
-*   Introducing version update checker. If you already have v1.5.3, you'll see the first update notice when you visit Engintron in WHM. Upgrading is as simple as clicking a link in the app.
-
-_Feb 12th, 2016 - v1.5.3_
-
-*   Micro-caching is now enabled by default. Extensive tests have shown that there are no issues caused when micro-caching is enabled. In fact, performance is exponentially increased when micro-caching is on, which is the reason why Engintron now ships with this option on.
-*   Improvements to the installer - if any of the Apache modules (RPAF or RemoteIP) fail to install, we just skip that part without causing Apache to stop working because of missing .so files.
-*   Increased default timeouts in nginx.conf to minimize 504 errors from slow backends.
-*   Added a more reliable way to restart Nginx if another Nginx plugin for cPanel was previously uninstalled leaving Nginx still binding to port 80.
-
-_Feb 7th, 2016 - v1.5.2_
-
-*   Added CentOS 7 support (installer worked fine since 1.5.0, however a few controls in the WHM app did not output the correct messages)
-*   Added option to update or re-install Engintron from within WHM, via the Engintron app under "Plugins"
-
-_Feb 6th, 2016 - v1.5.1_
-
-*   General installer/uninstaller improvements
-*   Improved compatibility with CentOS 5
-*   Added option to enable/disable Engintron without completely uninstalling it. You can control Engintron's state through the WHM app dashboard or via the terminal. Nginx switches to port 8080 and Apache switches to port 80 when you run "$ bash /engintron.sh disable". If you run "$ bash /engintron.sh enable" Nginx reclaims port 80 and Apache takes port 8080.
-*   IPv6 support is now present but it has to be uncommented in order to work properly (in files /etc/nginx/nginx.conf for the resolver & /etc/nginx/conf.d/default.conf for the catch-all rule)
-*   Improved help/instructions when executing engintron.sh via terminal
-*   Added some terminal utilities like "restart Apache & Nginx", "restart all important services", "show server info", "show traffic on port 80" and more. From the terminal type "bash /engintron.sh" or just "/engintron.sh" if you have already installed Engintron.
-*   Fixed /nginx_status page - info now also shown under "Nginx Status" option in the WHM app dashboard
-*   Fixed /favicon.ico and /robots.txt loading - previously these files were blocked due to a mismatch in their respective definitions
-*   Updated retrieval location for mod_rpaf to ensure proper installation on all CentOS releases
-
-_Feb 1st, 2016 - v1.5.0_
-
-*   Complete re-write of the main installer script as well as the app dashboard
-*   vhost sync'ing is no longer needed - you add new domains via cPanel and it just works
-*   New, smarter, better proxying/caching approach - improves performance without the headaches of controlling exclusions for different CMSs - it just works
-*   Proper client side caching for all types of content
-*   Compatible with domains served via CloudFlare
-
-_Dec 23rd, 2014 - v1.0.4 Build 20141223_
-
-*   Updated static asset loading from an HTTPS source
-
-_Dec 3rd, 2014 - v1.0.4 Build 20141203_
-
-*   Since mod_rpaf was dropped from its original developer, it's now been updated with the fork that's been actively maintained here: https://github.com/gnif/mod_rpaf
-*   Moved all static assets of the app dashboard onto GitHub's CDN. This simply results to a cleaner Engintron script.
-*   Removed the line "proxy_hide_header Set-Cookie;" from proxy.conf as it was causing issues with WordPress websites not being properly cached (thank you @AgentGod)
-
-_May 30th, 2014 - v1.0.3_
-
-*   Fixed compatibility with Munin, added Nginx tracking in Munin
-*   Enabled access logs for domains, but static file logging is disabled for performance reasons
-*   Switched default Nginx worker process to "auto" (aka CPU/core support), so it won't be required to be set manually
-*   Obsolete vhosts are now cleaned up whenever the sync process is performed
-*   Added some default Nginx files after setup in case they are not created during Nginx's installation
-*   Added default.conf vhost during installation
-
-**License**
+## License
 
 Engintron is released under the GNU/GPL license. For more info, have a look here: [http://www.gnu.org/copyleft/gpl.html](http://www.gnu.org/copyleft/gpl.html)
 
 
-==
-### More info
+## More info
 A proper website is on its way, featuring short tutorials and videos, a forum and a commercial support channel.
 
 If however you require commercial support now, you can contact us via Engintron's app dashboard or simply email us at: engintron [at] gmail [dot] com
@@ -221,5 +151,4 @@ If however you require commercial support now, you can contact us via Engintron'
 https://engintron.com
 
 
-==
 Copyright &copy; 2010-2016 [Nuevvo Webware P.C.](http://nuevvo.com)
