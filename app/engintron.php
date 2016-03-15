@@ -289,9 +289,9 @@ switch($op) {
 	case "engintron_toggle":
 		if(file_exists("/usr/local/engintron/state.conf")){
 			if(ENGINTRON_STATE=="on") {
-				$ret = shell_exec("bash /engintron.sh disable");
+				$ret = shell_exec("bash /usr/local/engintron/engintron.sh disable");
 			} elseif(ENGINTRON_STATE=="off") {
-				$ret = shell_exec("bash /engintron.sh enable");
+				$ret = shell_exec("bash /usr/local/engintron/engintron.sh enable");
 			} else {
 				$ret = "Couldn't get state of Engintron - please try again.";
 			}
@@ -301,7 +301,7 @@ switch($op) {
 		break;
 
 	case "engintron_update":
-		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
+		$ret = strip_tags(shell_exec("wget --no-check-certificate -O /usr/local/engintron/engintron.sh https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh; bash /usr/local/engintron/engintron.sh install"), "<br><span>");
 		break;
 
 	case "engintron_res":
