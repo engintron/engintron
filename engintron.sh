@@ -10,7 +10,7 @@
 #  */
 
 # Constants
-APP_PATH="/usr/local/src/engintron"
+APP_PATH="/usr/local/engintron"
 APP_VERSION="1.6.1"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
@@ -287,11 +287,13 @@ function install_engintron_ui {
 
 	echo "=== Installing Engintron WHM plugin files... ==="
 
-	/bin/cp -f $APP_PATH/app/addon_engintron.cgi $CPANEL_PLG_PATH/
-	/bin/cp -f $APP_PATH/app/engintron.php $CPANEL_PLG_PATH/
+	/bin/ln -sf $APP_PATH/app/addon_engintron.cgi $CPANEL_PLG_PATH/addon_engintron.cgi
+	/bin/ln -sf $APP_PATH/app/engintron.php $CPANEL_PLG_PATH/engintron.php
+	/bin/ln -sf $APP_PATH/engintron.sh /usr/local/sbin/engintron
 
-	chmod +x $CPANEL_PLG_PATH/addon_engintron.cgi
-	chmod +x $CPANEL_PLG_PATH/engintron.php
+	chmod +x $APP_PATH/app/addon_engintron.cgi
+	chmod +x $APP_PATH/app/engintron.php
+	chmod +x $APP_PATH/engintron.sh
 
 	echo ""
 	echo "=== Fix ACL requirements in newer cPanel releases ==="
@@ -313,8 +315,9 @@ function install_engintron_ui {
 function remove_engintron_ui {
 
 	echo "=== Removing Engintron WHM plugin files... ==="
-	/bin/rm -f $CPANEL_PLG_PATH/addon_engintron.*
-	/bin/rm -f $CPANEL_PLG_PATH/engintron.*
+	/bin/rm -f $CPANEL_PLG_PATH/addon_engintron.cgi
+	/bin/rm -f $CPANEL_PLG_PATH/engintron.php
+	/bin/rm -f /usr/local/sbin/engintron
 	echo ""
 	echo ""
 
@@ -383,23 +386,6 @@ install)
 
 	clear
 
-	if [ ! -f /engintron.sh ]; then
-		echo ""
-		echo ""
-		echo "***********************************************"
-		echo ""
-		echo " ENGINTRON NOTICE:"
-		echo " You must place & execute engintron.sh"
-		echo " from the root directory (/) of your server!"
-		echo ""
-		echo " --- Exiting ---"
-		echo ""
-		echo "***********************************************"
-		echo ""
-		echo ""
-		exit 0
-	fi
-
 	if [[ $GET_EA3_VERSION == "" ]]; then
 		echo ""
 		echo ""
@@ -424,23 +410,15 @@ install)
 	echo "*        Installing Engintron        *"
 	echo "**************************************"
 
-	chmod +x /engintron.sh
-	cd /
-
-	# Set Engintron src file path
+	# Ensure engintron app directory is created
 	if [[ ! -d $APP_PATH ]]; then
 		mkdir -p $APP_PATH
 	fi
 
 	# Get the files
-	cd $APP_PATH
-	wget --no-check-certificate -O engintron.zip https://github.com/engintron/engintron/archive/master.zip
-	unzip engintron.zip
-	/bin/cp -rf $APP_PATH/engintron-master/* $APP_PATH/
-	/bin/rm -rvf $APP_PATH/engintron-master/*
-	/bin/rm -f $APP_PATH/engintron.zip
-
-	cd /
+	wget --no-check-certificate -O $APP_PATH/engintron.tar.gz https://github.com/engintron/engintron/archive/master.tar.gz
+	tar xzvf $APP_PATH/engintron.tar.gz --strip-components 1 -C $APP_PATH/
+	/bin/rm -f $APP_PATH/engintron.tar.gz
 
 	install_basics
 	install_nginx
@@ -713,32 +691,32 @@ Engintron will improve the performance & web serving capacity of your server, wh
 To begin using Engintron, explore the various options below.
 
 - To install or update Engintron
-$ /engintron.sh install
+$ engintron install
 
 - To remove Engintron entirely from your system
-$ /engintron.sh remove
+$ engintron remove
 
 - To disable Nginx without removing Engintron & switch to Apache
-$ /engintron.sh disable
+$ engintron disable
 
 - To re-enable Nginx and switch Apache to port 8080
-$ /engintron.sh enable
+$ engintron enable
 
 - To clean up Nginx's cache & temp folders and restart both Apache & Nginx
-$ /engintron.sh clean
+$ engintron clean
 
 [and some utilities]
 - To restart basic services (Apache & Nginx)
-$ /engintron.sh res
+$ engintron res
 
 - To restart all services
-$ /engintron.sh resall
+$ engintron resall
 
 - To show all connections on port 80 sorted by connection count & IP, including total concurrent count
-$ /engintron.sh 80
+$ engintron 80
 
 - To show basic system info
-$ /engintron.sh info
+$ engintron info
 
 ~~ Enjoy Engintron! ~~
 
