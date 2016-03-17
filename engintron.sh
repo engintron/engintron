@@ -681,7 +681,7 @@ info)
 	echo " / /___/ /|  / /_/ // // /|  / / / / _, _/ /_/ / /|  /  "
 	echo "/_____/_/ |_/\____/___/_/ |_/ /_/ /_/ |_|\____/_/ |_/   "
 	echo "                           https://engintron.com        "
-  echo
+	echo
 	cat << EOF
 Usage:
   engintron [command] [flags]
