@@ -5,11 +5,12 @@ Engintron Changelog
 
 #### Major changes
 
-*	None
+*  None
 
 #### Minor changes
 
-*	Engintron now installs to /usr/local/engintron which will make it easier to manage and update.
+*   Engintron now installs to /usr/local/engintron which will make it easier to manage and update.
+*   Engintron CLI/UI now loads up much faster.
 
 ## 1.6.1 - Feb 19th, 2016
 
