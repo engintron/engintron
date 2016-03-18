@@ -14,7 +14,6 @@ APP_PATH="/usr/local/engintron"
 APP_VERSION="1.6.1"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
-REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
 
 
 
@@ -36,15 +35,14 @@ function install_basics {
 function install_mod_rpaf {
 
   echo "=== Installing mod_rpaf (v0.8.4) for Apache ==="
-  cd /usr/local/src
-  /bin/rm -f mod_rpaf-0.8.4.zip
-  wget --no-check-certificate $REPO_CDN_URL/apache/mod_rpaf-0.8.4.zip
-  unzip -o mod_rpaf-0.8.4.zip
-  /bin/rm -f mod_rpaf-0.8.4.zip
+
+  pushd $APP_PATH/apache
+  unzip -o mod_rpaf-0.8.4.zip -d mod_rpaf-0.8.4
   cd mod_rpaf-0.8.4
-  chmod +x apxs.sh
-  ./apxs.sh -i -c -n mod_rpaf.so mod_rpaf.c
-  /bin/rm -rf /usr/local/src/mod_rpaf-0.8.4/
+  $APP_PATH/apache/apxs.sh -i -c -n mod_rpaf.so mod_rpaf.c
+  popd
+
+  /bin/rm -rf $APP_PATH/apache/mod_rpaf-0.8.4/
 
   if [ -f /usr/local/apache/modules/mod_rpaf.so ]; then
 
@@ -93,14 +91,10 @@ function remove_mod_rpaf {
 function install_mod_remoteip {
 
   echo "=== Installing mod_remoteip for Apache ==="
-  cd /usr/local/src
-  /bin/rm -f mod_remoteip.c
-  wget --no-check-certificate https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
-  wget --no-check-certificate $REPO_CDN_URL/apache/apxs.sh
-  chmod +x apxs.sh
+
+  pushd $APP_PATH/apache
   ./apxs.sh -i -c -n mod_remoteip.so mod_remoteip.c
-  /bin/rm -f mod_remoteip.c
-  /bin/rm -f apxs.sh
+  popd
 
   if [ -f /usr/local/apache/modules/mod_remoteip.so ]; then
     # Get system IPs
