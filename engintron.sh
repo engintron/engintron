@@ -16,10 +16,6 @@ APP_VERSION="1.6.1"
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
 
-GET_HTTPD_VERSION=$(httpd -v | grep "Server version")
-GET_CENTOS_VERSION=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release))
-GET_CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
-GET_EA3_VERSION=$(/scripts/easyapache --version | grep "Easy Apache v3")
 
 
 
@@ -383,6 +379,7 @@ function remove_munin_patch {
 ### Define actions ###
 case $1 in
 install)
+	GET_EA3_VERSION=$(/scripts/easyapache --version | grep "Easy Apache v3")
 
 	clear
 
@@ -423,6 +420,7 @@ install)
 	install_basics
 	install_nginx
 
+	GET_HTTPD_VERSION=$(httpd -v | grep "Server version")
 	if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
 		install_mod_rpaf
 	else
@@ -458,6 +456,7 @@ remove)
 	echo "*         Removing Engintron         *"
 	echo "**************************************"
 
+	GET_HTTPD_VERSION=$(httpd -v | grep "Server version")
 	if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
 		remove_mod_rpaf
 	else
@@ -620,14 +619,21 @@ clean)
 	fi
 	;;
 info)
+	CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
+	OS_VERSION=$(cat /etc/redhat-release)
+
 	echo "=================="
 	echo "=== OS Version ==="
 	echo "=================="
 	echo ""
-	cat /etc/redhat-release
+	echo $OS_VERSION
 	echo ""
-	echo "cPanel version: $GET_CPANEL_VERSION"
+
+	echo "======================"
+	echo "=== cPanel Version ==="
+	echo "======================"
 	echo ""
+	echo $CPANEL_VERSION
 	echo ""
 
 	echo "=================="
@@ -636,14 +642,12 @@ info)
 	echo ""
 	df -hT
 	echo ""
-	echo ""
 
 	echo "=============="
 	echo "=== Uptime ==="
 	echo "=============="
 	echo ""
 	uptime
-	echo ""
 	echo ""
 
 	echo "==================="
@@ -652,14 +656,12 @@ info)
 	echo ""
 	date
 	echo ""
-	echo ""
 
 	echo "======================="
 	echo "=== Users Logged In ==="
 	echo "======================="
 	echo ""
 	who
-	echo ""
 	echo ""
 	;;
 80)
@@ -696,7 +698,7 @@ Main Commands:
 Utility Commands:
   info          Show basic system info
   80            Show all connections on port 80 sorted by count & IP
-  res           Restart basic services (nginx & apache)           
+  res           Restart basic services (nginx & apache)
   resall        Restart all services
 
 ~~ Enjoy Engintron! ~~
