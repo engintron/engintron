@@ -195,6 +195,14 @@ function apache_revert_port {
 
 function install_nginx {
 
+	# Allow switching from mainline to stable release
+	if [[ ! $1 ]]; then
+		if grep -iq "mainline" /etc/yum.repos.d/nginx.repo; then
+			yum -y remove nginx
+		fi
+	fi
+
+	# Setup Nginx repo
 	if [ ! -f /etc/yum.repos.d/nginx.repo ]; then
 		touch /etc/yum.repos.d/nginx.repo
 	fi
@@ -219,6 +227,7 @@ enabled=1
 EOFS
 	fi
 
+	# Install Nginx
 	yum -y install nginx
 
 	# Copy Nginx config files
@@ -419,7 +428,7 @@ install)
 	if [[ $GET_EA3_VERSION == "" ]]; then
 		echo ""
 		echo ""
-		echo "***************************************************"
+		echo "*****************************************************"
 		echo ""
 		echo " ENGINTRON ERROR:"
 		echo " This server has EasyApache version 4 (beta)"
@@ -430,7 +439,7 @@ install)
 		echo ""
 		echo " --- Installation aborted ---"
 		echo ""
-		echo "***************************************************"
+		echo "*****************************************************"
 		echo ""
 		echo ""
 		exit 0
