@@ -728,7 +728,7 @@ Utility commands:
     resall      Restart Cron, CSF & LFD (if installed), Munin (if installed),
                 MySQL, Apache, Nginx
     80          Show active connections on port 80 sorted by connection count & IP,
-                including total concurrent count
+                including total concurrent connections count
     info        Show basic system info
 
 ~~ Enjoy Engintron! ~~
