@@ -195,7 +195,7 @@ function apache_revert_port {
 
 function install_nginx {
 
-	if [ -f /etc/yum.repos.d/nginx.repo ]; then
+	if [ ! -f /etc/yum.repos.d/nginx.repo ]; then
 		touch /etc/yum.repos.d/nginx.repo
 	fi
 
@@ -480,7 +480,7 @@ install)
 	fuser -k 80/tcp
 	service nginx start
 
-	if [ -f $APP_PATH/state.conf ]; then
+	if [ ! -f $APP_PATH/state.conf ]; then
 		touch $APP_PATH/state.conf
 	fi
 	echo "on" > $APP_PATH/state.conf
@@ -531,7 +531,7 @@ enable)
 	echo "*         Enabling Engintron         *"
 	echo "**************************************"
 
-	if [ -f $APP_PATH/state.conf ]; then
+	if [ ! -f $APP_PATH/state.conf ]; then
 		touch $APP_PATH/state.conf
 	fi
 	echo "on" > $APP_PATH/state.conf
@@ -560,7 +560,7 @@ disable)
 	echo "*        Disabling Engintron         *"
 	echo "**************************************"
 
-	if [ -f $APP_PATH/state.conf ]; then
+	if [ ! -f $APP_PATH/state.conf ]; then
 		touch $APP_PATH/state.conf
 	fi
 	echo "off" > $APP_PATH/state.conf
