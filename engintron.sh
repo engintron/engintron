@@ -195,18 +195,29 @@ function apache_revert_port {
 
 function install_nginx {
 
-	echo "=== Install Nginx from official repositories ==="
 	if [ -f /etc/yum.repos.d/nginx.repo ]; then
 		touch /etc/yum.repos.d/nginx.repo
 	fi
-	cat > "/etc/yum.repos.d/nginx.repo" <<EOF
+
+	if [[ $1 == 'mainline' ]]; then
+		echo "=== Install Nginx (mainline) from nginx.org ==="
+		cat > "/etc/yum.repos.d/nginx.repo" <<EOFM
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/mainline/centos/\$releasever/\$basearch/
+gpgcheck=0
+enabled=1
+EOFM
+	else
+		echo "=== Install Nginx (stable) from nginx.org ==="
+		cat > "/etc/yum.repos.d/nginx.repo" <<EOFS
 [nginx]
 name=nginx repo
 baseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/
 gpgcheck=0
 enabled=1
-
-EOF
+EOFS
+	fi
 
 	yum -y install nginx
 
@@ -333,7 +344,6 @@ function install_munin_patch {
 [apache_status]
 env.ports 8080
 env.label 8080
-
 EOF
 		fi
 
@@ -444,7 +454,7 @@ install)
 	cd /
 
 	install_basics
-	install_nginx
+	install_nginx $2
 
 	if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
 		install_mod_rpaf
@@ -705,16 +715,16 @@ info)
 	echo "/_____/_/ |_/\____/___/_/ |_/ /_/ /_/ |_|\____/_/ |_/   "
 	echo "                                                        "
 	echo "                  https://engintron.com                 "
-	cat << EOF
+	cat <<EOF
 
 Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/WHM server.
 
-Usage:
-	$ /engintron.sh [command]
+Usage: /engintron.sh [command] [flag]
 
 Main commands:
-    install     Install, re-install or update Engintron (enables Nginx by default)
-    remove      Remove Engintron completely
+    install     Install, re-install or update Engintron (enables Nginx by default).
+                Add optional flag "mainline" to install Nginx mainline release.
+    remove      Remove Engintron completely.
     enable      Set Nginx to port 80 & Apache to port 8080
     disable     Set Nginx to port 8080 & switch Apache to port 80
     clean       Clean up Nginx's "cache" & "temp" folders,
