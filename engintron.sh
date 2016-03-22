@@ -716,20 +716,20 @@ Usage:
 	$ /engintron.sh [command]
 
 Main commands:
-	install     Install, re-install or update Engintron (enables Nginx by default)
-	remove      Remove Engintron completely
-	enable      Set Nginx to port 80 & Apache to port 8080
-	disable     Set Nginx to port 8080 & switch Apache to port 80
-	clean       Clean up Nginx's "cache" & "temp" folders,
+    install     Install, re-install or update Engintron (enables Nginx by default)
+    remove      Remove Engintron completely
+    enable      Set Nginx to port 80 & Apache to port 8080
+    disable     Set Nginx to port 8080 & switch Apache to port 80
+    clean       Clean up Nginx's "cache" & "temp" folders,
                 then restart both Apache & Nginx
 
 Utility commands:
-	res         Restart web servers only (Apache & Nginx)
-	resall      Restart Cron, CSF & LFD (if installed), Munin (if installed),
+    res         Restart web servers only (Apache & Nginx)
+    resall      Restart Cron, CSF & LFD (if installed), Munin (if installed),
                 MySQL, Apache, Nginx
-	80          Show active connections on port 80 sorted by connection count & IP,
+    80          Show active connections on port 80 sorted by connection count & IP,
                 including total concurrent count
-	info        Show basic system info
+    info        Show basic system info
 
 ~~ Enjoy Engintron! ~~
 
