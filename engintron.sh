@@ -19,7 +19,6 @@ REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
 GET_HTTPD_VERSION=$(httpd -v | grep "Server version")
 GET_CENTOS_VERSION=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release))
 GET_CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
-GET_EA3_VERSION=$(/scripts/easyapache --version | grep "Easy Apache v3")
 
 
 
@@ -399,6 +398,8 @@ install)
 		echo ""
 		exit 0
 	fi
+
+	GET_EA3_VERSION=$(/scripts/easyapache --version | grep "Easy Apache v3")
 
 	if [[ $GET_EA3_VERSION == "" ]]; then
 		echo ""
