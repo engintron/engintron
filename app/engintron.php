@@ -300,8 +300,12 @@ switch($op) {
 		}
 		break;
 
-	case "engintron_update":
+	case "engintron_update_stable":
 		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
+		break;
+
+	case "engintron_update_mainline":
+		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install mainline"), "<br><span>");
 		break;
 
 	case "engintron_res":
@@ -384,7 +388,7 @@ switch($op) {
 				div#ngOperations ul li form.displayLogs input {border:none;border-bottom:1px solid #08c;text-align:center;color:#08c;font-size:12px;padding:1px 8px;}
 				div#ngOperations ul li.active form.displayLogs input {font-weight:bold;}
 				div#ngOperations ul li form.displayLogs:hover a {text-decoration:underline;}
-				div#ngOperations ul li#ngUpdate span {font-size:11px;font-weight:normal;font-style:italic;color:#999;display:none;}
+				div#ngOperations ul li.ngUpdate span {font-size:11px;font-weight:normal;font-style:italic;color:#999;display:none;}
 					p#ngSocialIcons a {color:#333;font-size:20px;text-decoration:none;margin:0 20px 0 0;}
 					a#cpAppsLink {background:#f26b32;color:#fff;padding:4px 8px 2px;margin:0;border-radius:3px;font-size:10px;font-weight:bold;vertical-align:super;}
 					a#cpAppsLink:hover {background:#e34806;text-decoration:none;}
@@ -506,8 +510,12 @@ switch($op) {
 						<h3>Engintron</h3>
 						<ul>
 							<li><a href="engintron.php?op=engintron_toggle">Enable/Disable Engintron</a></li>
-							<li id="ngUpdate">
-								<a href="engintron.php?op=engintron_update">Update (or re-install) Engintron</a>
+							<li id="ngUpdateStable" class="ngUpdate">
+								<a href="engintron.php?op=engintron_update_stable">Update (or re-install) Engintron [stable]</a>
+								<span>[please wait a few minutes...]</span>
+							</li>
+							<li id="ngUpdateMainline" class="ngUpdate">
+								<a href="engintron.php?op=engintron_update_mainline">Update (or re-install) Engintron [mainline]</a>
 								<span>[please wait a few minutes...]</span>
 							</li>
 						</ul>
@@ -519,7 +527,7 @@ switch($op) {
 				<p>Engintron is both free &amp; open source.<br /><br /><a target="_blank" href="https://github.com/engintron/engintron/issues">Report issues/bugs</a> or <a target="_blank" href="https://github.com/engintron/engintron/pulls">help us improve it</a>.</p>
 				<p><a class="github-button" href="https://github.com/engintron/engintron" data-count-href="/engintron/engintron/stargazers" data-count-api="/repos/engintron/engintron#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star engintron/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i> Rate on cPApps</a>
 </p>
-				<p id="ngSocialIcons"><a target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a><a target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a><a target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a><a target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a><a target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a><a href="mailto:47qycpgl"><i class="fa fa-envelope"></i></a></p>
+				<p id="ngSocialIcons"><a target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a><a target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a><a target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a><a target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a><a target="_blank" href="https://plus.google.com/117428375464020763682"><i class="fa fa-google-plus"></i></a><a target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a><a href="mailto:47qycpgl"><i class="fa fa-envelope"></i></a></p>
 				<p id="commercialSupport"><b>Looking for commercial support?</b> <a href="mailto:47qycpgl">Get in touch with us</a>.
 			</div>
 			<div id="ngOutput">
@@ -597,6 +605,21 @@ switch($op) {
 				document.getElementById(el).submit();
 				return false;
 			}
+			function ngUpdate(el){
+				var updContainer = document.getElementById(el);
+				if(updContainer){
+					var updLink = updContainer.getElementsByTagName('a')[0];
+					updLink.onclick = function(){
+						updContainer.getElementsByTagName('span')[0].setAttribute('style', 'display:inline;');
+						if(this.className != "clicked") {
+							this.className = "clicked";
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+			}
 			function ngUtils(){
 				// Highlight menu
 				var i = 0,
@@ -610,20 +633,9 @@ switch($op) {
 						}
 					}
 				}
-				// Disable the update/re-install link when clicked
-				var updContainer = document.getElementById('ngUpdate');
-				if(updContainer){
-					var updLink = updContainer.getElementsByTagName('a')[0];
-					updLink.onclick = function(){
-						updContainer.getElementsByTagName('span')[0].setAttribute('style', 'display:inline;');
-						if(this.className != "clicked") {
-							this.className = "clicked";
-							return true;
-						} else {
-							return false;
-						}
-					}
-				}
+				// Disable the update/re-install links when clicked
+				ngUpdate('ngUpdateStable');
+				ngUpdate('ngUpdateMainline');
 				// Hide message after 3 seconds
 				if(document.getElementById('ngMessage')){
 					setTimeout(function(){

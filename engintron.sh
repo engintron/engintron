@@ -453,6 +453,9 @@ install)
 
 	cd /
 
+	echo ""
+	echo ""
+
 	install_basics
 	install_nginx $2
 
