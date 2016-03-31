@@ -511,11 +511,11 @@ switch($op) {
 						<ul>
 							<li><a href="engintron.php?op=engintron_toggle">Enable/Disable Engintron</a></li>
 							<li id="ngUpdateStable" class="ngUpdate">
-								<a href="engintron.php?op=engintron_update_stable">Update (or re-install) Engintron [stable]</a>
+								<a href="engintron.php?op=engintron_update_stable">Update (or re-install) Engintron [Nginx stable]</a>
 								<span>[please wait a few minutes...]</span>
 							</li>
 							<li id="ngUpdateMainline" class="ngUpdate">
-								<a href="engintron.php?op=engintron_update_mainline">Update (or re-install) Engintron [mainline]</a>
+								<a href="engintron.php?op=engintron_update_mainline">Update (or re-install) Engintron [Nginx mainline]</a>
 								<span>[please wait a few minutes...]</span>
 							</li>
 						</ul>
