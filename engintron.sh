@@ -51,7 +51,8 @@ function install_mod_rpaf {
 
 	if [ -f /usr/local/apache/modules/mod_rpaf.so ]; then
 
-		systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
+		#systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
+		systemips=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
 
 		if [ ! -f /usr/local/apache/conf/includes/rpaf.conf ]; then
 			touch /usr/local/apache/conf/includes/rpaf.conf
