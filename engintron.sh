@@ -29,7 +29,7 @@ function install_basics {
 	echo "=== Let's upgrade our system first & install a few required packages ==="
 	yum -y update
 	yum -y upgrade
-	yum -y install atop bash-completion bc cron curl htop ifstat iftop iotop make nano openssl-devel pcre pcre-devel sudo tree unzip zip zlib-devel
+	yum -y install atop bash-completion bc cronie curl htop ifstat iftop iotop make nano openssl-devel pcre pcre-devel sudo tree unzip zip zlib-devel
 	yum clean all
 	echo ""
 	echo ""
