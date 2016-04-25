@@ -9,8 +9,8 @@
  */
 
 // Permissions check
-$user = getenv('REMOTE_USER');
-if($user != "root") {
+$checkPrivileges = trim(shell_exec("if whmapi1 myprivs | grep -q 'all: 1'; then echo 'all'; fi;"));
+if($checkPrivileges!='all') {
 	echo "You do not have sufficient permissions to access this page...";
 	exit;
 }
