@@ -16,7 +16,7 @@
 # a) If you wish to use CloudFlare for any (or all) of your sites that use your server's SHARED IP address, you will have
 #    to provide this shared IP address below otherwise you'll get errors from CloudFlare.
 #    Uncomment the following line if all your sites on the shared (main) IP of your server are on CloudFlare:
-#set $PROXY_DOMAIN_OR_IP "XXX.XXX.XXX.XXX"; # Use your cPanel's share IP address here
+#set $PROXY_DOMAIN_OR_IP "XXX.XXX.XXX.XXX"; # Use your cPanel's shared IP address here
 
 # b) If you utilize CloudFlare for domains with dedicated IPs on your cPanel server, you will also
 #    have to set the IP for each such domain at the "Domain Exclusions" section lower in this file.
