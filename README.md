@@ -1,6 +1,6 @@
 ![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png)
 
-**(v1.6.1 - released Feb 19th, 2016, updated May 13th 2016 - [See CHANGELOG](#changelog))**
+**[Engintron v1.6.1 released Feb 19th, 2016 & updated May 13th 2016 - [See CHANGELOG](#changelog)]**
 ***
 
 ##### Quick Nav: [Engintron.com](https://engintron.com) | [FAQ](#faq) | [Documentation (Wiki)](https://github.com/engintron/engintron/wiki) | [Issues (for support requests & bug reports)](https://github.com/engintron/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
