@@ -286,6 +286,11 @@ EOFS
 		systemctl enable nginx
 	fi
 
+	if [ -f /usr/lib/systemd/system/nginx.service ]; then
+		sed -i 's/PrivateTmp=true/PrivateTmp=false/' /usr/lib/systemd/system/nginx.service
+		systemctl daemon-reload
+	fi
+
 	if [ "$(pstree | grep 'nginx')" ]; then
 		service nginx stop
 	fi

@@ -162,6 +162,7 @@ _Jul 19th, 2016 - v1.6.2_
 *   Switched Nginx status page back to public (by default). When that page was set to private, Munin failed to graph Nginx usage. If you don't use Munin, you can uncomment 2 lines in default.conf if you wish to hide that page. In any case, leaving the Nginx status page open does not pose any security or other issue.
 *   Nginx log rotation is updated to 7 days (the default option was 52 days!).
 *   Moved SVG file handling in Nginx to the "fonts" block as Chrome uses CORS to decide serving to end users.
+*   Fixed Nginx cache/temp folder reporting in CentOS 7 (or other systemd based distros where cPanel works).
 *   Code changes to make Engintron utilize the WHM API v1 where possible.
 
 _Feb 19th, 2016 - v1.6.1_
