@@ -1,11 +1,11 @@
 <?php
 /**
- * @version		1.6.1
- * @package		Engintron for cPanel/WHM
- * @author		Fotis Evangelou
- * @url			https://engintron.com
- * @copyright	Copyright (c) 2014 - 2016 Nuevvo Webware P.C. (http://nuevvo.com). All rights reserved.
- * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ * @version    1.6.2
+ * @package    Engintron for cPanel/WHM
+ * @author     Fotis Evangelou
+ * @url        https://engintron.com
+ * @copyright  Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
+ * @license    GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
 // Permissions check
@@ -22,7 +22,7 @@ if($grantAccess === false){
 // *** Common variables to make updating easier ***
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.6.1');
+define('PLG_VERSION', '1.6.2');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('ENGINTRON_STATE', trim(file_get_contents("/usr/local/src/engintron/state.conf")));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
@@ -457,8 +457,8 @@ switch($op) {
 							<li><a href="engintron.php?op=nginx_reload">Reload</a></li>
 							<li><a href="engintron.php?op=nginx_restart">Restart</a></li>
 							<li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules&s=nginx">Edit your custom rules for Nginx</a></li>
-							<?php if(file_exists('/etc/nginx/custom_rules.bak')): ?>
-							<li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules.bak&s=nginx">Check your custom rules backup for Nginx</a></li>
+							<?php if(file_exists('/etc/nginx/custom_rules.dist')): ?>
+							<li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules.dist&s=nginx">View the default Engintron custom_rules file for Nginx</a></li>
 							<?php endif; ?>
 							<li><a href="engintron.php?op=edit&f=/etc/nginx/conf.d/default.conf&s=nginx">Edit default.conf</a></li>
 							<li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_common&s=nginx">Edit proxy_params_common</a></li>
@@ -531,8 +531,8 @@ switch($op) {
 				<p>Engintron is both free &amp; open source.<br /><br /><a target="_blank" href="https://github.com/engintron/engintron/issues">Report issues/bugs</a> or <a target="_blank" href="https://github.com/engintron/engintron/pulls">help us improve it</a>.</p>
 				<p><a class="github-button" href="https://github.com/engintron/engintron" data-count-href="/engintron/engintron/stargazers" data-count-api="/repos/engintron/engintron#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star engintron/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i> Rate on cPApps</a>
 </p>
-				<p id="ngSocialIcons"><a target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a><a target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a><a target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a><a target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a><a target="_blank" href="https://plus.google.com/117428375464020763682"><i class="fa fa-google-plus"></i></a><a target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a><a href="mailto:47qycpgl"><i class="fa fa-envelope"></i></a></p>
-				<p id="commercialSupport"><b>Looking for commercial support?</b> <a href="mailto:47qycpgl">Get in touch with us</a>.
+				<p id="ngSocialIcons"><a target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a><a target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a><a target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a><a target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a><a target="_blank" href="https://plus.google.com/117428375464020763682"><i class="fa fa-google-plus"></i></a><a target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a><a href="mailto:4asloy9a"><i class="fa fa-envelope"></i></a></p>
+				<p id="commercialSupport"><b>Looking for commercial support?</b> <a href="mailto:4asloy9a">Get in touch with us</a>.
 			</div>
 			<div id="ngOutput">
 				<h2>&gt; Output</h2>

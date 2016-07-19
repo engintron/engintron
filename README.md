@@ -1,6 +1,6 @@
 ![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png)
 
-**[Engintron v1.6.1 released Feb 19th, 2016 & updated May 13th, 2016 - [See CHANGELOG](#changelog)]**
+**[Engintron v1.6.2 released July 19th, 2016 - [See CHANGELOG](#changelog)]**
 ***
 
 ##### Quick Nav: [Engintron.com](https://engintron.com) | [FAQ](#faq) | [Documentation (Wiki)](https://github.com/engintron/engintron/wiki) | [Issues (for support requests & bug reports)](https://github.com/engintron/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
@@ -149,6 +149,20 @@ Or you can simply emails us at: engintron [at] gmail [dot] com
 
 ==
 ### Changelog
+
+_Jul 19th, 2016 - v1.6.2_
+
+*   Protect your cPanel server from the [httpoxy](https://httpoxy.org/) vulnerability with the help of Nginx, by setting the "HTTP Proxy" header to null.
+*   Install mod_remoteip using the source file provided from the Engintron repo on GitHub. Many installations previously dealt with failed downloads of that file from the official Apache code repo, which resulted in mod_remoteip not being installed at all and thus Nginx could not pass the visitor's IP back to Apache.
+*   Bumped proxy read/send timeouts to 180s from 120s.
+*   Fixed IPv6 resolver syntax in nginx.conf.
+*   The custom_rules file will not be overridden on Engintron updates.
+*   You can switch between Nginx stable and mainline (latest) releases with new options in the WHM app and the Engintron CLI.
+*   Nuke cookies for static files for good - added 'proxy_ignore_headers Set-Cookie;' & 'proxy_set_header Cookie "";' alongside 'proxy_hide_header Set-Cookie;'.
+*   Switched Nginx status page back to public (by default). When that page was set to private, Munin failed to graph Nginx usage. If you don't use Munin, you can uncomment 2 lines in default.conf if you wish to hide that page. In any case, leaving the Nginx status page open does not pose any security or other issue.
+*   Nginx log rotation is updated to 7 days (the default option was 52 days!).
+*   Moved SVG file handling in Nginx to the "fonts" block as Chrome uses CORS to decide serving to end users.
+*   Code changes to make Engintron utilize the WHM API v1 where possible.
 
 _Feb 19th, 2016 - v1.6.1_
 

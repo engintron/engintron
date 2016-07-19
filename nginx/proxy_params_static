@@ -1,10 +1,10 @@
 # /**
-#  * @version		1.6.1
-#  * @package		Engintron for cPanel/WHM
-#  * @author    	Fotis Evangelou
-#  * @url			https://engintron.com
-#  * @copyright		Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
-#  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+#  * @version    1.6.2
+#  * @package    Engintron for cPanel/WHM
+#  * @author     Fotis Evangelou
+#  * @url        https://engintron.com
+#  * @copyright  Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
+#  * @license    GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
 #  */
 
 # === STATIC ASSET CACHING ===
@@ -15,11 +15,13 @@
 # Respects Expires, Cache-Control & Vary headers already set in default.conf
 # for client-side caching.
 
-proxy_cache					engintron_static;
-proxy_cache_key				"$request_method$scheme$host$request_uri";
-proxy_cache_lock			on;
-proxy_cache_min_uses		1;
-proxy_cache_revalidate		on;
-proxy_cache_use_stale		error timeout updating http_500 http_502 http_503 http_504;
-proxy_cache_valid			200 301 302 1m; # Covers 200, 301 & 302 responses, caching time set to 1 minute
-proxy_ignore_headers		Set-Cookie;
+proxy_cache                 engintron_static;
+proxy_cache_key             "$request_method$scheme$host$request_uri";
+proxy_cache_lock            on;
+proxy_cache_min_uses        1;
+proxy_cache_revalidate      on;
+proxy_cache_use_stale       error timeout updating http_500 http_502 http_503 http_504;
+proxy_cache_valid           200 301 302 1m; # Covers 200, 301 & 302 responses, caching time set to 1 minute
+proxy_hide_header           Set-Cookie;
+proxy_ignore_headers        Set-Cookie;
+proxy_set_header            Cookie "";

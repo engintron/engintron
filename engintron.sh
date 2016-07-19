@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # /**
-#  * @version		1.6.1
-#  * @package		Engintron for cPanel/WHM
-#  * @author    	Fotis Evangelou
-#  * @url			https://engintron.com
-#  * @copyright		Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
-#  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+#  * @version    1.6.2
+#  * @package    Engintron for cPanel/WHM
+#  * @author     Fotis Evangelou
+#  * @url        https://engintron.com
+#  * @copyright  Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
+#  * @license    GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
 #  */
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.6.1"
+APP_VERSION="1.6.2"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
@@ -100,7 +100,8 @@ function install_mod_remoteip {
 	echo "=== Installing mod_remoteip for Apache ==="
 	cd /usr/local/src
 	/bin/rm -f mod_remoteip.c
-	wget --no-check-certificate https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
+	#wget --no-check-certificate https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
+	wget --no-check-certificate $REPO_CDN_URL/apache/mod_remoteip.c
 	wget --no-check-certificate $REPO_CDN_URL/apache/apxs.sh
 	chmod +x apxs.sh
 	./apxs.sh -i -c -n mod_remoteip.so mod_remoteip.c
@@ -148,13 +149,18 @@ function remove_mod_remoteip {
 
 function apache_change_port {
 
-	echo "=== Switch Apache to port 8080 ==="
-	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
-	then
-		sed -i 's/^apache_port=.*/apache_port=0.0.0.0:8080/' /var/cpanel/cpanel.config
-		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+	echo "=== Switch Apache to port 8080, distill changes & restart Apache ==="
+
+	if [ -f /usr/local/cpanel/bin/whmapi1 ]; then
+		/usr/local/cpanel/bin/whmapi1 set_tweaksetting key=apache_port value=0.0.0.0:8080
 	else
-		echo "apache_port=0.0.0.0:8080" >> /var/cpanel/cpanel.config
+		if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
+		then
+			sed -i 's/^apache_port=.*/apache_port=0.0.0.0:8080/' /var/cpanel/cpanel.config
+			/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+		else
+			echo "apache_port=0.0.0.0:8080" >> /var/cpanel/cpanel.config
+		fi
 	fi
 
 	echo ""
@@ -162,9 +168,8 @@ function apache_change_port {
 
 	echo "=== Distill changes in Apache's configuration and restart Apache ==="
 	/usr/local/cpanel/bin/apache_conf_distiller --update
-	/scripts/rebuildhttpdconf --update
-
-	service httpd restart
+	/scripts/rebuildhttpdconf
+	/scripts/restartsrv httpd
 
 	echo ""
 	echo ""
@@ -174,12 +179,17 @@ function apache_change_port {
 function apache_revert_port {
 
 	echo "=== Switch Apache back to port 80 ==="
-	if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
-	then
-		sed -i 's/^apache_port=.*/apache_port=0.0.0.0:80/' /var/cpanel/cpanel.config
-		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+
+	if [ -f /usr/local/cpanel/bin/whmapi1 ]; then
+		/usr/local/cpanel/bin/whmapi1 set_tweaksetting key=apache_port value=0.0.0.0:80
 	else
-		echo "apache_port=0.0.0.0:80" >> /var/cpanel/cpanel.config
+		if grep -Fxq "apache_port=" /var/cpanel/cpanel.config
+		then
+			sed -i 's/^apache_port=.*/apache_port=0.0.0.0:80/' /var/cpanel/cpanel.config
+			/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
+		else
+			echo "apache_port=0.0.0.0:80" >> /var/cpanel/cpanel.config
+		fi
 	fi
 
 	echo ""
@@ -187,9 +197,8 @@ function apache_revert_port {
 
 	echo "=== Distill changes in Apache's configuration and restart Apache ==="
 	/usr/local/cpanel/bin/apache_conf_distiller --update
-	/scripts/rebuildhttpdconf --update
-
-	service httpd restart
+	/scripts/rebuildhttpdconf
+	/scripts/restartsrv httpd
 
 	echo ""
 	echo ""
@@ -235,9 +244,10 @@ EOFS
 
 	# Copy Nginx config files
 	if [ -f /etc/nginx/custom_rules ]; then
-		/bin/cp -f /etc/nginx/custom_rules /etc/nginx/custom_rules.bak
+		/bin/cp -f $APP_PATH/nginx/custom_rules /etc/nginx/custom_rules.dist
+	else
+		/bin/cp -f $APP_PATH/nginx/custom_rules /etc/nginx/
 	fi
-	/bin/cp -f $APP_PATH/nginx/custom_rules /etc/nginx/
 
 	if [ -f /etc/nginx/proxy_params_common ]; then
 		/bin/cp -f /etc/nginx/proxy_params_common /etc/nginx/proxy_params_common.bak
@@ -322,14 +332,19 @@ function install_engintron_ui {
 
 	echo ""
 	echo "=== Fix ACL requirements in newer cPanel releases ==="
-	if grep -Fxq "permit_unregistered_apps_as_root=" /var/cpanel/cpanel.config
-	then
-		sed -i 's/^permit_unregistered_apps_as_root=.*/permit_unregistered_apps_as_root=1/' /var/cpanel/cpanel.config
+
+	if [ -f /usr/local/cpanel/bin/whmapi1 ]; then
+		/usr/local/cpanel/bin/whmapi1 set_tweaksetting key=permit_unregistered_apps_as_root value=1
 	else
-		echo "permit_unregistered_apps_as_root=1" >> /var/cpanel/cpanel.config
+		if grep -Fxq "permit_unregistered_apps_as_root=" /var/cpanel/cpanel.config
+		then
+			sed -i 's/^permit_unregistered_apps_as_root=.*/permit_unregistered_apps_as_root=1/' /var/cpanel/cpanel.config
+		else
+			echo "permit_unregistered_apps_as_root=1" >> /var/cpanel/cpanel.config
+		fi
+		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
 	fi
 
-	/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
 	/usr/local/cpanel/etc/init/startcpsrvd
 
 	echo ""
