@@ -121,12 +121,7 @@ A. Version 1.5 which was made available in the early days of February 2016 is by
 
 Engintron is fully compatible with CentOS version 5, 6 and 7 on both 32-bit and 64-bit platforms. Additionally, users have already reported a 100% compatibility with CloudLinux versions 6 & 7.
 
-However at the time of writing (Feb 7th, 2016), Engintron is compatible with EasyApache 3 only, as EasyApache 4 is still in beta and there's currently a bug with it that prevents Nginx from installing onto the system.
-
-The cPanel team have promised to fix this pretty soon (you can follow this thread in the cPanel forums: [https://forums.cpanel.net/threads/why-does-easyapache4-block-nginx-installation-using-yum-official-nginx-repos.524241/](https://forums.cpanel.net/threads/why-does-easyapache4-block-nginx-installation-using-yum-official-nginx-repos.524241/))
-
-If this is not resolved soon, we will just have to resort to building Nginx from source in order to support EasyApache 4. This however has the caveat that Nginx will not be updated whenever the system is (automatically) updated by cPanel. In that case, you will simply need to re-run the installer from within WHM whenever a new version of Nginx is available. If we have to resort to this solution, we'll make sure to have an Nginx version update notifier within Engintron's WHM app so you know when to update.
-
+However at the time of writing (July 20th, 2016), Engintron is compatible with EasyApache 3 only, as EasyApache 4 just got out of beta with version 58 of cPanel. We're working to provide support for EasyApache4 in Engintron version 1.7.0, which is to be released in the coming weeks.
 
 ### Documentation
 
