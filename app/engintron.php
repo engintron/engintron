@@ -39,6 +39,7 @@ $allowed_files = array(
 	'/etc/nginx/proxy_params_dynamic',
 	'/etc/nginx/proxy_params_static',
 	'/etc/nginx/custom_rules',
+	'/etc/nginx/custom_rules.dist',
 	'/etc/nginx/conf.d/default.conf',
 	'/etc/my.cnf',
 	'/usr/local/apache/conf/php.conf',
@@ -157,6 +158,12 @@ function execute($act) {
 
 // Operations
 switch($op) {
+	case "view":
+		if(isset($f) && in_array($f, $allowed_files)){
+			$ret = file_get_contents($f);
+		}
+		break;
+	
 	case "edit":
 		if(isset($_POST['data'])) {
 			$data = $_POST['data'];
@@ -310,11 +317,11 @@ switch($op) {
 
 	case "engintron_update":
 	case "engintron_update_stable":
-		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
+		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
 		break;
 
 	case "engintron_update_mainline":
-		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/nuevvo/engintron/master/engintron.sh; bash engintron.sh install mainline"), "<br><span>");
+		$ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh; bash engintron.sh install mainline"), "<br><span>");
 		break;
 
 	case "engintron_res":
@@ -377,6 +384,7 @@ switch($op) {
 			input[type=submit] {padding:8px;border:0;font-size:13px;border-radius:4px;cursor:pointer;color:#fff;background-color:#179541;background-image:-webkit-gradient(linear, left top, left bottom, from(#179541), to(#007f2a));background-image:-webkit-linear-gradient(top, #179541, #007f2a);background-image:-moz-linear-gradient(top, #179541, #007f2a);background-image:-o-linear-gradient(top, #179541, #007f2a);background-image:linear-gradient(to bottom, #179541, #007f2a);-webkit-transition:all 500ms cubic-bezier(0.000, 0.685, 0.205, 0.995);-moz-transition:all 500ms cubic-bezier(0.000, 0.685, 0.205, 0.995);-ms-transition:all 500ms cubic-bezier(0.000, 0.685, 0.205, 0.995);-o-transition:all 500ms cubic-bezier(0.000, 0.685, 0.205, 0.995);transition:all 500ms cubic-bezier(0.000, 0.685, 0.205, 0.995);}
 			.clr {clear:both;display:block;height:0;line-height:0;padding:0;margin:0;}
 			.sep {padding:0 4px;margin:0;}
+			.ngViewDefault {font-size:12px;font-style:italic;}
 			hr {line-height:0;height:0;border:none;border-bottom:1px solid #eaeaea;padding:0;margin:8px 0;}
 			div#ngBreadcrumbs {background:#eee;padding:4px 16px;margin:0;border-bottom:2px solid #eaeaea;}
 				div#ngBreadcrumbs a {color:#999;font-weight:bold;text-decoration:none;font-size:12px;margin:0 4px;}
@@ -461,10 +469,7 @@ switch($op) {
 							<li><a href="engintron.php?op=nginx_status">Status</a></li>
 							<li><a href="engintron.php?op=nginx_reload">Reload</a></li>
 							<li><a href="engintron.php?op=nginx_restart">Restart</a></li>
-							<li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules&s=nginx">Edit your custom rules for Nginx</a></li>
-							<?php if(file_exists('/etc/nginx/custom_rules.dist')): ?>
-							<li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules.dist&s=nginx">View the default Engintron custom_rules file for Nginx</a></li>
-							<?php endif; ?>
+							<li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules&s=nginx">Edit your custom_rules for Nginx</a><?php if(file_exists('/etc/nginx/custom_rules.dist')): ?> (<a class="ngViewDefault" href="engintron.php?op=view&f=/etc/nginx/custom_rules.dist">view default</a>)<?php endif; ?></li>
 							<li><a href="engintron.php?op=edit&f=/etc/nginx/conf.d/default.conf&s=nginx">Edit default.conf</a></li>
 							<li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_common&s=nginx">Edit proxy_params_common</a></li>
 							<li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_dynamic&s=nginx">Edit proxy_params_dynamic</a></li>

@@ -527,6 +527,7 @@ install)
 	echo "*       Installation Complete        *"
 	echo "**************************************"
 	echo ""
+	echo ""
 	;;
 remove)
 
@@ -560,6 +561,7 @@ remove)
 	echo "*          Removal Complete          *"
 	echo "**************************************"
 	echo ""
+	echo ""
 	;;
 enable)
 	clear
@@ -588,6 +590,7 @@ enable)
 	echo "**************************************"
 	echo "*         Engintron Enabled          *"
 	echo "**************************************"
+	echo ""
 	echo ""
 	;;
 disable)
@@ -618,6 +621,7 @@ disable)
 	echo "**************************************"
 	echo "*         Engintron Disabled         *"
 	echo "**************************************"
+	echo ""
 	echo ""
 	;;
 resall)
@@ -660,10 +664,9 @@ resall)
 		service nginx restart
 		echo ""
 	fi
+	echo ""
 	;;
 res)
-	echo ""
-	echo ""
 	echo "====================================="
 	echo "=== Restarting All Basic Services ==="
 	echo "====================================="
@@ -678,10 +681,9 @@ res)
 		service nginx restart
 		echo ""
 	fi
+	echo ""
 	;;
-clean)
-	echo ""
-	echo ""
+purgecache)
 	echo "==================================================================="
 	echo "=== Clean Nginx cache & temp folders and restart Apache & Nginx ==="
 	echo "==================================================================="
@@ -692,10 +694,60 @@ clean)
 	if [ "$(pstree | grep 'httpd')" ]; then
 		echo "Apache restarting..."
 		service httpd restart
+		echo ""
 	fi
 	if [ "$(pstree | grep 'nginx')" ]; then
 		service nginx restart
+		echo ""
 	fi
+	echo ""
+	;;
+fixaccessperms)
+	echo "===================================================="
+	echo "=== Fix user file & directory access permissions ==="
+	echo "===================================================="
+	echo ""
+	echo "Changing directory permissions to 755..."
+	find /home/*/public_html/ -type d -exec chmod 755 {} \;
+	echo ""
+	echo "Changing file permissions to 644..."
+	find /home/*/public_html/ -type f -exec chmod 644 {} \;
+	echo ""
+	echo "Operation completed."
+	echo ""
+	echo ""
+	;;
+fixownerperms)
+	echo "==================================================="
+	echo "=== Fix user file & directory owner permissions ==="
+	echo "==================================================="
+	echo ""
+	cd /home
+	for user in $( ls -d * )
+	do
+		if [ -d /home/$user/public_html ]; then
+			echo "=== Fixing permissions for user $user ==="
+			chown -R $user:$user /home/$user/public_html/*
+		fi
+	done
+	echo "Operation completed."
+	echo ""
+	echo ""
+	;;
+cleanup)
+	echo "=========================================================================="
+	echo "=== Cleanup Mac or Windows specific metadata or Apache error_log files ==="
+	echo "=========================================================================="
+	echo ""
+	find /home/*/public_html/ -iname 'error_log' | xargs rm -rvf
+	find /home/*/public_html/ -iname '.DS_Store' | xargs rm -rvf
+	find /home/*/public_html/ -iname 'thumbs.db' | xargs rm -rvf
+	find /home/*/public_html/ -iname '__MACOSX' | xargs rm -rvf
+	find /home/*/public_html/ -iname '._*' | xargs rm -rvf
+	echo ""
+	echo "Operation completed."
+	echo ""
+	echo ""
 	;;
 info)
 	echo "=================="
@@ -767,21 +819,25 @@ Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/WH
 Usage: /engintron.sh [command] [flag]
 
 Main commands:
-    install     Install, re-install or update Engintron (enables Nginx by default).
-                Add optional flag "mainline" to install Nginx mainline release.
-    remove      Remove Engintron completely.
-    enable      Set Nginx to port 80 & Apache to port 8080
-    disable     Set Nginx to port 8080 & switch Apache to port 80
-    clean       Clean up Nginx's "cache" & "temp" folders,
-                then restart both Apache & Nginx
+    install          Install, re-install or update Engintron (enables Nginx by default).
+                     Add optional flag "mainline" to install Nginx mainline release.
+    remove           Remove Engintron completely.
+    enable           Set Nginx to port 80 & Apache to port 8080
+    disable          Set Nginx to port 8080 & switch Apache to port 80
+    purgecache       Purge Nginx's "cache" & "temp" folders,
+                     then restart both Apache & Nginx
 
 Utility commands:
-    res         Restart web servers only (Apache & Nginx)
-    resall      Restart Cron, CSF & LFD (if installed), Munin (if installed),
-                MySQL, Apache, Nginx
-    80          Show active connections on port 80 sorted by connection count & IP,
-                including total concurrent connections count
-    info        Show basic system info
+    res              Restart web servers only (Apache & Nginx)
+    resall           Restart Cron, CSF & LFD (if installed), Munin (if installed),
+                     MySQL, Apache, Nginx
+    80               Show active connections on port 80 sorted by connection count & IP,
+                     including total concurrent connections count
+    fixaccessperms   Fix user file & directory access permissions in all user public_html folders
+    fixownerperms    Fix user file & directory owner permissions in all user public_html folders
+    cleanup          Cleanup Mac or Windows specific metadata or Apache error_log files
+                     in all user public_html folders
+    info             Show basic system info
 
 ~~ Enjoy Engintron! ~~
 
