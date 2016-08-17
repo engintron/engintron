@@ -147,6 +147,7 @@ _Aug 17th, 2016 - v1.7.0_
 
 *   Engintron is now EasyApache 4 compatible.
 *   Added option to edit the system's crontab file
+*   New CLI options added - explore with "/engintron.sh -h"
 
 _Jul 19th, 2016 - v1.6.2_
 

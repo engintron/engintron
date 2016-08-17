@@ -702,6 +702,28 @@ purgecache)
 	fi
 	echo ""
 	;;
+purgelogs)
+	echo "================================================================"
+	echo "=== Clean Nginx access/error logs and restart Apache & Nginx ==="
+	echo "================================================================"
+	echo ""
+	if [ -f /var/log/nginx/access.log ]; then
+		echo "" > /var/log/nginx/access.log
+	fi
+	if [ -f /var/log/nginx/error.log ]; then
+		echo "" > /var/log/nginx/error.log
+	fi
+	if [ "$(pstree | grep 'httpd')" ]; then
+		echo "Apache restarting..."
+		service httpd restart
+		echo ""
+	fi
+	if [ "$(pstree | grep 'nginx')" ]; then
+		service nginx restart
+		echo ""
+	fi
+	echo ""
+	;;
 fixaccessperms)
 	echo "===================================================="
 	echo "=== Fix user file & directory access permissions ==="
