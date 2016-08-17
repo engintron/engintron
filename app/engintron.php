@@ -89,7 +89,7 @@ function execute($act) {
 			}
 			break;
 
-		case "nginx_cleanup":
+		case "nginx_purgecache":
 			$command = shell_exec("find /tmp/engintron_dynamic/ -type f | xargs rm -rvf; find /tmp/engintron_static/ -type f | xargs rm -rvf; find /tmp/engintron_temp/ -type f | xargs rm -rvf");
 			if(empty($command)) {
 				$output = "<p>No output generated. Nginx cache & temp folders are probably empty.</p>";
@@ -181,7 +181,7 @@ switch($op) {
 						case "mysql":
 							$message .= execute("mysql_restart");
 							break;
-						case "fastcgi":
+						case "phpconf":
 							$message .= nl2br(shell_exec("/usr/local/cpanel/bin/apache_conf_distiller --update"));
 							$message .= nl2br(shell_exec("/scripts/rebuildhttpdconf --update"));
 							$message .= execute("httpd_restart");
@@ -243,9 +243,15 @@ switch($op) {
 		$ret .= shell_exec("nginx -V 2>&1");
 		break;
 
-	case "nginx_cleanup":
+	case "nginx_purgelogs":
+		$ret = "<b>Cleanup Nginx access &amp; error log files...</b><br />";
+		$ret .= shell_exec("bash /engintron.sh purgelogs");
+		$ret .= execute("nginx_restart");
+		break;
+
+	case "nginx_purgecache":
 		$ret = "<b>Cleanup Nginx cache &amp; temp files...</b><br />";
-		$ret .= execute("nginx_cleanup");
+		$ret .= execute("nginx_purgecache");
 		$ret .= execute("nginx_restart");
 		break;
 
@@ -487,7 +493,8 @@ switch($op) {
 									<a href="engintron.php?op=nginx_errorlog" onClick="ngSaveFile('errorlog')">Show last</a> <input type="text" name="error_entries" size="4" value="100" autocomplete="off" /> <a href="engintron.php?op=nginx_errorlog" onClick="ngSaveFile('errorlog')">error log entries</a>
 								</form>
 							</li>
-							<li><a href="engintron.php?op=nginx_cleanup">Cleanup cache &amp; temp files</a></li>
+							<li><a href="engintron.php?op=nginx_purgelogs">Purge access &amp; error log files</a></li>
+							<li><a href="engintron.php?op=nginx_purgecache">Purge cache &amp; temp files</a></li>
 						</ul>
 					</li>
 					<li>
@@ -498,7 +505,7 @@ switch($op) {
 							<li><a href="engintron.php?op=httpd_restart">Restart</a></li>
 							<li><a href="engintron.php?op=edit&f=/usr/local/lib/php.ini&s=apache">Edit php.ini</a></li>
 							<?php if(file_exists('/usr/local/apache/conf/php.conf')): ?>
-							<li><a href="engintron.php?op=edit&f=/usr/local/apache/conf/php.conf&s=fastcgi">Edit php.conf</a></li>
+							<li><a href="engintron.php?op=edit&f=/usr/local/apache/conf/php.conf&s=phpconf">Edit php.conf</a></li>
 							<?php endif; ?>
 						</ul>
 					</li>
