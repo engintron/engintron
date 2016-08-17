@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    1.6.2
+ * @version    1.7.0
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -22,7 +22,7 @@ if($grantAccess === false){
 // *** Common variables to make updating easier ***
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.6.2');
+define('PLG_VERSION', '1.7.0');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('ENGINTRON_STATE', trim(file_get_contents("/usr/local/src/engintron/state.conf")));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
@@ -33,6 +33,7 @@ $f = $_GET['f'];
 $s = $_GET['s'];
 
 $allowed_files = array(
+	'/etc/crontab',
 	'/etc/nginx/nginx.conf',
 	'/etc/nginx/proxy_params_common',
 	'/etc/nginx/proxy_params_dynamic',
@@ -177,6 +178,9 @@ switch($op) {
 							$message .= nl2br(shell_exec("/usr/local/cpanel/bin/apache_conf_distiller --update"));
 							$message .= nl2br(shell_exec("/scripts/rebuildhttpdconf --update"));
 							$message .= execute("httpd_restart");
+							break;
+						case "cron":
+							$message .= nl2br(shell_exec("service crond restart"));
 							break;
 					}
 				}
@@ -500,6 +504,12 @@ switch($op) {
 							<li><a href="engintron.php?op=mysql_restart">Restart</a></li>
 							<!--<li><a href="engintron.php?op=mysql_processlist">Process list</a></li>-->
 							<li><a href="engintron.php?op=edit&f=/etc/my.cnf&s=mysql">Edit my.cnf</a></li>
+						</ul>
+					</li>
+					<li>
+						<h3>Other System Configuration Files</h3>
+						<ul>
+							<li><a href="engintron.php?op=edit&f=/etc/crontab&s=cron">Edit /etc/crontab</a></li>
 						</ul>
 					</li>
 					<li>

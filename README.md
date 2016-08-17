@@ -1,6 +1,6 @@
 ![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png)
 
-**[Engintron v1.6.2 released July 19th, 2016 - [See CHANGELOG](#changelog)]**
+**[Engintron v1.7.0 released Aug 17th, 2016 - [See CHANGELOG](#changelog)]**
 ***
 
 ##### Quick Nav: [Engintron.com](https://engintron.com) | [FAQ](#faq) | [Documentation (Wiki)](https://github.com/engintron/engintron/wiki) | [Issues (for support requests & bug reports)](https://github.com/engintron/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
@@ -118,7 +118,8 @@ A. Version 1.5 (and newer releases) which was made available in the early days o
 
 Engintron is fully compatible with CentOS version 5, 6 and 7 on both 32-bit and 64-bit platforms. Additionally, users have already reported a 100% compatibility with CloudLinux versions 6 & 7.
 
-However at the time of writing (July 20th, 2016), Engintron is compatible with EasyApache 3 only, as EasyApache 4 just got out of beta with version 58 of cPanel. We're working to provide support for EasyApache4 in Engintron version 1.7.0, which is to be released in the coming weeks.
+Engintron is also compatible with both EasyApache 3 and EasyApache 4 as of version 1.7.0.
+
 
 ### Documentation
 
@@ -141,6 +142,11 @@ Or you can simply emails us at: engintron [at] gmail [dot] com
 
 ==
 ### Changelog
+
+_Aug 17th, 2016 - v1.7.0_
+
+*   Engintron is now EasyApache 4 compatible.
+*   Added option to edit the system's crontab file
 
 _Jul 19th, 2016 - v1.6.2_
 

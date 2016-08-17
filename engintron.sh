@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.6.2
+#  * @version    1.7.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -11,7 +11,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.6.2"
+APP_VERSION="1.7.0"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
@@ -97,53 +97,80 @@ function remove_mod_rpaf {
 
 function install_mod_remoteip {
 
+	# Get system IPs
+	#systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
+	systemips=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+
 	echo "=== Installing mod_remoteip for Apache ==="
-	cd /usr/local/src
-	/bin/rm -f mod_remoteip.c
-	#wget --no-check-certificate https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
-	wget --no-check-certificate $REPO_CDN_URL/apache/mod_remoteip.c
-	wget --no-check-certificate $REPO_CDN_URL/apache/apxs.sh
-	chmod +x apxs.sh
-	./apxs.sh -i -c -n mod_remoteip.so mod_remoteip.c
-	/bin/rm -f mod_remoteip.c
-	/bin/rm -f apxs.sh
 
-	if [ -f /usr/local/apache/modules/mod_remoteip.so ]; then
-		# Get system IPs
-		#systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
-		systemips=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+	if [ -f /etc/apache2/conf/httpd.conf ]; then
+		yum -y install ea-apache24-mod_remoteip
 
-		if [ ! -f /usr/local/apache/conf/includes/remoteip.conf ]; then
-			touch /usr/local/apache/conf/includes/remoteip.conf
+		if [ -f /etc/apache2/modules/mod_remoteip.so ]; then
+			REMOTEIP_CONF=$(find /etc/apache2/conf.modules.d/ -iname "*_mod_remoteip.conf")
+			if [ -f $REMOTEIP_CONF ]; then
+
+				cat > $REMOTEIP_CONF <<EOF
+# Enable mod_remoteip
+LoadModule remoteip_module modules/mod_remoteip.so
+RemoteIPInternalProxy 127.0.0.1 $systemips
+RemoteIPHeader X-Real-IP
+EOF
+				sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /etc/apache2/conf/httpd.conf
+			fi
 		fi
+	else
+		cd /usr/local/src
+		/bin/rm -f mod_remoteip.c
+		#wget --no-check-certificate https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
+		wget --no-check-certificate $REPO_CDN_URL/apache/mod_remoteip.c
+		wget --no-check-certificate $REPO_CDN_URL/apache/apxs.sh
+		chmod +x apxs.sh
+		./apxs.sh -i -c -n mod_remoteip.so mod_remoteip.c
+		/bin/rm -f mod_remoteip.c
+		/bin/rm -f apxs.sh
 
-		cat > "/usr/local/apache/conf/includes/remoteip.conf" <<EOF
+		if [ -f /usr/local/apache/modules/mod_remoteip.so ]; then
+
+			if [ ! -f /usr/local/apache/conf/includes/remoteip.conf ]; then
+				touch /usr/local/apache/conf/includes/remoteip.conf
+			fi
+
+			cat > "/usr/local/apache/conf/includes/remoteip.conf" <<EOF
 # RemoteIP
 LoadModule remoteip_module modules/mod_remoteip.so
 RemoteIPInternalProxy 127.0.0.1 $systemips
 RemoteIPHeader X-Real-IP
 EOF
 
-		/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
-		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
-		sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
-		sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /usr/local/apache/conf/httpd.conf
-		echo ""
-		echo ""
+			/bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+			sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
+			sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
+			sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /usr/local/apache/conf/httpd.conf
+		fi
 	fi
+
+	echo ""
+	echo ""
 
 }
 
 function remove_mod_remoteip {
 
-	if [ -f /usr/local/apache/conf/includes/remoteip.conf ]; then
-		echo "=== Removing mod_remoteip for Apache ==="
-		rm -f /usr/local/apache/conf/includes/remoteip.conf
-		sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
-		sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
-		echo ""
-		echo ""
+	if [ -f /etc/apache2/conf/httpd.conf ]; then
+		yum -y remove ea-apache24-mod_remoteip
+		sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /etc/apache2/conf/httpd.conf
+	else
+		if [ -f /usr/local/apache/conf/includes/remoteip.conf ]; then
+			echo "=== Removing mod_remoteip for Apache ==="
+			rm -f /usr/local/apache/conf/includes/remoteip.conf
+			sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
+			sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
+		fi
 	fi
+
+	echo ""
+	echo ""
 
 }
 
@@ -207,6 +234,10 @@ function apache_revert_port {
 
 function install_nginx {
 
+	if [ ! -f /etc/yum.repos.d/nginx.repo ]; then
+		touch /etc/yum.repos.d/nginx.repo
+	fi
+
 	# Allow switching from mainline to stable release
 	if [[ ! $1 ]]; then
 		if grep -iq "mainline" /etc/yum.repos.d/nginx.repo; then
@@ -215,10 +246,6 @@ function install_nginx {
 	fi
 
 	# Setup Nginx repo
-	if [ ! -f /etc/yum.repos.d/nginx.repo ]; then
-		touch /etc/yum.repos.d/nginx.repo
-	fi
-
 	if [[ $1 == 'mainline' ]]; then
 		echo "=== Install Nginx (mainline) from nginx.org ==="
 		cat > "/etc/yum.repos.d/nginx.repo" <<EOFM
@@ -446,7 +473,8 @@ install)
 		exit 0
 	fi
 
-	GET_EA3_VERSION=$(/scripts/easyapache --version | grep "Easy Apache v3")
+	#GET_EA3_VERSION=$(/scripts/easyapache --version | grep "Easy Apache v3")
+	GET_EA3_VERSION=1
 
 	if [[ $GET_EA3_VERSION == "" ]]; then
 		echo ""
