@@ -757,9 +757,9 @@ fixownerperms)
 	echo ""
 	;;
 cleanup)
-	echo "=========================================================================="
-	echo "=== Cleanup Mac or Windows specific metadata or Apache error_log files ==="
-	echo "=========================================================================="
+	echo "========================================================================="
+	echo "=== Cleanup Mac or Windows specific metadata & Apache error_log files ==="
+	echo "========================================================================="
 	echo ""
 	find /home/*/public_html/ -iname 'error_log' | xargs rm -rvf
 	find /home/*/public_html/ -iname '.DS_Store' | xargs rm -rvf
@@ -856,10 +856,11 @@ Utility commands:
                      MySQL, Apache, Nginx
     80               Show active connections on port 80 sorted by connection count & IP,
                      including total concurrent connections count
-    fixaccessperms   Fix user file & directory access permissions in all user public_html folders
-    fixownerperms    Fix user file & directory owner permissions in all user public_html folders
-    cleanup          Cleanup Mac or Windows specific metadata or Apache error_log files
-                     in all user public_html folders
+    fixaccessperms   Change file & directory access permissions to 644 & 755 respectively
+                     in all user /public_html directories
+    fixownerperms    Fix owner permissions in all user /public_html directories
+    cleanup          Cleanup Mac or Windows specific metadata & Apache error_log files
+                     in all user /public_html directories
     info             Show basic system info
 
 ~~ Enjoy Engintron! ~~

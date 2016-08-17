@@ -163,7 +163,7 @@ switch($op) {
 			$ret = file_get_contents($f);
 		}
 		break;
-	
+
 	case "edit":
 		if(isset($_POST['data'])) {
 			$data = $_POST['data'];
@@ -305,6 +305,21 @@ switch($op) {
 	case "utils_top_php":
 		$ret = "<b>$ top -b -n 1 | grep php | sort -k8,8</b><br /><br />";
 		$ret .= shell_exec("top -b -n 1 | grep php | sort -k8,8");
+		break;
+
+	case "utils_fixaccessperms":
+		$ret = "<b>$ /engintron.sh fixaccessperms</b><br /><br />";
+		$ret .= shell_exec("bash /engintron.sh fixaccessperms");
+		break;
+
+	case "utils_fixownerperms":
+		$ret = "<b>$ /engintron.sh fixownerperms</b><br /><br />";
+		$ret .= shell_exec("bash /engintron.sh fixownerperms");
+		break;
+
+	case "utils_cleanup":
+		$ret = "<b>$ /engintron.sh cleanup</b><br /><br />";
+		$ret .= shell_exec("bash /engintron.sh cleanup");
 		break;
 
 	case "engintron_toggle":
@@ -531,6 +546,11 @@ switch($op) {
 							<li><a href="engintron.php?op=utils_top_php">Show top PHP processes</a></li>
 							<li><a href="engintron.php?op=utils_pstree">Show current process tree</a></li>
 							<li><a href="engintron.php?op=utils_80">Current connections on port 80 (per IP &amp; total)</a></li>
+							<!--
+							<li><a href="engintron.php?op=utils_fixaccessperms">Change file &amp; directory access permissions to 644 &amp; 755 respectively in all user /public_html directories</a></li>
+							<li><a href="engintron.php?op=utils_fixownerperms">Fix owner permissions in all user /public_html directories</a></li>
+							<li><a href="engintron.php?op=utils_cleanup">Cleanup Mac or Windows specific metadata &amp; Apache error_log files in all user /public_html directories</a></li>
+                     		-->
 						</ul>
 					</li>
 					<li>
