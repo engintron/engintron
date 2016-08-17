@@ -473,29 +473,6 @@ install)
 		exit 0
 	fi
 
-	#GET_EA3_VERSION=$(/scripts/easyapache --version | grep "Easy Apache v3")
-	GET_EA3_VERSION=1
-
-	if [[ $GET_EA3_VERSION == "" ]]; then
-		echo ""
-		echo ""
-		echo "*****************************************************"
-		echo ""
-		echo " ENGINTRON ERROR:"
-		echo " This server has EasyApache version 4 (beta)"
-		echo " installed and Engintron is currently only compatible"
-		echo " with EasyApache version 3 only!"
-		echo " EasyApache version 4 will be supported"
-		echo " in Engintron version 1.6."
-		echo ""
-		echo " --- Installation aborted ---"
-		echo ""
-		echo "*****************************************************"
-		echo ""
-		echo ""
-		exit 0
-	fi
-
 	echo "**************************************"
 	echo "*        Installing Engintron        *"
 	echo "**************************************"
