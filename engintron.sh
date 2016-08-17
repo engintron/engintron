@@ -848,6 +848,7 @@ Main commands:
     disable          Set Nginx to port 8080 & switch Apache to port 80
     purgecache       Purge Nginx's "cache" & "temp" folders,
                      then restart both Apache & Nginx
+    purgelogs        Purge Nginx's access & error log files
 
 Utility commands:
     res              Restart web servers only (Apache & Nginx)
