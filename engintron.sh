@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.7.0
+#  * @version    1.7.1
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -11,7 +11,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.7.0"
+APP_VERSION="1.7.1"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
@@ -578,6 +578,7 @@ enable)
 	install_munin_patch
 	service nginx stop
 	sed -i 's:listen 8080 default_server:listen 80 default_server:' /etc/nginx/conf.d/default.conf
+	sed -i 's:deny all; #:# deny all; #:' /etc/nginx/conf.d/default.conf
 	sed -i 's:\:80; # Apache Status Page:\:8080; # Apache Status Page:' /etc/nginx/conf.d/default.conf
 	sed -i 's:PROXY_DOMAIN_OR_IP\:80:PROXY_DOMAIN_OR_IP\:8080:' /etc/nginx/proxy_params_common
 	apache_change_port
@@ -608,6 +609,7 @@ disable)
 	remove_munin_patch
 	service nginx stop
 	sed -i 's:listen 80 default_server:listen 8080 default_server:' /etc/nginx/conf.d/default.conf
+	sed -i 's:# deny all; #:deny all; #:' /etc/nginx/conf.d/default.conf
 	sed -i 's:\:8080; # Apache Status Page:\:80; # Apache Status Page:' /etc/nginx/conf.d/default.conf
 	sed -i 's:PROXY_DOMAIN_OR_IP\:8080:PROXY_DOMAIN_OR_IP\:80:' /etc/nginx/proxy_params_common
 

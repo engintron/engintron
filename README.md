@@ -1,6 +1,6 @@
 ![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png)
 
-**[Engintron v1.7.0 released Aug 17th, 2016 - [See CHANGELOG](#changelog)]**
+**[Engintron v1.7.1 released Aug 19th, 2016 - [See CHANGELOG](#changelog)]**
 ***
 
 ##### Quick Nav: [Engintron.com](https://engintron.com) | [FAQ](#faq) | [Documentation (Wiki)](https://github.com/engintron/engintron/wiki) | [Issues (for support requests & bug reports)](https://github.com/engintron/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
@@ -142,6 +142,11 @@ Or you can simply emails us at: engintron [at] gmail [dot] com
 
 ==
 ### Changelog
+
+_Aug 19th, 2016 - v1.7.1_
+
+*   Addressed potential security issue where Nginx becomes an open proxy when Engintron is disabled and Nginx is switched to port 8080.
+*   The "Enable/Disable Engintron" toggler in the Engintron WHM app will now properly display the target state to switch to, e.g. either "Enable Engintron" or "Disable Engintron".
 
 _Aug 17th, 2016 - v1.7.0_
 
