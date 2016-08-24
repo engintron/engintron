@@ -21,7 +21,7 @@ Sign up here https://tinyletter.com/engintron or here https://engintron.com
 
 
 ==
-### Engintron is Nginx on cPanel
+## Engintron is Nginx on cPanel, done right!
 
 Nginx® is a powerful open source web server that was built to scale websites to millions of visitors. cPanel® is the leading hosting control panel worldwide.
 
