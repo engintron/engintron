@@ -85,8 +85,6 @@ Seventh, it doesn't require Nginx/Apache vhost synchronization when adding new d
 
 And finally, Engintron is 100% open source. You can tear it apart, customize it, fork it, knife it or contribute back to its development. Do whatever you want with it :)
 
-==
-
 
 ***
 # NEW - Join the Engintron Newsletter / Mailing List
@@ -96,7 +94,6 @@ Sign up here https://tinyletter.com/engintron or here https://engintron.com
 ***
 
 
-==
 ### FAQ
 
 The FAQ section has been moved in the Engintron Wiki: https://github.com/engintron/engintron/wiki/FAQ
