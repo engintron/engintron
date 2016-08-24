@@ -1,6 +1,6 @@
 **root@cpanel [~]#** Engintron v1.7.1 released on Aug 19th, 2016
 
-***[See the CHANGELOG](https://github.com/engintron/engintron/wiki/Changelog) for more info***
+**[Checkout the CHANGELOG](https://github.com/engintron/engintron/wiki/Changelog) for more information on this latest release**
 
 ***
 ![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png)
