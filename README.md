@@ -85,40 +85,7 @@ Seventh, it doesn't require Nginx/Apache vhost synchronization when adding new d
 
 And finally, Engintron is 100% open source. You can tear it apart, customize it, fork it, knife it or contribute back to its development. Do whatever you want with it :)
 
-
 ==
-
-### FAQ
-
-Q. **How popular is Engintron?**  
-A. Version 1.5 (and newer releases) which was made available in the early days of February 2016 is by far our most popular release to date. It was installed on more than 300 servers in the first 2 days alone and at the time of writing (July 20th, 2016) it ***has been deployed into more than 5000 servers in over 100 countries worldwide***! You could say that Engintron is probably the most popular cPanel plugin of its kind. For v1.0 we do not really have metrics but we estimate it's below 1000 deployments. However v1.0 had very limited application as it was primarily targeted for websites with no user-generated content (e.g. media/news portals or high traffic blogs). Engintron v1.5 builds upon the knowledge gathered from v1.0 but it has been completely written from the ground up to support any type of website (even those with user generated content like forums, e-shops etc.) and also be easier to use, with little to no configuration after installation.
-
-Q. **How do I get started?**  
-A. Installation is pretty straightforward as you may have read above already. There is however extensive documentation available in the wiki: https://github.com/engintron/engintron/wiki - we even include general optimization guides for your cPanel server!
-
-Q. **Engintron is awesome! But I have a problem or I want to report a bug! Where do I do that?**  
-A. The "Issues" section here on GitHub - https://github.com/engintron/engintron/issues - is the right place to report bugs or request for help. We will eventually offer a dedicated support forum when we launch the new Engintron website in Q1 2016.
-
-Q. **I have dozens of .htaccess rules in Apache. Will I have to re-write those for Nginx?**  
-A. Of course not! Nginx works as a proxy to Apache, it does not operate as the direct webserver to your content. In other words, you just install Engintron and everything in Apache (and your apps or websites) will function as it did before. Nginx requires no maintenance. It just works.
-
-Q. **Is Nginx secure? Will my server be protected as it is now with Apache. I already have [name 20 protection solution for cPanel here] installed. Do I have to configure my cPanel/WHM server additionally?**  
-A. Nginx is both reliable and secure. In fact, it can even be used to mitigate attacks on software - see how Nginx can be used to protect vulnerable Joomla 3.x websites for a recently disclosed exploit (CVE): https://www.nginx.com/blog/new-joomla-exploit-cve-2015-8562/ - and when used with micro-caching enabled, it can even handle large DoS (denial of service) attacks by simply doing what it does best: handle huge web traffic! To be more precise, all you need for a secure server is ConfigServer's CSF firewall (essentially a frontend for IPTables) to handle basic firewall functionality for your server and Engintron for web traffic (and the occasional app protection like the above Joomla exploit)
-
-Q. **How does Engintron (and Nginx) handle HTTPS traffic?**  
-A. Because of the way TLS/SSL certificates are currently setup in cPanel, HTTPS traffic will only go through Apache (for the moment). We have plans to add TLS/SSL support in upcoming versions by combining existing certificates installed via cPanel and using LetsEncrypt issued certificates for the domains that don't have a certificate installed via cPanel. This feature will probably come in version 1.8.0 of Engintron.
-
-Q. **Will it work with CloudFlare?**  
-A. Why yes of course! However you do need to adjust your "custom_rules" Nginx configuration file a bit. When you edit this file via WHM, you'll notice there are comments in place for the procedure, so rest assured you got everything you need there. To briefly explain the process, you need to set your server's shared (main) IP and/or any additional dedicated IPs matching certain domains (everything is documented with examples in there). If you can't see visitor IPs in your Apache logs, you'll also need to execute a single line command via the terminal as root user (also documented in this file). As a sidenote, let me add that if you use CloudFlare for all your cPanel domains, you can essentially have HTTPS traffic for all your domains by switching CloudFlare's "Crypto" settings to "Flexible SSL". This way, CloudFlare's servers will proxy your HTTPS traffic to your server's HTTP port (Nginx). In other words, you get to have both amazing serving capacity and SSL/TLS support at the same time.
-
-Q. **I have Munin installed on my cPanel server to monitor resources. Does Engintron setup Nginx graphs in Munin as well?**  
-A. Absolutely. Have a look at the "Using Engintron" document in our Wiki for a screenshot of the graphs you get for Nginx in Munin. If you install Munin after you first installed Engintron, simply re-install Engintron via WHM and you'll get the Nginx graphs in your newly set Munin installation.
-
-Q. **Does Engintron require a certain CentOS release to work?**  
-A. Engintron is fully compatible with the last 3 major releases of CentOS. That means CentOS versions 5, 6 and 7 are fully supported. CentOS 4 has not been tested with Engintron as cPanel ceased support for CentOS 4 back in 2012.
-
-Q. **Does Engintron work in CloudLinux?**  
-Yes. It is fully compatible with CloudLinux versions 6 & 7. Although we haven't yet tested CloudLinux version 5, we assume Engintron will also work with that version since CloudLinux is essentially based off CentOS and Engintron is already fully compatible with CentOS 5.
 
 
 ***
@@ -130,9 +97,14 @@ Sign up here https://tinyletter.com/engintron or here https://engintron.com
 
 
 ==
+### FAQ
+
+The FAQ section has been moved in the Engintron Wiki: https://github.com/engintron/engintron/wiki/FAQ
+
+
 ### Changelog
 
-The changelog has been moved in the Engintron Wiki: https://github.com/engintron/engintron/wiki/Changelog
+The Changelog section has been moved in the Engintron Wiki: https://github.com/engintron/engintron/wiki/Changelog
 
 
 ### Compatibility & Requirements
@@ -154,7 +126,6 @@ Please post your feedback and any issues or feature requests/suggestions in the 
 If you use Engintron, please take a moment to post a review and/or rating in the cPanel Applications Directory at: https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel
 
 
-==
 ### I need commercial support - do you offer such services?
 
 If you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through other services that directly affect the performance of your cPanel server (MySQL, Apache, PHP, certain system configuration files and more), feel free to use the contact options from within Engintron to get in touch with us.
@@ -162,7 +133,6 @@ If you wish to go the "extra mile" and optimize your cPanel server both through 
 Or you can simply email us at: engintron [at] gmail [dot] com
 
 
-==
 ### License
 
 Engintron is released under the GNU/GPL license. For more info, have a look here: [http://www.gnu.org/copyleft/gpl.html](http://www.gnu.org/copyleft/gpl.html)
