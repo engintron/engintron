@@ -9,9 +9,10 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 * [engintron.com](https://engintron.com)
 * [Documentation (Wiki)](https://github.com/engintron/engintron/wiki)
 * [FAQ](https://github.com/engintron/engintron/wiki/FAQ)
-* [Issues (for support requests & bug reports)](https://github.com/engintron/engintron/issues)
-* [Newsletter / Mailing List](https://tinyletter.com/engintron)
-* [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
+* [Get support & report bugs (Issues)](https://github.com/engintron/engintron/issues)
+* [Join the Engintron Newsletter / Mailing List](https://tinyletter.com/engintron)
+* Engintron on [Facebook](https://www.facebook.com/engintron/), [Twitter](https://twitter.com/engintron_sh) & [Google+](https://plus.google.com/117428375464020763682)
+* [Rate and/or review Engintron in the cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
 
 ***
 # NEW - Join the Engintron Newsletter / Mailing List
@@ -28,7 +29,7 @@ Sign up here https://tinyletter.com/engintron or here https://engintron.com
 ==
 ## Engintron is Nginx on cPanel, done right!
 
-Nginx® is a powerful open source web server that was built to scale websites to millions of visitors. cPanel® is the leading hosting control panel worldwide.
+[Nginx®](http://nginx.org/) is a powerful open source web server that was built to scale websites to millions of visitors. cPanel® is the leading hosting control panel worldwide.
 
 Engintron integrates Nginx into cPanel so you can enjoy amazing performance for your sites, without having to sacrifice important hosting features found in cPanel.
 
