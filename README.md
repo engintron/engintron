@@ -147,7 +147,7 @@ If you use Engintron, please take a moment to post a review and/or rating in the
 
 If you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through other services that directly affect the performance of your cPanel server (MySQL, Apache, PHP, certain system configuration files and more), feel free to use the contact options from within Engintron to get in touch with us.
 
-Or you can simply emails us at: engintron [at] gmail [dot] com
+Or you can simply email us at: engintron [at] gmail [dot] com
 
 
 ***
