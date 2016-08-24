@@ -150,6 +150,25 @@ If you wish to go the "extra mile" and optimize your cPanel server both through 
 Or you can simply email us at: engintron [at] gmail [dot] com
 
 
+==
+### License
+
+Engintron is released under the GNU/GPL license. For more info, have a look here: [http://www.gnu.org/copyleft/gpl.html](http://www.gnu.org/copyleft/gpl.html)
+
+
+==
+### More info
+A proper website is on its way, featuring short tutorials and videos, a forum and a commercial support channel.
+
+If however you require commercial support now, you can contact us via Engintron's app dashboard or simply email us at: engintron [at] gmail [dot] com
+
+https://engintron.com
+
+
+==
+Copyright &copy; 2014-2016 Fotis Evangelou / [Nuevvo Webware P.C.](http://nuevvo.com)
+
+
 ***
 # NEW - Join the Engintron Newsletter / Mailing List
 It's easy to miss an Engintron update on social media. If you want to know for sure when the latest version of Engintron is released, sign up to get notified directly to your inbox. We will never spam you.
@@ -159,7 +178,7 @@ Sign up here https://tinyletter.com/engintron or here https://engintron.com
 
 
 ==
-### Changelog
+## Changelog
 
 _Aug 19th, 2016 - v1.7.1_
 
@@ -247,20 +266,3 @@ _May 30th, 2014 - v1.0.3_
 *   Obsolete vhosts are now cleaned up whenever the sync process is performed
 *   Added some default Nginx files after setup in case they are not created during Nginx's installation
 *   Added default.conf vhost during installation
-
-**License**
-
-Engintron is released under the GNU/GPL license. For more info, have a look here: [http://www.gnu.org/copyleft/gpl.html](http://www.gnu.org/copyleft/gpl.html)
-
-
-==
-### More info
-A proper website is on its way, featuring short tutorials and videos, a forum and a commercial support channel.
-
-If however you require commercial support now, you can contact us via Engintron's app dashboard or simply email us at: engintron [at] gmail [dot] com
-
-https://engintron.com
-
-
-==
-Copyright &copy; 2014-2016 Fotis Evangelou / [Nuevvo Webware P.C.](http://nuevvo.com)
