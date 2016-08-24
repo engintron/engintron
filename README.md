@@ -90,6 +90,9 @@ And finally, Engintron is 100% open source. You can tear it apart, customize it,
 
 ### FAQ
 
+Q. **How popular is Engintron?**  
+A. Version 1.5 (and newer releases) which was made available in the early days of February 2016 is by far our most popular release to date. It was installed on more than 300 servers in the first 2 days alone and at the time of writing (July 20th, 2016) it ***has been deployed into more than 5000 servers in over 100 countries worldwide***! You could say that Engintron is probably the most popular cPanel plugin of its kind. For v1.0 we do not really have metrics but we estimate it's below 1000 deployments. However v1.0 had very limited application as it was primarily targeted for websites with no user-generated content (e.g. media/news portals or high traffic blogs). Engintron v1.5 builds upon the knowledge gathered from v1.0 but it has been completely written from the ground up to support any type of website (even those with user generated content like forums, e-shops etc.) and also be easier to use, with little to no configuration after installation.
+
 Q. **How do I get started?**  
 A. Installation is pretty straightforward as you may have read above already. There is however extensive documentation available in the wiki: https://github.com/engintron/engintron/wiki - we even include general optimization guides for your cPanel server!
 
@@ -116,9 +119,6 @@ A. Engintron is fully compatible with the last 3 major releases of CentOS. That 
 
 Q. **Does Engintron work in CloudLinux?**  
 Yes. It is fully compatible with CloudLinux versions 6 & 7. Although we haven't yet tested CloudLinux version 5, we assume Engintron will also work with that version since CloudLinux is essentially based off CentOS and Engintron is already fully compatible with CentOS 5.
-
-Q. **How popular is Engintron?**  
-A. Version 1.5 (and newer releases) which was made available in the early days of February 2016 is by far our most popular release to date. It was installed on more than 300 servers in the first 2 days alone and at the time of writing (July 20th, 2016) it has been deployed into around 5000 servers in over 90 countries worldwide! You could say that Engintron is probably the most popular cPanel plugin of its kind. For v1.0 we do not really have metrics but we estimate it's below 1000 deployments. However v1.0 had very limited application as it was primarily targeted for websites with no user-generated content (e.g. media/news portals or high traffic blogs). Engintron v1.5 builds upon the knowledge gathered from v1.0 but it has been completely written from the ground up to support any type of website (even those with user generated content like forums, e-shops etc.) and also be easier to use, with little to no configuration after installation.
 
 
 ==
