@@ -1,6 +1,6 @@
 ![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png)
 
-**[Engintron v1.7.1 released Aug 19th, 2016 - [See CHANGELOG](#changelog)]**
+**[Engintron v1.7.1 released Aug 19th, 2016 - [See CHANGELOG](https://github.com/engintron/engintron/wiki/Changelog)]**
 ***
 
 ##### Quick Nav: [Engintron.com](https://engintron.com) | [FAQ](#faq) | [Documentation (Wiki)](https://github.com/engintron/engintron/wiki) | [Issues (for support requests & bug reports)](https://github.com/engintron/engintron/issues) | [Engintron on cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel) | [Newsletter / Mailing List](https://tinyletter.com/engintron)
@@ -121,7 +121,19 @@ Q. **Does Engintron work in CloudLinux?**
 Yes. It is fully compatible with CloudLinux versions 6 & 7. Although we haven't yet tested CloudLinux version 5, we assume Engintron will also work with that version since CloudLinux is essentially based off CentOS and Engintron is already fully compatible with CentOS 5.
 
 
+***
+# NEW - Join the Engintron Newsletter / Mailing List
+It's easy to miss an Engintron update on social media. If you want to know for sure when the latest version of Engintron is released, sign up to get notified directly to your inbox. We will never spam you.
+
+Sign up here https://tinyletter.com/engintron or here https://engintron.com
+***
+
+
 ==
+### Changelog
+
+The changelog has been moved in the Engintron Wiki: https://github.com/engintron/engintron/wiki/Changelog
+
 
 ### Compatibility & Requirements
 
@@ -167,102 +179,3 @@ https://engintron.com
 
 ==
 Copyright &copy; 2014-2016 Fotis Evangelou / [Nuevvo Webware P.C.](http://nuevvo.com)
-
-
-***
-# NEW - Join the Engintron Newsletter / Mailing List
-It's easy to miss an Engintron update on social media. If you want to know for sure when the latest version of Engintron is released, sign up to get notified directly to your inbox. We will never spam you.
-
-Sign up here https://tinyletter.com/engintron or here https://engintron.com
-***
-
-
-==
-## Changelog
-
-_Aug 19th, 2016 - v1.7.1_
-
-*   Addressed potential security issue where Nginx becomes an open proxy when Engintron is disabled and Nginx is switched to port 8080.
-*   The "Enable/Disable Engintron" toggler in the Engintron WHM app will now properly display the target state to switch to, e.g. either "Enable Engintron" or "Disable Engintron".
-
-_Aug 17th, 2016 - v1.7.0_
-
-*   Engintron is now EasyApache 4 compatible.
-*   Added option to edit the system's crontab file
-*   New CLI options added - explore with "/engintron.sh -h"
-
-_Jul 19th, 2016 - v1.6.2_
-
-*   Protect your cPanel server from the [httpoxy](https://httpoxy.org/) vulnerability with the help of Nginx, by setting the "HTTP Proxy" header to null.
-*   Install mod_remoteip using the source file provided from the Engintron repo on GitHub. Many installations previously dealt with failed downloads of that file from the official Apache code repo, which resulted in mod_remoteip not being installed at all and thus Nginx could not pass the visitor's IP back to Apache.
-*   Bumped proxy read/send timeouts to 180s from 120s.
-*   Fixed IPv6 resolver syntax in nginx.conf.
-*   The custom_rules file will not be overridden on Engintron updates.
-*   You can switch between Nginx stable and mainline (latest) releases with new options in the WHM app and the Engintron CLI.
-*   Nuke cookies for static files for good - added 'proxy_ignore_headers Set-Cookie;' & 'proxy_set_header Cookie "";' alongside 'proxy_hide_header Set-Cookie;'.
-*   Switched Nginx status page back to public (by default). When that page was set to private, Munin failed to graph Nginx usage. If you don't use Munin, you can uncomment 2 lines in default.conf if you wish to hide that page. In any case, leaving the Nginx status page open does not pose any security or other issue.
-*   Nginx log rotation is updated to 7 days (the default option was 52 days!).
-*   Moved SVG file handling in Nginx to the "fonts" block as Chrome uses CORS to decide serving to end users.
-*   Fixed Nginx cache/temp folder reporting in CentOS 7 (or other systemd based distros where cPanel works).
-*   Code changes to make Engintron utilize the WHM API v1 where possible.
-
-_Feb 19th, 2016 - v1.6.1_
-
-*   Engintron will now (be default) modify Apache's log format to allow for the proper inclusion of a visitor's IP in all systems. The change is merged with Apache's configuration so it's protected if Apache settings are modified via WHM. If you uninstall Engintron, Apache's log format is reverted to its previous state.
-
-_Feb 14th, 2016 - v1.6.0_
-
-*   Introducing new "custom_rules" file (fully editable from within WHM) for you to store any custom Nginx rules or redirects. These include custom setup for CloudFlare or for certain domains. The only thing you need to edit to apply any rules from now on is "custom_rules" and that's why upon updates, we keep a copy of that file and display it within WHM so you can easily copy/paste your custom Nginx rules before the update to the new "custom_rules" file being installed. We could simply keep that file for you, but breaking changes may be introduced so it's always good to be able to keep up to date.
-*   CloudFlare integration is now easier than ever. All you have to do is set your shared or any dedicated IPs. We also include some handy redirect rules for CloudFlare, for HTTP to HTTPS. Just uncomment whatever you want to use.
-*   Introducing version update checker. If you already have v1.5.3, you'll see the first update notice when you visit Engintron in WHM. Upgrading is as simple as clicking a link in the app.
-
-_Feb 12th, 2016 - v1.5.3_
-
-*   Micro-caching is now enabled by default. Extensive tests have shown that there are no issues caused when micro-caching is enabled. In fact, performance is exponentially increased when micro-caching is on, which is the reason why Engintron now ships with this option on.
-*   Improvements to the installer - if any of the Apache modules (RPAF or RemoteIP) fail to install, we just skip that part without causing Apache to stop working because of missing .so files.
-*   Increased default timeouts in nginx.conf to minimize 504 errors from slow backends.
-*   Added a more reliable way to restart Nginx if another Nginx plugin for cPanel was previously uninstalled leaving Nginx still binding to port 80.
-
-_Feb 7th, 2016 - v1.5.2_
-
-*   Added CentOS 7 support (installer worked fine since 1.5.0, however a few controls in the WHM app did not output the correct messages)
-*   Added option to update or re-install Engintron from within WHM, via the Engintron app under "Plugins"
-
-_Feb 6th, 2016 - v1.5.1_
-
-*   General installer/uninstaller improvements
-*   Improved compatibility with CentOS 5
-*   Added option to enable/disable Engintron without completely uninstalling it. You can control Engintron's state through the WHM app dashboard or via the terminal. Nginx switches to port 8080 and Apache switches to port 80 when you run "$ bash /engintron.sh disable". If you run "$ bash /engintron.sh enable" Nginx reclaims port 80 and Apache takes port 8080.
-*   IPv6 support is now present but it has to be uncommented in order to work properly (in files /etc/nginx/nginx.conf for the resolver & /etc/nginx/conf.d/default.conf for the catch-all rule)
-*   Improved help/instructions when executing engintron.sh via terminal
-*   Added some terminal utilities like "restart Apache & Nginx", "restart all important services", "show server info", "show traffic on port 80" and more. From the terminal type "bash /engintron.sh" or just "/engintron.sh" if you have already installed Engintron.
-*   Fixed /nginx_status page - info now also shown under "Nginx Status" option in the WHM app dashboard
-*   Fixed /favicon.ico and /robots.txt loading - previously these files were blocked due to a mismatch in their respective definitions
-*   Updated retrieval location for mod_rpaf to ensure proper installation on all CentOS releases
-
-_Feb 1st, 2016 - v1.5.0_
-
-*   Complete re-write of the main installer script as well as the app dashboard
-*   vhost sync'ing is no longer needed - you add new domains via cPanel and it just works
-*   New, smarter, better proxying/caching approach - improves performance without the headaches of controlling exclusions for different CMSs - it just works
-*   Proper client side caching for all types of content
-*   Compatible with domains served via CloudFlare
-
-_Dec 23rd, 2014 - v1.0.4 Build 20141223_
-
-*   Updated static asset loading from an HTTPS source
-
-_Dec 3rd, 2014 - v1.0.4 Build 20141203_
-
-*   Since mod_rpaf was dropped from its original developer, it's now been updated with the fork that's been actively maintained here: https://github.com/gnif/mod_rpaf
-*   Moved all static assets of the app dashboard onto GitHub's CDN. This simply results to a cleaner Engintron script.
-*   Removed the line "proxy_hide_header Set-Cookie;" from proxy.conf as it was causing issues with WordPress websites not being properly cached (thank you @AgentGod)
-
-_May 30th, 2014 - v1.0.3_
-
-*   Fixed compatibility with Munin, added Nginx tracking in Munin
-*   Enabled access logs for domains, but static file logging is disabled for performance reasons
-*   Switched default Nginx worker process to "auto" (aka CPU/core support), so it won't be required to be set manually
-*   Obsolete vhosts are now cleaned up whenever the sync process is performed
-*   Added some default Nginx files after setup in case they are not created during Nginx's installation
-*   Added default.conf vhost during installation
