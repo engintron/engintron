@@ -1,7 +1,7 @@
 #!/usr/local/cpanel/3rdparty/bin/perl
 
 # /**
-#  * @version    1.7.1
+#  * @version    1.7.2
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com

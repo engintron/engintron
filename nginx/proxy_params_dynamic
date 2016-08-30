@@ -1,5 +1,5 @@
 # /**
-#  * @version    1.7.1
+#  * @version    1.7.2
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -9,9 +9,47 @@
 
 # === MICRO CACHING ===
 # 1 second (1s) micro-caching enabled for all proxied dynamic HTML content
-proxy_cache					engintron_dynamic;
-proxy_cache_key				"$request_method$scheme$host$request_uri";
-proxy_cache_lock			on;
-proxy_cache_use_stale		updating;
-proxy_cache_valid			200 1s;
-proxy_ignore_headers		Expires Cache-Control Set-Cookie Vary;
+# If you wish to have longer cache times, adjust lines any "1s" occurrence
+set $CACHE_BYPASS_FOR_DYNAMIC 0;
+set $EXPIRES_FOR_DYNAMIC "1s";
+
+# CMS (& CMS extension) specific cookies (Joomla, K2, WordPress)
+if ($http_cookie ~* "joomla_[a-zA-Z0-9_]+|userID|comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|wordpress_logged_in") {
+    set $CACHE_BYPASS_FOR_DYNAMIC 1;
+    set $EXPIRES_FOR_DYNAMIC 0;
+}
+
+# Invision Power Board (IPB)
+if ($cookie_member_id ~ "^[1-9][0-9]*$") {
+    set $CACHE_BYPASS_FOR_DYNAMIC 1;
+    set $EXPIRES_FOR_DYNAMIC 0;
+}
+
+# Admin sections & generic entry point names for CMSs
+if ($request_uri ~* "/administrator|/wp-admin|/wp-login.php|/ucp.php|/login|/connect") {
+    set $CACHE_BYPASS_FOR_DYNAMIC 1;
+    set $EXPIRES_FOR_DYNAMIC 0;
+}
+
+# Generic query string to request a page bypassing Nginx's caching
+if ($query_string ~* "nocache") {
+    set $CACHE_BYPASS_FOR_DYNAMIC 1;
+    set $EXPIRES_FOR_DYNAMIC 0;
+}
+
+proxy_no_cache          $CACHE_BYPASS_FOR_DYNAMIC;
+proxy_cache_bypass      $CACHE_BYPASS_FOR_DYNAMIC;
+
+proxy_cache             engintron_dynamic;
+proxy_cache_key         "$request_method$scheme$host$request_uri";
+proxy_cache_lock        on;
+proxy_cache_methods     GET HEAD;
+proxy_cache_use_stale   error timeout invalid_header updating http_500 http_502 http_503 http_504; # Additional options: http_403 http_404
+proxy_cache_valid       200 1s; # Adjust for longer cache times (unfortunately, we cannot use a variable here)
+proxy_ignore_headers    Expires Cache-Control Set-Cookie Vary;
+
+# Headers
+expires                 $EXPIRES_FOR_DYNAMIC;
+add_header              Pragma "public";
+add_header              Cache-Control "public";
+add_header              Vary "Accept-Encoding";

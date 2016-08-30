@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    1.7.1
+ * @version    1.7.2
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -22,7 +22,7 @@ if($grantAccess === false) {
 // *** Common variables to make updating easier ***
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.7.1');
+define('PLG_VERSION', '1.7.2');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 if(file_exists("/usr/local/src/engintron/state.conf")) {
