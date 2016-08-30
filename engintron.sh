@@ -446,6 +446,44 @@ function remove_munin_patch {
 
 }
 
+function csf_pignore_add {
+	if [ -f /etc/csf/csf.pignore ]; then
+		echo ""
+		echo "=== Adding Nginx to CSF's process ignore list ==="
+
+		if grep -q "exe\:\/usr\/sbin\/nginx" /etc/csf/csf.pignore
+		then
+			echo "Nginx seems to be already configured with CSF..."
+		else
+			echo "exe:/usr/sbin/nginx" >> /etc/csf/csf.pignore
+			csf -r
+			service lfd restart
+		fi
+
+		echo ""
+		echo ""
+
+	fi
+}
+
+function csf_pignore_remove {
+	if [ -f /etc/csf/csf.pignore ]; then
+		echo ""
+		echo "=== Removing Nginx from CSF's process ignore list ==="
+
+		if grep -q "exe\:\/usr\/sbin\/nginx" /etc/csf/csf.pignore
+		then
+			sed -i 's:^exe\:\/usr\/sbin\/nginx::' /etc/csf/csf.pignore
+			csf -r
+			service lfd restart
+		fi
+
+		echo ""
+		echo ""
+
+	fi
+}
+
 ############################# HELPER FUCTIONS [end] #############################
 
 
@@ -516,6 +554,8 @@ install)
 	service httpd restart
 	fuser -k 80/tcp
 	service nginx start
+	
+	csf_pignore_add
 
 	if [ ! -f $APP_PATH/state.conf ]; then
 		touch $APP_PATH/state.conf
@@ -547,6 +587,7 @@ remove)
 	remove_nginx
 	remove_munin_patch
 	remove_engintron_ui
+	csf_pignore_remove
 
 	echo ""
 	echo "=== Removing Engintron files... ==="
