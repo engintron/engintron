@@ -16,6 +16,7 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 * [Join the Engintron Newsletter / Mailing List](https://tinyletter.com/engintron)
 * Engintron on [Facebook](https://www.facebook.com/engintron/), [Twitter](https://twitter.com/engintron_sh) & [Google+](https://plus.google.com/117428375464020763682)
 * [Rate and/or review Engintron in the cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
+* [Donate & Support the development of Engintron](https://engintron.com/?donate)
 
 ***
 # NEW - Join the Engintron Newsletter / Mailing List
@@ -130,6 +131,10 @@ For more information regarding setup, configuration or uninstallation, as well a
 Please post your feedback and any issues or feature requests/suggestions in the project's issue tracker at: https://github.com/engintron/engintron/issues
 
 If you use Engintron, please take a moment to post a review and/or rating in the cPanel Applications Directory at: https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel
+
+
+### Donate & support the development of Engintron
+Does Engintron bring value to your business? If so, you can donate & support the development of Engintron at: https://engintron.com/?donate
 
 
 ### I need commercial support - do you offer such services?
