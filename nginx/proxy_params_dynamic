@@ -14,7 +14,7 @@ set $CACHE_BYPASS_FOR_DYNAMIC 0;
 set $EXPIRES_FOR_DYNAMIC "1s";
 
 # CMS (& CMS extension) specific cookies (Joomla, K2, WordPress)
-if ($http_cookie ~* "joomla_[a-zA-Z0-9_]+|userID|comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|wordpress_logged_in") {
+if ($http_cookie ~* "joomla_[a-zA-Z0-9_]+|userID|comment_author|wordpress_[a-f0-9]+|wp-postpass|wordpress_no_cache|wordpress_logged_in|wordpress_logged_in_[a-f0-9]+") {
     set $CACHE_BYPASS_FOR_DYNAMIC 1;
     set $EXPIRES_FOR_DYNAMIC 0;
 }
