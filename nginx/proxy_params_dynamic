@@ -37,6 +37,9 @@ if ($query_string ~* "nocache") {
     set $EXPIRES_FOR_DYNAMIC 0;
 }
 
+# Bypass cache for domains
+include /etc/nginx/bypass_domains;
+
 proxy_no_cache          $CACHE_BYPASS_FOR_DYNAMIC;
 proxy_cache_bypass      $CACHE_BYPASS_FOR_DYNAMIC;
 
