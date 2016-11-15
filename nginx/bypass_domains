@@ -1,0 +1,12 @@
+#
+# /etc/nginx/bypass_domains
+#
+# Configure domains we dont want cache at all, just uncomment the if statment below.
+# Please keep in mind the more domains we bypass the less efficient nginx will be to the end user.
+#
+# Once added test nginx with nginx -t , fix error and restart. Also note replace DOMAIN part with a real domain.
+
+# if ($host ~* "DOMAIN1|DOMAIN2|DOMAIN3") {
+#    set $CACHE_BYPASS_FOR_DYNAMIC 1;
+#    set $EXPIRES_FOR_DYNAMIC 0;
+# }
