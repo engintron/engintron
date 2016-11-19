@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.7.2
+#  * @version    1.7.3
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -11,7 +11,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.7.2"
+APP_VERSION="1.7.3"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
@@ -356,28 +356,18 @@ function install_engintron_ui {
 
 	echo "=== Installing Engintron WHM plugin files... ==="
 
-	/bin/cp -f $APP_PATH/app/addon_engintron.cgi $CPANEL_PLG_PATH/
-	/bin/cp -f $APP_PATH/app/engintron.php $CPANEL_PLG_PATH/
+	# Cleanup older installations from the obsolete addon_engintron.cgi file
+	if [ -f $CPANEL_PLG_PATH/addon_engintron.cgi ]; then
+		/bin/rm -f $CPANEL_PLG_PATH/addon_engintron.cgi
+	fi
 
-	chmod +x $CPANEL_PLG_PATH/addon_engintron.cgi
+	/bin/cp -f $APP_PATH/app/engintron.php $CPANEL_PLG_PATH/
 	chmod +x $CPANEL_PLG_PATH/engintron.php
 
 	echo ""
-	echo "=== Fix ACL requirements in newer cPanel releases ==="
+	echo "=== Register Engintron as a cPanel app ==="
 
-	if [ -f /usr/local/cpanel/bin/whmapi1 ]; then
-		/usr/local/cpanel/bin/whmapi1 set_tweaksetting key=permit_unregistered_apps_as_root value=1
-	else
-		if grep -Fxq "permit_unregistered_apps_as_root=" /var/cpanel/cpanel.config
-		then
-			sed -i 's/^permit_unregistered_apps_as_root=.*/permit_unregistered_apps_as_root=1/' /var/cpanel/cpanel.config
-		else
-			echo "permit_unregistered_apps_as_root=1" >> /var/cpanel/cpanel.config
-		fi
-		/usr/local/cpanel/whostmgr/bin/whostmgr2 --updatetweaksettings
-	fi
-
-	/usr/local/cpanel/etc/init/startcpsrvd
+	/usr/local/cpanel/bin/register_appconfig $APP_PATH/app/engintron.conf
 
 	echo ""
 	echo ""
@@ -387,8 +377,13 @@ function install_engintron_ui {
 function remove_engintron_ui {
 
 	echo "=== Removing Engintron WHM plugin files... ==="
-	/bin/rm -f $CPANEL_PLG_PATH/addon_engintron.*
-	/bin/rm -f $CPANEL_PLG_PATH/engintron.*
+	/bin/rm -f $CPANEL_PLG_PATH/engintron.php
+
+	echo ""
+	echo "=== Unregister Engintron as a cPanel app ==="
+
+	/usr/local/cpanel/bin/unregister_appconfig engintron
+
 	echo ""
 	echo ""
 
@@ -554,7 +549,7 @@ install)
 	service httpd restart
 	fuser -k 80/tcp
 	service nginx start
-	
+
 	csf_pignore_add
 
 	if [ ! -f $APP_PATH/state.conf ]; then

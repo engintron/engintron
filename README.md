@@ -1,4 +1,4 @@
-### root@cpanelsrv [~]#   *Engintron v1.7.2 released on Aug 30th, 2016*
+### root@cpanelsrv [~]#   *Engintron v1.7.3 released on Nov 19th, 2016*
 
 **Have a look at the [CHANGELOG](https://github.com/engintron/engintron/wiki/Changelog) for more information on this latest release**
 

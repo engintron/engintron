@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    1.7.2
+ * @version    1.7.3
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -22,7 +22,7 @@ if($grantAccess === false) {
 // *** Common variables to make updating easier ***
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.7.2');
+define('PLG_VERSION', '1.7.3');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 if(file_exists("/usr/local/src/engintron/state.conf")) {
@@ -176,12 +176,13 @@ switch($op) {
 				file_put_contents($f, $data);
 				$message = '<b>'.$f.'</b> has been updated';
 				if(isset($_POST['c'])) {
-					switch($s) {
+					$message .= '<br /><br />';
+					switch($_POST['s']) {
 						case "nginx":
 							$message .= execute("nginx_reload");
 							break;
 						case "apache":
-							$message .= execute("httpd_reload");
+							$message .= execute("httpd_restart");
 							break;
 						case "mysql":
 							$message .= execute("mysql_restart");
@@ -613,7 +614,7 @@ if(ENGINTRON_STATE!="missing") {
 						<div class="editbox">
 							<input type="checkbox" name="c" checked />Reload or restart related services (<?php echo (isset($_POST['s'])) ? $_POST['s'] : ucfirst($s); ?>)? <small>(recommended if you want changes to take effect immediately)</small>
 							<br /><br />
-							<input type="hidden" name="s" value="<?php echo ucfirst($s); ?>" />
+							<input type="hidden" name="s" value="<?php echo $s; ?>" />
 							<input type="submit" value="Update <?php echo $f; ?>" onClick="ngSaveFile('fileEditor')" />
 						</div>
 					</form>
