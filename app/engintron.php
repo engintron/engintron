@@ -701,9 +701,13 @@ if(ENGINTRON_STATE!="missing") {
 				ngUpdate('ngUpdateStable');
 				ngUpdate('ngUpdateMainline');
 				// Hide message after 3 seconds
-				if(document.getElementById('ngMessage')){
+				var ngMsgContainer = document.getElementById('ngMessage');
+				if(ngMsgContainer){
 					setTimeout(function(){
-						document.getElementById('ngMessage').className += 'hidden';
+						ngMsgContainer.className += 'hidden';
+						setTimeout(function(){
+							ngMsgContainer.parentNode.removeChild(ngMsgContainer);
+						}, 3000);
 					}, 3000);
 				}
 			}
