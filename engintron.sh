@@ -313,6 +313,18 @@ EOFS
 		systemctl enable nginx
 	fi
 
+  if [ ! -f /etc/chkserv.d/engintron ]; then
+    touch /etc/chkserv.d/engintron
+  fi
+
+  cat > "/etc/chkserv.d/engintron" <<EOF
+service[nginx]=x,x,x,service nginx restart,nginx,root
+EOF
+  if [ "$(grep -c 'engintron:1' /etc/chkserv.d/chkservd.conf)" -eq 0 ]; then
+    echo 'engintron:1' >> /etc/chkserv.d/chkservd.conf
+  fi
+  /scripts/restartsrv_chkservd
+
 	if [ -f /usr/lib/systemd/system/nginx.service ]; then
 		sed -i 's/PrivateTmp=true/PrivateTmp=false/' /usr/lib/systemd/system/nginx.service
 		systemctl daemon-reload
@@ -344,6 +356,8 @@ function remove_nginx {
 	service nginx stop
 
 	yum -y remove nginx
+	/bin/rm -fv /etc/chkserv.d/engintron
+	/scripts/restartsrv_chkservd
 	/bin/rm -rf /etc/nginx/*
 	/bin/rm -f /etc/yum.repos.d/nginx.repo
 
