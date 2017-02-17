@@ -599,11 +599,15 @@ install)
     echo "=== Restarting Apache & Nginx... ==="
     service httpd restart
     fuser -k 80/tcp
+    fuser -k 8080/tcp
     fuser -k 443/tcp
+    fuser -k 8443/tcp
     service nginx start
 
     csf_pignore_add
     cron_for_https_vhosts_add
+
+    service nginx restart
 
     if [ ! -f $APP_PATH/state.conf ]; then
         touch $APP_PATH/state.conf
