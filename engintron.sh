@@ -676,6 +676,8 @@ enable)
         sed -i 's:deny all; #:# deny all; #:g' /etc/nginx/conf.d/default_https.conf
     fi
     sed -i 's:deny all; #:# deny all; #:g' /etc/nginx/utilities/https_vhosts.php
+    sed -i 's:'HTTPD_HTTPS_PORT', '443':'HTTPD_HTTPS_PORT', '8443':' /etc/nginx/utilities/https_vhosts.php
+    sed -i 's:'NGINX_HTTPS_PORT', '8443':'NGINX_HTTPS_PORT', '443':' /etc/nginx/utilities/https_vhosts.php
     sed -i 's:PROXY_TO_PORT 443:PROXY_TO_PORT 8443:' /etc/nginx/common_https.conf
     sed -i 's:PROXY_DOMAIN_OR_IP\:80:PROXY_DOMAIN_OR_IP\:8080:' /etc/nginx/proxy_params_common
     apache_change_port
@@ -715,6 +717,8 @@ disable)
         sed -i 's:# deny all; #:deny all; #:g' /etc/nginx/conf.d/default_https.conf
     fi
     sed -i 's:# deny all; #:deny all; #:g' /etc/nginx/utilities/https_vhosts.php
+    sed -i 's:'HTTPD_HTTPS_PORT', '8443':'HTTPD_HTTPS_PORT', '443':' /etc/nginx/utilities/https_vhosts.php
+    sed -i 's:'NGINX_HTTPS_PORT', '443':'NGINX_HTTPS_PORT', '8443':' /etc/nginx/utilities/https_vhosts.php
     sed -i 's:PROXY_TO_PORT 8443:PROXY_TO_PORT 443:' /etc/nginx/common_https.conf
     sed -i 's:PROXY_DOMAIN_OR_IP\:8080:PROXY_DOMAIN_OR_IP\:80:' /etc/nginx/proxy_params_common
 
