@@ -496,15 +496,20 @@ function csf_pignore_remove {
 
 function cron_for_https_vhosts_add {
     if [ -f /etc/crontab ]; then
-        echo ""
-        echo "=== Adding cron job to generate Nginx's HTTPS vhosts ==="
+        if grep -q "https_vhosts\.sh" /etc/crontab
+        then
+            echo "=== Skip adding cron job to generate Nginx's HTTPS vhosts ==="
+        else
+            echo ""
+            echo "=== Adding cron job to generate Nginx's HTTPS vhosts ==="
 
-        cat >> "/etc/crontab" <<EOF
+            cat >> "/etc/crontab" <<EOF
 
 * * * * * root /etc/nginx/utilities/https_vhosts.sh >> /dev/null 2>&1
 
 EOF
 
+        fi
         echo ""
         echo ""
     fi
