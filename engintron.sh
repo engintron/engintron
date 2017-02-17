@@ -320,6 +320,7 @@ EOFS
     fi
     /bin/cp -f $APP_PATH/nginx/utilities/https_vhosts.php /etc/nginx/utilities/
     /bin/cp -f $APP_PATH/nginx/utilities/https_vhosts.sh /etc/nginx/utilities/
+    chmod +x /etc/nginx/utilities/*
 
     if [ -f /sbin/chkconfig ]; then
         /sbin/chkconfig nginx on
