@@ -292,10 +292,11 @@ switch($op) {
 		break;
 
 	case "utils_80":
-		$ret = "<b>$ netstat -anp | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n</b><br /><br />";
-		$ret .= shell_exec("netstat -anp | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n")."<br /><br />";
-		$ret .= "<b>$ netstat -an | grep :80 | wc -l</b><br /><br />";
-		$ret .= trim(shell_exec("netstat -an | grep :80 | wc -l")).' total concurrent connections';
+		$ret .= shell_exec("bash /engintron.sh 80")."<br /><br />";
+		break;
+
+	case "utils_443":
+		$ret .= shell_exec("bash /engintron.sh 443")."<br /><br />";
 		break;
 
 	case "utils_pstree":
