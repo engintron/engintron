@@ -1,9 +1,9 @@
 # /**
-#  * @version    1.7.3
+#  * @version    1.8.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2010 - 2016 Nuevvo Webware P.C. All rights reserved.
+#  * @copyright  Copyright (c) 2010 - 2017 Nuevvo Webware P.C. All rights reserved.
 #  * @license    GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
 #  */
 
@@ -44,9 +44,8 @@ proxy_hide_header       Pragma;
 proxy_hide_header       Set-Cookie;
 proxy_hide_header       Vary;
 
-# Set headers
+# Reset headers
 add_header              Pragma "public";
-add_header              Cache-Control "public";
 add_header              Vary "Accept-Encoding";
 
 # Disable logging
