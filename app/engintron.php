@@ -564,6 +564,7 @@ if(ENGINTRON_STATE!="missing") {
 							<li><a href="engintron.php?op=utils_top_php">Show top PHP processes</a></li>
 							<li><a href="engintron.php?op=utils_pstree">Show current process tree</a></li>
 							<li><a href="engintron.php?op=utils_80">Current connections on port 80 (per IP &amp; total)</a></li>
+							<li><a href="engintron.php?op=utils_443">Current connections on port 443 (per IP &amp; total)</a></li>
 							<!--
 							<li><a href="engintron.php?op=utils_fixaccessperms">Change file &amp; directory access permissions to 644 &amp; 755 respectively in all user /public_html directories</a></li>
 							<li><a href="engintron.php?op=utils_fixownerperms">Fix owner permissions in all user /public_html directories</a></li>
