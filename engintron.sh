@@ -591,6 +591,10 @@ install)
     install_engintron_ui
 
     echo ""
+    echo "=== Generating DHE ciphersuites (2048 bits)... ==="
+    openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+
+    echo ""
     echo "=== Restarting Apache & Nginx... ==="
     service httpd restart
     fuser -k 80/tcp
