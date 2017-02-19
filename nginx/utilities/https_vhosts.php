@@ -18,13 +18,13 @@ define('NGINX_HTTPS_PORT', '443');
 
 function generate_https_vhosts() {
 
-	$hostnamePemFile = '';
-	if(file_exists('/var/cpanel/ssl/cpanel/cpanel.pem') && is_readable('/var/cpanel/ssl/cpanel/cpanel.pem'){
-		$hostnamePemFile = '/var/cpanel/ssl/cpanel/cpanel.pem';
-	}
-	if(file_exists('/var/cpanel/ssl/cpanel/mycpanel.pem') && is_readable('/var/cpanel/ssl/cpanel/mycpanel.pem'){
-		$hostnamePemFile = '/var/cpanel/ssl/cpanel/mycpanel.pem';
-	}
+    $hostnamePemFile = '';
+    if (file_exists('/var/cpanel/ssl/cpanel/cpanel.pem') && is_readable('/var/cpanel/ssl/cpanel/cpanel.pem')) {
+        $hostnamePemFile = '/var/cpanel/ssl/cpanel/cpanel.pem';
+    }
+    if (file_exists('/var/cpanel/ssl/cpanel/mycpanel.pem') && is_readable('/var/cpanel/ssl/cpanel/mycpanel.pem')) {
+        $hostnamePemFile = '/var/cpanel/ssl/cpanel/mycpanel.pem';
+    }
 
     // Initialize the output for default_https.conf
     $output = '
@@ -111,11 +111,11 @@ server {
 }
 
 // Run the check
-if(!file_exists(NGINX_DEFAULT_HTTPS_VHOST) || (file_exists(HTTPD_CONF) && is_readable(HTTPD_CONF) && (filemtime(HTTPD_CONF) + HTTPD_CONF_LAST_CHANGED) > time())) {
+if (!file_exists(NGINX_DEFAULT_HTTPS_VHOST) || (file_exists(HTTPD_CONF) && is_readable(HTTPD_CONF) && (filemtime(HTTPD_CONF) + HTTPD_CONF_LAST_CHANGED) > time())) {
     generate_https_vhosts();
     echo "HTTPS vhosts for Nginx re-created.\n";
     exit(1);
 } else {
-	echo "No changes in Apache's vhosts configuration. HTTPS vhosts for Nginx unchanged.\n";
-	exit(0);
+    echo "No changes in Apache's vhosts configuration. HTTPS vhosts for Nginx unchanged.\n";
+    exit(0);
 }
