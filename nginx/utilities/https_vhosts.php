@@ -87,6 +87,8 @@ server {
             'SSLCertificateKeyFile' => $certkey[1],
             'SSLCACertificateFile' => $certbundle[1]
         );
+        $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostBlock['certificates']['SSLCertificateFile']);
+        file_put_contents($fullChainCertName, file_get_contents($vhostBlock['certificates']['SSLCertificateFile'])."\n".file_get_contents($vhostBlock['certificates']['SSLCACertificateFile']));
         $output .= '
 # Definition block for domain(s): '.$vhostBlock['domains'].' #
 server {
@@ -98,7 +100,7 @@ server {
 
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
 
-    ssl_certificate '.$vhostBlock['certificates']['SSLCertificateFile'].';
+    ssl_certificate '.$fullChainCertName.';
     ssl_certificate_key '.$vhostBlock['certificates']['SSLCertificateKeyFile'].';
 
     include common_https.conf;
@@ -106,7 +108,6 @@ server {
 }
         ';
     }
-
     file_put_contents(NGINX_DEFAULT_HTTPS_VHOST, $output);
 }
 

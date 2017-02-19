@@ -322,6 +322,10 @@ EOFS
     /bin/cp -f $APP_PATH/nginx/utilities/https_vhosts.sh /etc/nginx/utilities/
     chmod +x /etc/nginx/utilities/*
 
+    if [ ! -d /etc/ssl/engintron ]; then
+        mkdir -p /etc/ssl/engintron
+    fi
+
     if [ -f /sbin/chkconfig ]; then
         /sbin/chkconfig nginx on
     else
@@ -361,6 +365,7 @@ function remove_nginx {
     yum -y remove nginx
     /bin/rm -rf /etc/nginx/*
     /bin/rm -f /etc/yum.repos.d/nginx.repo
+    /bin/rm -rf /etc/ssl/engintron/*
 
     echo ""
     echo ""
@@ -596,10 +601,10 @@ install)
     install_munin_patch
     install_engintron_ui
 
-	if [ ! -f /etc/ssl/certs/dhparam.pem ]; then
-	    echo ""
-	    echo "=== Generating DHE ciphersuites (2048 bits)... ==="
-	    openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+    if [ ! -f /etc/ssl/certs/dhparam.pem ]; then
+        echo ""
+        echo "=== Generating DHE ciphersuites (2048 bits)... ==="
+        openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
     fi
 
     echo ""
