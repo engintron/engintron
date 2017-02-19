@@ -17,6 +17,15 @@ define('NGINX_DEFAULT_HTTPS_VHOST', '/etc/nginx/conf.d/default_https.conf');
 define('NGINX_HTTPS_PORT', '443');
 
 function generate_https_vhosts() {
+
+	$hostnamePemFile = '';
+	if(file_exists('/var/cpanel/ssl/cpanel/cpanel.pem') && is_readable('/var/cpanel/ssl/cpanel/cpanel.pem'){
+		$hostnamePemFile = '/var/cpanel/ssl/cpanel/cpanel.pem';
+	}
+	if(file_exists('/var/cpanel/ssl/cpanel/mycpanel.pem') && is_readable('/var/cpanel/ssl/cpanel/mycpanel.pem'){
+		$hostnamePemFile = '/var/cpanel/ssl/cpanel/mycpanel.pem';
+	}
+
     // Initialize the output for default_https.conf
     $output = '
 # Default definition block for HTTPS (Generated on '.date('Y.m.d H:i:s').') #
@@ -29,13 +38,13 @@ server {
 
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
 
-    ssl_certificate /var/cpanel/ssl/cpanel/mycpanel.pem;
-    ssl_certificate_key /var/cpanel/ssl/cpanel/mycpanel.pem;
+    ssl_certificate '.$hostnamePemFile.';
+    ssl_certificate_key '.$hostnamePemFile.';
 
     # OCSP Stapling (for the server hostname only)
     ssl_stapling on;
     ssl_stapling_verify on;
-    ssl_trusted_certificate /var/cpanel/ssl/cpanel/mycpanel.pem;
+    ssl_trusted_certificate '.$hostnamePemFile.';
 
     include common_https.conf;
 
