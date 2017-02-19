@@ -37,7 +37,7 @@ proxy_send_timeout            240s;
 
 # Security Headers
 #if ($scheme = 'https') {
-#	add_header                Strict-Transport-Security "max-age=15768000; includeSubDomains" always;
+#	add_header                Strict-Transport-Security "max-age=86400; includeSubDomains" always;
 #}
 
 # Info
