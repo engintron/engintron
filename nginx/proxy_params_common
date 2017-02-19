@@ -36,8 +36,10 @@ proxy_read_timeout            240s;
 proxy_send_timeout            240s;
 
 # Security Headers
+add_header                    X-XSS-Protection "1; mode=block" always;
+add_header                    X-Content-Type-Options "nosniff" always;
 #if ($scheme = 'https') {
-#	add_header                Strict-Transport-Security "max-age=86400; includeSubDomains" always;
+#   add_header                Strict-Transport-Security "max-age=86400; includeSubDomains" always;
 #}
 
 # Info
