@@ -433,7 +433,7 @@ if(ENGINTRON_STATE!="missing") {
 			div#ngContainer {margin:0;padding:0 16px 4px;}
 				h1#ngTitle {margin:0;padding:0;text-align:center;}
 				h1#ngTitle a {background:url('https://engintron.com/app/images/Engintron_Logo_316x98_8.png') no-repeat 0 50%;font-size:20px;padding:36px 0 36px 326px;margin:0 0 8px 0;color:#333;display:inline-block;text-decoration:none;text-align:left;}
-				h1#ngTitle a span {display:block;font-size:11px;font-weight:normal;color:#999;}
+				h1#ngTitle a span {display:block;font-size:11px;font-weight:normal;color:#999;margin-left:8px;}
 				h2 {border-bottom:2px solid #eaeaea;padding:8px 0;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;font-size:24px;color:#008d23;}
 				div#ngOperations {float:left;width:30%;}
 				div#ngOperations ul {padding:0 0 0 8px;margin:0;list-style:none;}
