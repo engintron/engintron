@@ -596,9 +596,11 @@ install)
     install_munin_patch
     install_engintron_ui
 
-    echo ""
-    echo "=== Generating DHE ciphersuites (2048 bits)... ==="
-    openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+	if [ ! -f /etc/ssl/certs/dhparam.pem ]; then
+	    echo ""
+	    echo "=== Generating DHE ciphersuites (2048 bits)... ==="
+	    openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+    fi
 
     echo ""
     echo "=== Restarting Apache & Nginx... ==="
