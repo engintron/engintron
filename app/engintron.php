@@ -23,7 +23,7 @@ if($grantAccess === false) {
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_VERSION', '1.8.0');
-define('PLG_BUILD', ' (Build 20170219)');
+define('PLG_BUILD', 'Build 20170219');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 if(file_exists("/usr/local/src/engintron/state.conf")) {
@@ -433,7 +433,7 @@ if(ENGINTRON_STATE!="missing") {
 			div#ngContainer {margin:0;padding:0 16px 4px;}
 				h1#ngTitle {margin:0;padding:0;text-align:center;}
 				h1#ngTitle a {background:url('https://engintron.com/app/images/Engintron_Logo_316x98_8.png') no-repeat 0 50%;font-size:20px;padding:36px 0 36px 326px;margin:0 0 8px 0;color:#333;display:inline-block;text-decoration:none;text-align:left;}
-				h1#ngTitle a span {display:block;font-size:11px;font-weight:normal;color:#999;margin-left:8px;}
+				h1#ngTitle a span {display:block;font-size:11px;font-weight:normal;color:#999;}
 				h2 {border-bottom:2px solid #eaeaea;padding:8px 0;text-transform:uppercase;font-family:'Montserrat',sans-serif;font-weight:700;font-size:24px;color:#008d23;}
 				div#ngOperations {float:left;width:30%;}
 				div#ngOperations ul {padding:0 0 0 8px;margin:0;list-style:none;}
@@ -493,7 +493,7 @@ if(ENGINTRON_STATE!="missing") {
 		<div id="ngContainer">
 			<h1 id="ngTitle">
 				<a href="engintron.php" title="<?php echo PLG_NAME; ?>">
-					v<?php echo PLG_VERSION; ?><?php echo PLG_BUILD; ?><span>(Nginx version: <?php echo NGINX_VERSION; ?>)</span>
+					v<?php echo PLG_VERSION; ?><span><?php echo PLG_BUILD; ?><br />(Nginx version: <?php echo NGINX_VERSION; ?>)</span>
 				</a>
 			</h1>
 			<div id="ngOperations">
