@@ -23,6 +23,7 @@ if($grantAccess === false) {
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_VERSION', '1.8.0');
+define('PLG_BUILD', ' (Build 20170219)');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 if(file_exists("/usr/local/src/engintron/state.conf")) {
@@ -490,7 +491,11 @@ if(ENGINTRON_STATE!="missing") {
 			<a href="../scripts/command?PFILE=main">Home</a> &raquo; <a href="../scripts/command?PFILE=Plugins">Plugins</a> &raquo; <a href="engintron.php" class="active"><?php echo PLG_NAME; ?></a>
 		</div>
 		<div id="ngContainer">
-			<h1 id="ngTitle"><a href="engintron.php" title="<?php echo PLG_NAME; ?>">v<?php echo PLG_VERSION; ?><span>(Nginx version: <?php echo NGINX_VERSION; ?>)</span></a></h1>
+			<h1 id="ngTitle">
+				<a href="engintron.php" title="<?php echo PLG_NAME; ?>">
+					v<?php echo PLG_VERSION; ?><?php echo PLG_BUILD; ?><span>(Nginx version: <?php echo NGINX_VERSION; ?>)</span>
+				</a>
+			</h1>
 			<div id="ngOperations">
 				<h2>Operations</h2>
 				<ul>
