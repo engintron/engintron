@@ -70,14 +70,14 @@ The process will take a couple of minutes to complete and after that, Engintron 
 
 In there, you'll find basic options to control Nginx, Apache and MySQL, all in one convenient place. Additionally, you can edit all of Nginx's configuration files (as well as some from Apache & MySQL) to get even more from Engintron (e.g. configure Engintron for use with CloudFlare). If however all you want is to accelerate both static & dynamic content delivery, then Engintron is already setup for you and you don't need to do anything more.
 
-Inside the Engintron app dashboard you'll also find some handy utilities to monitor things like your Nginx access & error logs, check processes on your server or see incoming traffic on port 80.
+Inside the Engintron app dashboard you'll also find some handy utilities to monitor things like your Nginx access & error logs, check processes on your server or see incoming traffic on ports 80 & 443 (HTTP & HTTPS traffic respectively).
 
 _For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://github.com/engintron/engintron/wiki](https://github.com/engintron/engintron/wiki)_
 
 
 ### Why is Engintron a better solution compared to other Nginx installers for cPanel
 
-There are 8 key differences when comparing Engintron with other Nginx installers for cPanel.
+There are 9 key differences when comparing Engintron with other Nginx installers for cPanel.
 
 First and foremost, caching actually works with Engintron. It works as it should and it works universally. You install it and ALL your cPanel websites will get accelerated, even the slowest ones. Not only that, your serving capacity will increase tremendously. Simple Apache Benchmark (ab) tests reveal a phenomenal increase in concurrent requests served per second, from just 3-300 in Apache to 15,000-20,000 or even more using Nginx via Engintron. It's our carefully crafted "black box" configuration that does all the magic. And it requires literally almost zero maintenance.
 
@@ -92,6 +92,8 @@ Fifth, it has an amazingly simple yet practical app dashboard inside WHM with al
 Sixth, it's CloudFlare friendly. Because both CloudFlare and Engintron use Nginx as a reverse caching proxy, unless we configure Nginx in cPanel to properly act as the secondary proxy (after CloudFlare of course), chances are that CloudFlare will freak out and serve your sites with 10xx errors. So, if you have any domains hosted on your cPanel server that use CloudFlare for their CDN, you just set your server IPs inside your "custom_rules" Nginx configuration file (the file is commented for your help) and just restart Nginx for the changes to take effect. All this is done entirely inside WHM of course. If additionally you use CloudFlare's SSL, by choosing "Flexible SSL" in CloudFlare's "Crypt" settings you can direct CloudFlare HTTPS traffic to your cPanel's HTTP port served by Nginx, thus further improving web serving over HTTPS as well. A true win-win situation.
 
 Seventh, it doesn't require Nginx/Apache vhost synchronization when adding new domains via cPanel. That's why you essentially "set it and forget it". Have a look at the other Nginx installers... 'Nough said ;)
+
+Eighth, Engintron allows for both HTTP and HTTPS traffic to flow through Nginx entirely, as of version 1.8.0.
 
 And finally, Engintron is 100% open source. You can tear it apart, customize it, fork it, knife it or contribute back to its development. Do whatever you want with it :)
 
