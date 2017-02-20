@@ -65,29 +65,31 @@ server {
     ';
 
     // Process Apache vhosts
-    $file = file_get_contents(HTTPD_CONF);
-    $regex = "#\<VirtualHost [0-9\.]+\:".HTTPD_HTTPS_PORT."\>(.+?)\<\/VirtualHost\>#s";
-    preg_match_all($regex, $file, $matches, PREG_PATTERN_ORDER);
-    foreach ($matches[1] as $vhost) {
-        $vhostBlock = array();
-        preg_match("#ServerName (.+?)\n#s", $vhost, $name);
-        preg_match("#ServerAlias (.+?)\n#s", $vhost, $aliases);
-        $vhostBlock['domains'] = $name[1].' '.$aliases[1];
-        preg_match("#\<IfModule ssl_module\>(.+?)\<\/IfModule\>#s", $vhost, $sslblock);
-        $sslBlockContents = $sslblock[1];
-        preg_match("#SSLCertificateFile (.+?)\n#s", $sslBlockContents, $certfile);
-        preg_match("#SSLCertificateKeyFile (.+?)\n#s", $sslBlockContents, $certkey);
-        preg_match("#SSLCACertificateFile (.+?)\n#s", $sslBlockContents, $certbundle);
-        $vhostBlock['certificates'] = array(
-            'SSLCertificateFile' => $certfile[1],
-            'SSLCertificateKeyFile' => $certkey[1],
-            'SSLCACertificateFile' => $certbundle[1]
-        );
+    if (file_exists(HTTPD_CONF) && is_readable(HTTPD_CONF)) {
+        $file = file_get_contents(HTTPD_CONF);
+        $regex = "#\<VirtualHost [0-9\.]+\:".HTTPD_HTTPS_PORT."\>(.+?)\<\/VirtualHost\>#s";
+        preg_match_all($regex, $file, $matches, PREG_PATTERN_ORDER);
+        if(count($matches[1])) {
+            foreach ($matches[1] as $vhost) {
+                $vhostBlock = array();
+                preg_match("#ServerName (.+?)\n#s", $vhost, $name);
+                preg_match("#ServerAlias (.+?)\n#s", $vhost, $aliases);
+                $vhostBlock['domains'] = $name[1].' '.$aliases[1];
+                preg_match("#\<IfModule ssl_module\>(.+?)\<\/IfModule\>#s", $vhost, $sslblock);
+                $sslBlockContents = $sslblock[1];
+                preg_match("#SSLCertificateFile (.+?)\n#s", $sslBlockContents, $certfile);
+                preg_match("#SSLCertificateKeyFile (.+?)\n#s", $sslBlockContents, $certkey);
+                preg_match("#SSLCACertificateFile (.+?)\n#s", $sslBlockContents, $certbundle);
+                $vhostBlock['certificates'] = array(
+                    'SSLCertificateFile' => $certfile[1],
+                    'SSLCertificateKeyFile' => $certkey[1],
+                    'SSLCACertificateFile' => $certbundle[1]
+                );
 
-        $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostBlock['certificates']['SSLCertificateFile']);
-        file_put_contents($fullChainCertName, file_get_contents($vhostBlock['certificates']['SSLCertificateFile'])."\n".file_get_contents($vhostBlock['certificates']['SSLCACertificateFile']));
+                $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostBlock['certificates']['SSLCertificateFile']);
+                file_put_contents($fullChainCertName, file_get_contents($vhostBlock['certificates']['SSLCertificateFile'])."\n".file_get_contents($vhostBlock['certificates']['SSLCACertificateFile']));
 
-        $output .= '
+                $output .= '
 # Definition block for domain(s): '.$vhostBlock['domains'].' #
 server {
     listen '.NGINX_HTTPS_PORT.' ssl http2;
@@ -99,7 +101,9 @@ server {
     ssl_trusted_certificate '.$fullChainCertName.';
     include common_https.conf;
 }
-        ';
+                ';
+            }
+        }
     }
     file_put_contents(NGINX_DEFAULT_HTTPS_VHOST, $output);
 }
