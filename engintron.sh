@@ -626,6 +626,11 @@ install)
     fi
     echo "on" > $APP_PATH/state.conf
 
+    if [ -f $APP_PATH/engintron.sh ]; then
+    	chmod +x $APP_PATH/engintron.sh
+    	$APP_PATH/engintron.sh purgecache
+    fi
+
     echo ""
     echo "**************************************"
     echo "*       Installation Complete        *"
