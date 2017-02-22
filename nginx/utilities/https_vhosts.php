@@ -7,7 +7,7 @@
  * @author     Fotis Evangelou
  * @url        https://engintron.com
  * @copyright  Copyright (c) 2010 - 2017 Nuevvo Webware P.C. All rights reserved.
- * @license    GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
 define('HTTPD_CONF_LAST_CHANGED', 10); /* In seconds */

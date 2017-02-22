@@ -6,7 +6,7 @@
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
 #  * @copyright  Copyright (c) 2010 - 2017 Nuevvo Webware P.C. All rights reserved.
-#  * @license    GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+#  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
 # Constants
@@ -199,7 +199,7 @@ function apache_change_port {
     echo "=== Distill changes in Apache's configuration and restart Apache ==="
     /usr/local/cpanel/bin/apache_conf_distiller --update
     /scripts/rebuildhttpdconf
-    /scripts/restartsrv httpd
+    /scripts/restartsrv_httpd
 
     echo ""
     echo ""
@@ -231,7 +231,7 @@ function apache_revert_port {
     echo "=== Distill changes in Apache's configuration and restart Apache ==="
     /usr/local/cpanel/bin/apache_conf_distiller --update
     /scripts/rebuildhttpdconf
-    /scripts/restartsrv httpd
+    /scripts/restartsrv_httpd
 
     echo ""
     echo ""
@@ -609,7 +609,7 @@ install)
 
     echo ""
     echo "=== Restarting Apache & Nginx... ==="
-    service httpd restart
+    /scripts/restartsrv_httpd
     fuser -k 80/tcp
     fuser -k 8080/tcp
     fuser -k 443/tcp
@@ -660,7 +660,7 @@ remove)
 
     echo ""
     echo "=== Restarting Apache... ==="
-    service httpd restart
+    /scripts/restartsrv_httpd
 
     echo ""
     echo "**************************************"
@@ -700,7 +700,7 @@ enable)
     apache_change_port
     service nginx start
 
-    service httpd restart
+    /scripts/restartsrv_httpd
     service nginx restart
 
     echo ""
@@ -742,7 +742,7 @@ disable)
     apache_revert_port
     service nginx start
 
-    service httpd restart
+    /scripts/restartsrv_httpd
     service nginx restart
 
     echo ""
@@ -784,7 +784,7 @@ resall)
     fi
     if [ "$(pstree | grep 'httpd')" ]; then
         echo "Restarting Apache..."
-        service httpd restart
+        /scripts/restartsrv_httpd
         echo ""
     fi
     if [ "$(pstree | grep 'nginx')" ]; then
@@ -801,7 +801,7 @@ res)
     echo ""
     if [ "$(pstree | grep 'httpd')" ]; then
         echo "Restarting Apache..."
-        service httpd restart
+        /scripts/restartsrv_httpd
         echo ""
     fi
     if [ "$(pstree | grep 'nginx')" ]; then
@@ -821,7 +821,7 @@ purgecache)
     find /tmp/engintron_temp/ -type f | xargs rm -rvf
     if [ "$(pstree | grep 'httpd')" ]; then
         echo "Apache restarting..."
-        service httpd restart
+        /scripts/restartsrv_httpd
         echo ""
     fi
     if [ "$(pstree | grep 'nginx')" ]; then
@@ -843,7 +843,7 @@ purgelogs)
     fi
     if [ "$(pstree | grep 'httpd')" ]; then
         echo "Apache restarting..."
-        service httpd restart
+        /scripts/restartsrv_httpd
         echo ""
     fi
     if [ "$(pstree | grep 'nginx')" ]; then
