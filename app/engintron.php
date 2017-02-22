@@ -47,6 +47,7 @@ $allowed_files = array(
 	'/etc/nginx/custom_rules',
 	'/etc/nginx/custom_rules.dist',
 	'/etc/nginx/conf.d/default.conf',
+	'/etc/nginx/common_https.conf',
 	'/etc/my.cnf',
 	'/usr/local/apache/conf/php.conf',
 	'/usr/local/lib/php.ini'
