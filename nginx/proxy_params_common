@@ -43,7 +43,7 @@ proxy_send_timeout			120s;
 if ($scheme = "https") {
     # Info
     add_header                    X-Nginx-Cache-Status $upstream_cache_status;
-    add_header                    X-Server-Powered-By "My-Hosted-Website";
+    add_header                    X-Server-Powered-By "Engintron";
     
     # Security Headers
     add_header                    Strict-Transport-Security "max-age=15768000; includeSubDomains" always;
@@ -56,7 +56,7 @@ if ($scheme = "https") {
 if ($scheme = "http"){
     # Info
     add_header                    X-Nginx-Cache-Status $upstream_cache_status;
-    add_header                    X-Server-Powered-By "My-Hosted-Website";
+    add_header                    X-Server-Powered-By "Engintron";
     
     # Security Headers
     add_header                    Referrer-Policy "no-referrer-when-downgrade" always;
