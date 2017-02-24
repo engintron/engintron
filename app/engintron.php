@@ -141,7 +141,7 @@ function execute($act) {
             break;
 
         case "mysql_restart":
-            $command = shell_exec("/scripts/restartsrv_mysql");
+            $command = shell_exec("service mysqld restart");
             if(empty($command)) {
                 $output = "<p>Something went wrong, check the MySQL log.</p>";
             } else {
@@ -150,7 +150,7 @@ function execute($act) {
             break;
 
         case "mysql_status":
-            $command = shell_exec("service mysql status");
+            $command = shell_exec("service mysqld status");
             if(empty($command)) {
                 $output = "<p>Something went wrong, check the MySQL log.</p>";
             } else {
