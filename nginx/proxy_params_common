@@ -40,6 +40,27 @@ proxy_connect_timeout		120s;
 proxy_read_timeout			120s;
 proxy_send_timeout			120s;
 
-# Info
-add_header					X-Cache-Status $upstream_cache_status;
-add_header					X-Server-Powered-By "Engintron";
+if ($scheme = "https") {
+    # Info
+    add_header                    X-Nginx-Cache-Status $upstream_cache_status;
+    add_header                    X-Server-Powered-By "Engintron";
+    
+    # Security Headers
+    add_header                    Strict-Transport-Security "max-age=15768000; includeSubDomains" always;
+    add_header                    Referrer-Policy "no-referrer-when-downgrade" always;
+    add_header                    X-Frame-Options SAMEORIGIN;
+    add_header                    X-Content-Type-Options "nosniff" always;
+    add_header                    X-XSS-Protection "1; mode=block" always;
+}
+
+if ($scheme = "http"){
+    # Info
+    add_header                    X-Nginx-Cache-Status $upstream_cache_status;
+    add_header                    X-Server-Powered-By "Engintron";
+    
+    # Security Headers
+    add_header                    Referrer-Policy "no-referrer-when-downgrade" always;
+    add_header                    X-Frame-Options SAMEORIGIN;
+    add_header                    X-Content-Type-Options "nosniff" always;
+    add_header                    X-XSS-Protection "1; mode=block" always;
+}
