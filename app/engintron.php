@@ -14,6 +14,7 @@ $checkPrivileges = trim(shell_exec("if whmapi1 myprivs | grep -q 'all: 1'; then 
 $user = getenv('REMOTE_USER'); /* legacy check */
 if($checkPrivileges=='all') $grantAccess = true;
 if($user=="root") $grantAccess = true;
+if(strpos($user, 'cp')!==false) $grantAccess = true;
 if($grantAccess === false) {
     echo "You do not have sufficient permissions to access this page...";
     exit;
