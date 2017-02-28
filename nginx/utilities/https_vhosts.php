@@ -76,20 +76,19 @@ server {
                 preg_match("#ServerAlias (.+?)\n#s", $vhost, $aliases);
                 $vhostBlock['domains'] = $name[1].' '.$aliases[1];
                 preg_match("#\<IfModule ssl_module\>(.+?)\<\/IfModule\>#s", $vhost, $sslblock);
-                $sslBlockContents = $sslblock[1];
-                preg_match("#SSLCertificateFile (.+?)\n#s", $sslBlockContents, $certfile);
-                preg_match("#SSLCertificateKeyFile (.+?)\n#s", $sslBlockContents, $certkey);
-                preg_match("#SSLCACertificateFile (.+?)\n#s", $sslBlockContents, $certbundle);
-                $vhostBlock['certificates'] = array(
-                    'SSLCertificateFile' => $certfile[1],
-                    'SSLCertificateKeyFile' => $certkey[1],
-                    'SSLCACertificateFile' => $certbundle[1]
-                );
-
-                $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostBlock['certificates']['SSLCertificateFile']);
-                file_put_contents($fullChainCertName, file_get_contents($vhostBlock['certificates']['SSLCertificateFile'])."\n".file_get_contents($vhostBlock['certificates']['SSLCACertificateFile']));
-
-                $output .= '
+                if(count($sslblock)){
+                    $sslBlockContents = $sslblock[1];
+                    preg_match("#SSLCertificateFile (.+?)\n#s", $sslBlockContents, $certfile);
+                    preg_match("#SSLCertificateKeyFile (.+?)\n#s", $sslBlockContents, $certkey);
+                    preg_match("#SSLCACertificateFile (.+?)\n#s", $sslBlockContents, $certbundle);
+                    $vhostBlock['certificates'] = array(
+                        'SSLCertificateFile' => $certfile[1],
+                        'SSLCertificateKeyFile' => $certkey[1],
+                        'SSLCACertificateFile' => $certbundle[1]
+                    );
+                    $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostBlock['certificates']['SSLCertificateFile']);
+                    file_put_contents($fullChainCertName, file_get_contents($vhostBlock['certificates']['SSLCertificateFile'])."\n".file_get_contents($vhostBlock['certificates']['SSLCACertificateFile']));
+                    $output .= '
 # Definition block for domain(s): '.$vhostBlock['domains'].' #
 server {
     listen '.NGINX_HTTPS_PORT.' ssl http2;
@@ -101,7 +100,8 @@ server {
     ssl_trusted_certificate '.$fullChainCertName.';
     include common_https.conf;
 }
-                ';
+                    ';
+                }
             }
         }
     }
