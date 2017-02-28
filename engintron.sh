@@ -615,6 +615,7 @@ install)
     fuser -k 443/tcp
     fuser -k 8443/tcp
     service nginx start
+    /scripts/restartsrv_httpd
 
     csf_pignore_add
     cron_for_https_vhosts_add
