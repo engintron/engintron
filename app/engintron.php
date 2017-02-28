@@ -42,6 +42,7 @@ $state = $_GET['state'];
 $allowed_files = array(
     '/etc/crontab',
     '/etc/nginx/nginx.conf',
+    '/etc/nginx/common_https.conf',
     '/etc/nginx/proxy_params_common',
     '/etc/nginx/proxy_params_dynamic',
     '/etc/nginx/proxy_params_static',
@@ -144,16 +145,20 @@ function execute($act) {
         case "mysql_restart":
             $command = shell_exec("/scripts/restartsrv_mysql");
             if(empty($command)) {
-                $output = "<p>Something went wrong, check the MySQL log.</p>";
+                $output = "<p>Something went wrong, check the MySQL or MariaDB service log.</p>";
             } else {
                 $output = "<p>".nl2br($command)."</p>";
             }
             break;
 
         case "mysql_status":
-            $command = shell_exec("service mysql status");
+            if(shell_exec("service mysqld status; echo \$?")){
+                $command = shell_exec("service mysql status");
+            } else {
+                $command = shell_exec("service mysqld status");
+            }
             if(empty($command)) {
-                $output = "<p>Something went wrong, check the MySQL log.</p>";
+                $output = "<p>Something went wrong, check the MySQL or MariaDB service log.</p>";
             } else {
                 $output = "<p>".nl2br($command)."</p>";
             }
@@ -279,18 +284,13 @@ switch($op) {
         break;
 
     case "mysql_restart":
-        $ret = "<b>Restarting MySQL...</b><br />";
+        $ret = "<b>Restarting database...</b><br />";
         $ret .= execute("mysql_restart");
         break;
 
     case "mysql_status":
-        $ret = "<b>MySQL Status:</b><br />";
+        $ret = "<b>Database Status:</b><br />";
         $ret .= execute("mysql_status");
-        break;
-
-    case "mysql_processlist":
-        $ret = "<b>MySQL Process List:</b><br />";
-        $ret .= shell_exec("mysqladmin processlist 2>&1");
         break;
 
     case "utils_80":
@@ -519,6 +519,7 @@ if(ENGINTRON_STATE!="missing") {
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_common&s=nginx">Edit proxy_params_common</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_dynamic&s=nginx">Edit proxy_params_dynamic</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_static&s=nginx">Edit proxy_params_static</a></li>
+                            <li><a href="engintron.php?op=edit&f=/etc/nginx/common_https.conf&s=nginx">Edit common_https.conf</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/nginx.conf&s=nginx">Edit nginx.conf</a></li>
                             <li><a href="engintron.php?op=nginx_config">Check configuration for errors</a></li>
                             <li><a href="engintron.php?op=nginx_modules">Show compiled modules</a></li>
@@ -549,11 +550,10 @@ if(ENGINTRON_STATE!="missing") {
                         </ul>
                     </li>
                     <li>
-                        <h3>MySQL</h3>
+                        <h3>Database (MySQL or MariaDB)</h3>
                         <ul>
                             <li><a href="engintron.php?op=mysql_status">Status</a></li>
                             <li><a href="engintron.php?op=mysql_restart">Restart</a></li>
-                            <!--<li><a href="engintron.php?op=mysql_processlist">Process list</a></li>-->
                             <li><a href="engintron.php?op=edit&f=/etc/my.cnf&s=mysql">Edit my.cnf</a></li>
                         </ul>
                     </li>

@@ -208,7 +208,7 @@ function apache_change_port {
 
 function apache_revert_port {
 
-    echo "=== Switch Apache back to port 80 ==="
+    echo "=== Switch Apache back to ports 80 & 443 ==="
 
     if [ -f /usr/local/cpanel/bin/whmapi1 ]; then
         /usr/local/cpanel/bin/whmapi1 set_tweaksetting key=apache_port value=0.0.0.0:80
