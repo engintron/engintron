@@ -647,10 +647,10 @@ if(ENGINTRON_STATE!="missing") {
 
             // Ace
             if(document.getElementById('ngAceEditor')){
-                var editor = ace.edit("ngAceEditor");
+                var editor = ace.edit('ngAceEditor');
                 editor.$blockScrolling = Infinity;
-                editor.setTheme("ace/theme/twilight");
-                editor.getSession().setMode("ace/mode/sh");
+                editor.setTheme('ace/theme/twilight');
+                editor.getSession().setMode('ace/mode/sh');
                 editor.getSession().setUseWrapMode(true);
                 editor.resize();
                 var t = document.getElementById('data');
@@ -683,8 +683,8 @@ if(ENGINTRON_STATE!="missing") {
                     var updLink = updContainer.getElementsByTagName('a')[0];
                     updLink.onclick = function(){
                         updContainer.getElementsByTagName('span')[0].setAttribute('style', 'display:inline;');
-                        if(this.className != "clicked") {
-                            this.className = "clicked";
+                        if(this.className != 'clicked') {
+                            this.className = 'clicked';
                             return true;
                         } else {
                             return false;
