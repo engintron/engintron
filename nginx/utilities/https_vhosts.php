@@ -2,7 +2,7 @@
 <?php
 
 /**
- * @version    1.8.0
+ * @version    1.8.1
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -71,37 +71,47 @@ server {
         preg_match_all($regex, $file, $matches, PREG_PATTERN_ORDER);
         if(count($matches[1])) {
             foreach ($matches[1] as $vhost) {
-                $vhostBlock = array();
                 preg_match("#ServerName (.+?)\n#s", $vhost, $name);
                 preg_match("#ServerAlias (.+?)\n#s", $vhost, $aliases);
-                $vhostBlock['domains'] = $name[1].' '.$aliases[1];
-                preg_match("#\<IfModule ssl_module\>(.+?)\<\/IfModule\>#s", $vhost, $sslblock);
-                if(count($sslblock)){
-                    $sslBlockContents = $sslblock[1];
-                    preg_match("#SSLCertificateFile (.+?)\n#s", $sslBlockContents, $certfile);
-                    preg_match("#SSLCertificateKeyFile (.+?)\n#s", $sslBlockContents, $certkey);
-                    preg_match("#SSLCACertificateFile (.+?)\n#s", $sslBlockContents, $certbundle);
-                    $vhostBlock['certificates'] = array(
-                        'SSLCertificateFile' => $certfile[1],
-                        'SSLCertificateKeyFile' => $certkey[1],
-                        'SSLCACertificateFile' => $certbundle[1]
-                    );
-                    $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostBlock['certificates']['SSLCertificateFile']);
-                    file_put_contents($fullChainCertName, file_get_contents($vhostBlock['certificates']['SSLCertificateFile'])."\n".file_get_contents($vhostBlock['certificates']['SSLCACertificateFile']));
-                    $output .= '
-# Definition block for domain(s): '.$vhostBlock['domains'].' #
+                preg_match("#SSLCertificateFile (.+?)(\n|\r)#s", $vhost, $certfile);
+                preg_match("#SSLCertificateKeyFile (.+?)(\n|\r)#s", $vhost, $certkeyfile);
+                preg_match("#SSLCACertificateFile (.+?)(\n|\r)#s", $vhost, $certcafile);
+                if($aliases[1]){
+                    $vhostAliases = $aliases[1];
+                } else {
+                    $vhostAliases = '';
+                }
+                $vhostDomains = trim($name[1].' '.$vhostAliases);
+                $vhostCertFile = $certfile[1];
+                $vhostCertKeyFile = $certkeyfile[1];
+                $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostCertFile);
+                if($certcafile[1]){
+                    $vhostCertCAFile = $certcafile[1];
+                    $vhostFullChainCert = file_get_contents($vhostCertFile)."\n".file_get_contents($vhostCertCAFile);
+                    $ocspStapling = '
+    # OCSP Stapling
+    ssl_trusted_certificate '.$fullChainCertName.';
+    ssl_stapling on;
+    ssl_stapling_verify on;
+                ';
+                } else {
+                    $vhostFullChainCert = file_get_contents($vhostCertFile);
+                    $ocspStapling = '';
+                }
+                file_put_contents($fullChainCertName, $vhostFullChainCert);
+                $output .= '
+# Definition block for domain(s): '.$vhostDomains.' #
 server {
     listen '.NGINX_HTTPS_PORT.' ssl http2;
     #listen [::]:'.NGINX_HTTPS_PORT.' ssl http2; # Uncomment if your server supports IPv6
-    server_name '.$vhostBlock['domains'].';
+    server_name '.$vhostDomains.';
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
     ssl_certificate '.$fullChainCertName.';
-    ssl_certificate_key '.$vhostBlock['certificates']['SSLCertificateKeyFile'].';
-    ssl_trusted_certificate '.$fullChainCertName.';
+    ssl_certificate_key '.$vhostCertKeyFile.';
+    '.$ocspStapling.'
     include common_https.conf;
 }
-                    ';
-                }
+                ';
             }
         }
     }
