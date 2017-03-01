@@ -615,7 +615,6 @@ install)
     fuser -k 443/tcp
     fuser -k 8443/tcp
     service nginx start
-    /usr/bin/php /etc/nginx/utilities/https_vhosts.php
     /scripts/restartsrv_httpd
 
     csf_pignore_add
