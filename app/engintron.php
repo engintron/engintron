@@ -177,9 +177,14 @@ switch($op) {
         $ret .= shell_exec("service httpd -t 2>&1");
         break;
 
-    case "httpd_modules":
+    case "httpd_modules_compiled":
         $ret = "<b>Show compiled modules...</b><br />";
         $ret .= shell_exec("service httpd -l");
+        break;
+
+    case "httpd_modules_loaded":
+        $ret = "<b>Show compiled modules...</b><br />";
+        $ret .= shell_exec("service httpd -M");
         break;
 
     case "httpd_parsed_settings":
@@ -449,7 +454,8 @@ if(ENGINTRON_STATE!="missing") {
                             <li><a href="engintron.php?op=httpd_reload">Reload</a></li>
                             <li><a href="engintron.php?op=httpd_restart">Restart</a></li>
                             <li><a href="engintron.php?op=httpd_config">Check configuration for errors</a></li>
-                            <li><a href="engintron.php?op=httpd_modules">Show compiled modules</a></li>
+                            <li><a href="engintron.php?op=httpd_modules_compiled">Show compiled modules</a></li>
+                            <li><a href="engintron.php?op=httpd_modules_loaded">Show loaded modules</a></li>
                             <li><a href="engintron.php?op=httpd_parsed_settings">Show parsed settings</a></li>
                         </ul>
                     </li>
