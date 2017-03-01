@@ -180,7 +180,7 @@ switch($op) {
         if(isset($_POST['data'])) {
             $data = $_POST['data'];
             if(isset($f) && in_array($f, $allowed_files)) {
-                file_put_contents($f, $data);
+                file_put_contents($f, str_replace("\r\n", "\n", $data)); // Convert new lines to LF
                 $message = '<b>'.$f.'</b> has been updated';
                 if(isset($_POST['c'])) {
                     $message .= '<br /><br />';
