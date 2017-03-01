@@ -619,6 +619,7 @@ install)
 
     csf_pignore_add
     cron_for_https_vhosts_add
+    /etc/nginx/utilities/https_vhosts.sh
 
     service nginx restart
 
