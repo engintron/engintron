@@ -16,7 +16,9 @@ define('HTTPD_HTTPS_PORT', '8443');
 define('NGINX_DEFAULT_HTTPS_VHOST', '/etc/nginx/conf.d/default_https.conf');
 define('NGINX_HTTPS_PORT', '443');
 
-date_default_timezone_set('UTC');
+//date_default_timezone_set('UTC');
+//ini_set('display_errors', 0);
+//error_reporting(0);
 
 function generate_https_vhosts() {
 
