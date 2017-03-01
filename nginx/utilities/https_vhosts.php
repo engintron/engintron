@@ -16,6 +16,8 @@ define('HTTPD_HTTPS_PORT', '8443');
 define('NGINX_DEFAULT_HTTPS_VHOST', '/etc/nginx/conf.d/default_https.conf');
 define('NGINX_HTTPS_PORT', '443');
 
+date_default_timezone_set('UTC');
+
 function generate_https_vhosts() {
 
     $hostnamePemFile = '';
@@ -40,7 +42,11 @@ server {
 
     ssl_certificate '.$hostnamePemFile.';
     ssl_certificate_key '.$hostnamePemFile.';
+
+    # OCSP Stapling
     ssl_trusted_certificate '.$hostnamePemFile.';
+    ssl_stapling on;
+    ssl_stapling_verify on;
 
     include common_https.conf;
 
