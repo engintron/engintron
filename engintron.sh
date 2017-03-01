@@ -614,12 +614,12 @@ install)
     fuser -k 8080/tcp
     fuser -k 443/tcp
     fuser -k 8443/tcp
+    /etc/nginx/utilities/https_vhosts.sh
     service nginx start
     /scripts/restartsrv_httpd
 
     csf_pignore_add
     cron_for_https_vhosts_add
-    /etc/nginx/utilities/https_vhosts.sh
 
     service nginx restart
 
@@ -629,8 +629,8 @@ install)
     echo "on" > $APP_PATH/state.conf
 
     if [ -f $APP_PATH/engintron.sh ]; then
-    	chmod +x $APP_PATH/engintron.sh
-    	$APP_PATH/engintron.sh purgecache
+        chmod +x $APP_PATH/engintron.sh
+        $APP_PATH/engintron.sh purgecache
     fi
 
     echo ""
