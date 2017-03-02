@@ -183,7 +183,7 @@ switch($op) {
         break;
 
     case "httpd_modules_loaded":
-        $ret = "<b>Show compiled modules...</b><br />";
+        $ret = "<b>Show loaded modules...</b><br />";
         $ret .= shell_exec("service httpd -M");
         break;
 
