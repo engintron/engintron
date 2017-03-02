@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    1.8.1
+ * @version    1.8.2
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -23,8 +23,8 @@ if($grantAccess === false) {
 // A few constants to make updating easier
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.8.1');
-define('PLG_BUILD', 'Build 20170301');
+define('PLG_VERSION', '1.8.2');
+define('PLG_BUILD', 'Build 20170302');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 if(file_exists("/usr/local/src/engintron/state.conf")) {
@@ -190,6 +190,11 @@ switch($op) {
     case "httpd_parsed_settings":
         $ret = "<b>Show parsed settings...</b><br />";
         $ret .= shell_exec("service httpd -S");
+        break;
+
+    case "httpd_restoreipfwd":
+        $ret = "<b>Restore Nginx IP forwarding in Apache...</b><br />";
+        $ret .= shell_exec("bash /usr/local/src/engintron/engintron.sh restoreipfwd");
         break;
 
     case "mysql_restart":
@@ -457,6 +462,7 @@ if(ENGINTRON_STATE!="missing") {
                             <li><a href="engintron.php?op=httpd_modules_compiled">Show compiled modules</a></li>
                             <li><a href="engintron.php?op=httpd_modules_loaded">Show loaded modules</a></li>
                             <li><a href="engintron.php?op=httpd_parsed_settings">Show parsed settings</a></li>
+                            <li><a href="engintron.php?op=httpd_restoreipfwd">Restore Nginx IP forwarding in Apache</a></li>
                         </ul>
                     </li>
                     <li>

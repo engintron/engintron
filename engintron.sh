@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.8.1
+#  * @version    1.8.2
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -11,7 +11,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.8.1"
+APP_VERSION="1.8.2"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
@@ -36,70 +36,13 @@ function install_basics {
 
 }
 
-function install_mod_rpaf {
-
-    echo "=== Installing mod_rpaf (v0.8.4) for Apache ==="
-    cd /usr/local/src
-    /bin/rm -f mod_rpaf-0.8.4.zip
-    wget --no-check-certificate $REPO_CDN_URL/apache/mod_rpaf-0.8.4.zip
-    unzip -o mod_rpaf-0.8.4.zip
-    /bin/rm -f mod_rpaf-0.8.4.zip
-    cd mod_rpaf-0.8.4
-    chmod +x apxs.sh
-    ./apxs.sh -i -c -n mod_rpaf.so mod_rpaf.c
-    /bin/rm -rf /usr/local/src/mod_rpaf-0.8.4/
-
-    if [ -f /usr/local/apache/modules/mod_rpaf.so ]; then
-
-        # Get system IPs
-        #systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
-        systemips=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
-
-        if [ ! -f /usr/local/apache/conf/includes/rpaf.conf ]; then
-            touch /usr/local/apache/conf/includes/rpaf.conf
-        fi
-
-        cat > "/usr/local/apache/conf/includes/rpaf.conf" <<EOF
-# RPAF
-LoadModule              rpaf_module modules/mod_rpaf.so
-RPAF_Enable             On
-RPAF_ProxyIPs           127.0.0.1 $systemips
-RPAF_SetHostName        On
-RPAF_SetHTTPS           On
-RPAF_SetPort            On
-RPAF_ForbidIfNotProxy   Off
-RPAF_Header             X-Real-IP
-EOF
-
-        /bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
-        sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
-        sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/rpaf.conf":' /usr/local/apache/conf/httpd.conf
-        sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /usr/local/apache/conf/httpd.conf
-        echo ""
-        echo ""
-
-    fi
-
-}
-
-function remove_mod_rpaf {
-
-    if [ -f /usr/local/apache/conf/includes/rpaf.conf ]; then
-        echo "=== Removing mod_rpaf (v0.8.4) for Apache ==="
-        rm -f /usr/local/apache/conf/includes/rpaf.conf
-        sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
-        sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
-        echo ""
-        echo ""
-    fi
-
-}
-
 function install_mod_remoteip {
 
     # Get system IPs
-    #systemips=$(ip addr show | grep 'inet ' | grep ' brd ' | cut -d/ -f1 | cut -c10- | tr '\n' ' ');
-    systemips=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+    SYSTEM_IPS=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+    if [[ ! $(echo $SYSTEM_IPS | grep "127.0.0.1") ]]; then
+        SYSTEM_IPS="127.0.0.1 $SYSTEM_IPS"
+    fi
 
     echo "=== Installing mod_remoteip for Apache ==="
 
@@ -111,10 +54,10 @@ function install_mod_remoteip {
             if [ -f $REMOTEIP_CONF ]; then
 
                 cat > $REMOTEIP_CONF <<EOF
-# Enable mod_remoteip
+# mod_remoteip (https://httpd.apache.org/docs/current/mod/mod_remoteip.html)
 LoadModule remoteip_module modules/mod_remoteip.so
-RemoteIPInternalProxy 127.0.0.1 $systemips
-RemoteIPHeader X-Real-IP
+RemoteIPHeader        X-Forwarded-For
+RemoteIPInternalProxy $SYSTEM_IPS
 EOF
                 sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /etc/apache2/conf/httpd.conf
             fi
@@ -137,10 +80,10 @@ EOF
             fi
 
             cat > "/usr/local/apache/conf/includes/remoteip.conf" <<EOF
-# RemoteIP
+# mod_remoteip (https://httpd.apache.org/docs/current/mod/mod_remoteip.html)
 LoadModule remoteip_module modules/mod_remoteip.so
-RemoteIPInternalProxy 127.0.0.1 $systemips
-RemoteIPHeader X-Real-IP
+RemoteIPHeader        X-Forwarded-For
+RemoteIPInternalProxy $SYSTEM_IPS
 EOF
 
             /bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
@@ -171,6 +114,67 @@ function remove_mod_remoteip {
 
     echo ""
     echo ""
+
+}
+
+function install_mod_rpaf {
+
+    echo "=== Installing mod_rpaf (v0.8.4) for Apache ==="
+    cd /usr/local/src
+    /bin/rm -f mod_rpaf-0.8.4.zip
+    wget --no-check-certificate $REPO_CDN_URL/apache/mod_rpaf-0.8.4.zip
+    unzip -o mod_rpaf-0.8.4.zip
+    /bin/rm -f mod_rpaf-0.8.4.zip
+    cd mod_rpaf-0.8.4
+    chmod +x apxs.sh
+    ./apxs.sh -i -c -n mod_rpaf.so mod_rpaf.c
+    /bin/rm -rf /usr/local/src/mod_rpaf-0.8.4/
+
+    if [ -f /usr/local/apache/modules/mod_rpaf.so ]; then
+
+        # Get system IPs
+        SYSTEM_IPS=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+        if [[ ! $(echo $SYSTEM_IPS | grep "127.0.0.1") ]]; then
+            SYSTEM_IPS="127.0.0.1 $SYSTEM_IPS"
+        fi
+
+        if [ ! -f /usr/local/apache/conf/includes/rpaf.conf ]; then
+            touch /usr/local/apache/conf/includes/rpaf.conf
+        fi
+
+        cat > "/usr/local/apache/conf/includes/rpaf.conf" <<EOF
+# mod_rpaf (https://github.com/gnif/mod_rpaf)
+LoadModule              rpaf_module modules/mod_rpaf.so
+RPAF_Enable             On
+RPAF_ForbidIfNotProxy   Off
+RPAF_Header             X-Forwarded-For
+RPAF_ProxyIPs           $SYSTEM_IPS
+RPAF_SetHostName        On
+RPAF_SetHTTPS           On
+RPAF_SetPort            On
+EOF
+
+        /bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+        sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
+        sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/rpaf.conf":' /usr/local/apache/conf/httpd.conf
+        sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /usr/local/apache/conf/httpd.conf
+        echo ""
+        echo ""
+
+    fi
+
+}
+
+function remove_mod_rpaf {
+
+    if [ -f /usr/local/apache/conf/includes/rpaf.conf ]; then
+        echo "=== Removing mod_rpaf (v0.8.4) for Apache ==="
+        rm -f /usr/local/apache/conf/includes/rpaf.conf
+        sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
+        sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
+        echo ""
+        echo ""
+    fi
 
 }
 
@@ -532,9 +536,38 @@ function cron_for_https_vhosts_remove {
     fi
 }
 
-# Check SSH connections
-# 0 */6 * * * root /root/kontrol/tools/check_ssh_connections.sh >> /dev/null 2>&1
+function chkserv_nginx_on {
+    if [ -f /etc/chkserv.d/httpd ]; then
+        echo ""
+        echo "=== Enable TailWatch chkservd driver for Nginx ==="
 
+        sed -i 's:service[httpd]=80,:service[httpd]=8080,:' /etc/chkserv.d/httpd
+        echo "nginx:1" >> /etc/chkserv.d/chkservd.conf
+        if [ ! -f /etc/chkserv.d/nginx ]; then
+            touch /etc/chkserv.d/nginx
+        fi
+        echo "service[nginx]=80,GET / HTTP/1.0,HTTP/1..,killall -TERM nginx;sleep 2;killall -9 nginx;service nginx stop;service nginx start" > /etc/chkserv.d/nginx
+        /scripts/restartsrv_chkservd
+        echo ""
+        echo ""
+    fi
+}
+
+function chkserv_nginx_off {
+    if [ -f /etc/chkserv.d/httpd ]; then
+        echo ""
+        echo "=== Disable TailWatch chkservd driver for Nginx ==="
+
+        sed -i 's:service[httpd]=8080,:service[httpd]=80,:' /etc/chkserv.d/httpd
+        sed -i 's:nginx\:1::' /etc/chkserv.d/chkservd.conf
+        if [ -f /etc/chkserv.d/nginx ]; then
+            /bin/rm -f /etc/chkserv.d/nginx
+        fi
+        /scripts/restartsrv_chkservd
+        echo ""
+        echo ""
+    fi
+}
 
 ############################# HELPER FUCTIONS [end] #############################
 
@@ -567,23 +600,29 @@ install)
     echo "*        Installing Engintron        *"
     echo "**************************************"
 
+    echo ""
+    echo ""
+
     chmod +x /engintron.sh
-    cd /
 
-    # Set Engintron src file path
-    if [[ ! -d $APP_PATH ]]; then
-        mkdir -p $APP_PATH
+    if [[ $2 == 'local' ]]; then
+        echo -e "\033[36m=== Performing local installation from $APP_PATH... ===\033[0m"
+        cd /
+    else
+        # Set Engintron src file path
+        if [[ ! -d $APP_PATH ]]; then
+            mkdir -p $APP_PATH
+        fi
+
+        # Get the files
+        cd $APP_PATH
+        wget --no-check-certificate -O engintron.zip https://github.com/engintron/engintron/archive/master.zip
+        unzip engintron.zip
+        /bin/cp -rf $APP_PATH/engintron-master/* $APP_PATH/
+        /bin/rm -rvf $APP_PATH/engintron-master/*
+        /bin/rm -f $APP_PATH/engintron.zip
+        cd /
     fi
-
-    # Get the files
-    cd $APP_PATH
-    wget --no-check-certificate -O engintron.zip https://github.com/engintron/engintron/archive/master.zip
-    unzip engintron.zip
-    /bin/cp -rf $APP_PATH/engintron-master/* $APP_PATH/
-    /bin/rm -rvf $APP_PATH/engintron-master/*
-    /bin/rm -f $APP_PATH/engintron.zip
-
-    cd /
 
     echo ""
     echo ""
@@ -615,10 +654,10 @@ install)
     fuser -k 443/tcp
     fuser -k 8443/tcp
     service nginx start
-    /scripts/restartsrv_httpd
 
     csf_pignore_add
     cron_for_https_vhosts_add
+    chkserv_nginx_on
 
     service nginx restart
 
@@ -631,6 +670,13 @@ install)
         chmod +x $APP_PATH/engintron.sh
         $APP_PATH/engintron.sh purgecache
     fi
+
+    /scripts/restartsrv_httpd
+
+    sleep 5
+
+    service httpd restart
+    service nginx restart
 
     echo ""
     echo "**************************************"
@@ -659,6 +705,7 @@ remove)
     remove_engintron_ui
     csf_pignore_remove
     cron_for_https_vhosts_remove
+    chkserv_nginx_off
 
     echo ""
     echo "=== Removing Engintron files... ==="
@@ -708,6 +755,7 @@ enable)
 
     /scripts/restartsrv_httpd
     service nginx restart
+    chkserv_nginx_on
 
     echo ""
     echo "**************************************"
@@ -750,6 +798,7 @@ disable)
 
     /scripts/restartsrv_httpd
     service nginx restart
+    chkserv_nginx_off
 
     echo ""
     echo "**************************************"
@@ -890,6 +939,22 @@ fixownerperms)
     echo ""
     echo ""
     ;;
+restoreipfwd)
+    echo "======================================="
+    echo "=== Restore IP Forwarding in Apache ==="
+    echo "======================================="
+    echo ""
+    if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
+        install_mod_rpaf
+    else
+        install_mod_remoteip
+    fi
+    /scripts/restartsrv_httpd
+    service nginx reload
+    echo "Operation completed."
+    echo ""
+    echo ""
+    ;;
 cleanup)
     echo "========================================================================="
     echo "=== Cleanup Mac or Windows specific metadata & Apache error_log files ==="
@@ -1007,6 +1072,7 @@ Utility commands:
     fixaccessperms   Change file & directory access permissions to 644 & 755 respectively
                      in all user /public_html directories
     fixownerperms    Fix owner permissions in all user /public_html directories
+    restoreipfwd     Restore Nginx IP forwarding in Apache
     cleanup          Cleanup Mac or Windows specific metadata & Apache error_log files
                      in all user /public_html directories
     info             Show basic system info

@@ -1,7 +1,7 @@
 #####################################################################
 # === Place your custom Nginx rules here ===
 #
-# [comments used below updated for Engintron v1.8.1]
+# [comments used below updated for Engintron v1.8.2]
 #
 # Some examples:
 # - HTTP to HTTPS redirect when using CloudFlare
