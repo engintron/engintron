@@ -369,7 +369,13 @@ function remove_nginx {
 
     echo ""
     echo ""
-
+    echo "=== Removing Nginx from Cpanel TailWatch... ==="
+    sed -i -- 's/=8080/=80/g' /etc/chkserv.d/httpd
+    /bin/rm -f /etc/chkserv.d/nginx
+    /bin/rm -f /var/run/chkservd/nginx
+    sed -i '/nginx:1/d' /etc/chkserv.d/chkservd.conf
+    /scripts/restartsrv_chkservd
+    
 }
 
 function install_engintron_ui {
@@ -631,7 +637,13 @@ install)
         chmod +x $APP_PATH/engintron.sh
         $APP_PATH/engintron.sh purgecache
     fi
-
+    echo ""
+    echo "=== Adding nginx to Cpanel TailWatch... ==="
+    sed -i -- 's/=80/=8080/g' /etc/chkserv.d/httpd
+    echo "service[nginx]=80,GET / HTTP/1.0,HTTP/1..,service nginx restart" > /etc/chkserv.d/nginx
+    printf "$(cat /etc/chkserv.d/chkservd.conf)\nnginx:1"  | sort -o /etc/chkserv.d/chkservd.conf
+    echo "+" > /var/run/chkservd/nginx
+    /scripts/restartsrv_chkservd
     echo ""
     echo "**************************************"
     echo "*       Installation Complete        *"
