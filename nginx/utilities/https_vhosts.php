@@ -73,7 +73,7 @@ server {
     // Process Apache vhosts
     if (file_exists(HTTPD_CONF) && is_readable(HTTPD_CONF)) {
         $file = file_get_contents(HTTPD_CONF);
-        $regex = "#\<VirtualHost [0-9a-f\.\:]+\:".HTTPD_HTTPS_PORT."\>(.+?)\<\/VirtualHost\>#s";
+        $regex = "#\<VirtualHost [0-9a-f\.\:\[\]\s]+\:".HTTPD_HTTPS_PORT."\>(.+?)\<\/VirtualHost\>#s";
         preg_match_all($regex, $file, $matches, PREG_PATTERN_ORDER);
         if(count($matches[1])) {
             foreach ($matches[1] as $vhost) {
