@@ -87,7 +87,7 @@
 # If you wish to disable ONLY micro-caching, then comment the line "set $CACHE_BYPASS_FOR_STATIC".
 # If you wish to disable ONLY static file caching, then comment the line "set $CACHE_BYPASS_FOR_DYNAMIC".
 #
-# Note: Don't include the "http://" portion of a URL.
+# Note: Don't include the "http(s)://" portion of a URL.
 #
 # if ($SITE_URI ~* "example.com|example2.com/path|example3.com/some/other/path|subdomain.example4.com") {
 #     set $CACHE_BYPASS_FOR_DYNAMIC 1; # Disables micro-caching
