@@ -36,8 +36,6 @@ function generate_https_vhosts() {
 server {
 
     listen '.NGINX_HTTPS_PORT.' ssl http2 default_server;
-    #listen [::]:'.NGINX_HTTPS_PORT.' ssl http2 default_server; # Uncomment if your server supports IPv6
-
     server_name localhost;
 
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
@@ -75,7 +73,7 @@ server {
     // Process Apache vhosts
     if (file_exists(HTTPD_CONF) && is_readable(HTTPD_CONF)) {
         $file = file_get_contents(HTTPD_CONF);
-        $regex = "#\<VirtualHost [0-9\.]+\:".HTTPD_HTTPS_PORT."\>(.+?)\<\/VirtualHost\>#s";
+        $regex = "#\<VirtualHost [0-9a-f\.\:]+\:".HTTPD_HTTPS_PORT."\>(.+?)\<\/VirtualHost\>#s";
         preg_match_all($regex, $file, $matches, PREG_PATTERN_ORDER);
         if(count($matches[1])) {
             foreach ($matches[1] as $vhost) {
@@ -111,7 +109,6 @@ server {
 # Definition block for domain(s): '.$vhostDomains.' #
 server {
     listen '.NGINX_HTTPS_PORT.' ssl http2;
-    #listen [::]:'.NGINX_HTTPS_PORT.' ssl http2; # Uncomment if your server supports IPv6
     server_name '.$vhostDomains.';
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
     ssl_certificate '.$fullChainCertName.';
