@@ -77,6 +77,7 @@ server {
         preg_match_all($regex, $file, $matches, PREG_PATTERN_ORDER);
         if(count($matches[1])) {
             foreach ($matches[1] as $vhost) {
+                if($hostnamePemFile && strpos($vhost, $hostnamePemFile)!== false) continue; // Skip the main hostname entry
                 preg_match("#ServerName (.+?)\n#s", $vhost, $name);
                 preg_match("#ServerAlias (.+?)\n#s", $vhost, $aliases);
                 preg_match("#SSLCertificateFile (.+?)(\n|\r)#s", $vhost, $certfile);
