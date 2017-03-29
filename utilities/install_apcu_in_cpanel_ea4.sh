@@ -19,6 +19,15 @@ fi
 
 clear
 
+echo "**************************************"
+echo "* Checking for required dependencies *"
+echo "**************************************"
+echo ""
+yum -y install make pcre-devel
+
+echo ""
+echo ""
+
 # Setup APCu 4.x for PHP 5.4
 if [ -f /opt/cpanel/ea-php54/root/usr/bin/pecl ]; then
 
