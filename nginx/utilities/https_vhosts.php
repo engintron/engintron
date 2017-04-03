@@ -79,12 +79,12 @@ server {
             foreach ($matches[1] as $vhost) {
                 if($hostnamePemFile && strpos($vhost, $hostnamePemFile)!== false) continue; // Skip the main hostname entry
                 preg_match("#ServerName (.+?)\n#s", $vhost, $name);
-                preg_match("#ServerAlias (.+?)\n#s", $vhost, $aliases);
+                preg_match_all("#ServerAlias (.+?)\n#s", $vhost, $aliases); // may have more than one line!
                 preg_match("#SSLCertificateFile (.+?)(\n|\r)#s", $vhost, $certfile);
                 preg_match("#SSLCertificateKeyFile (.+?)(\n|\r)#s", $vhost, $certkeyfile);
                 preg_match("#SSLCACertificateFile (.+?)(\n|\r)#s", $vhost, $certcafile);
                 if($aliases[1]){
-                    $vhostAliases = $aliases[1];
+                    $vhostAliases = implode(' ', $aliases[1]);
                 } else {
                     $vhostAliases = '';
                 }
