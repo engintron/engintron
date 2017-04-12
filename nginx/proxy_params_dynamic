@@ -1,5 +1,5 @@
 # /**
-#  * @version    1.8.2
+#  * @version    1.8.3
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -23,13 +23,13 @@
 # You can also raise "proxy_cache_valid" to the same value (e.g. "1m") to force longer
 # server-side caching.
 # The combination of these settings will have Nginx serve all content without issuing requests
-# to Apache but to refresh its cache.
+# to Apache except only when it's required to refresh its cache.
 set $EXPIRES_FOR_DYNAMIC 1m;
 #############################################################################################
 
 # Allow separate cache entries for mobile devices (smartphones & tables)
 set $MOBILE "";
-if ($http_user_agent ~* "(iPhone|iPod|iPad|Android)") {
+if ($http_user_agent ~* "(iPhone|iPod|iPad|Android|Mobile|Tablet)") {
     set $MOBILE "mobile_";
 }
 
@@ -71,9 +71,9 @@ proxy_ignore_headers   Cache-Control Expires Set-Cookie Vary;
 
 # Force client-side caching for dynamic content (commented by default)
 # See explanation at the top of this file
-#proxy_hide_header      Cache-Control;
-#proxy_hide_header      Expires;
-#proxy_hide_header      Pragma;
-#proxy_hide_header      Set-Cookie;
-#proxy_hide_header      Vary;
-#expires                $EXPIRES_FOR_DYNAMIC;
+#expires               $EXPIRES_FOR_DYNAMIC;
+#proxy_hide_header     Cache-Control;
+#proxy_hide_header     Expires;
+#proxy_hide_header     Pragma;
+#proxy_hide_header     Set-Cookie;
+#proxy_hide_header     Vary;

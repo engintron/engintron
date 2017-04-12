@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.8.2
+#  * @version    1.8.3
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -11,7 +11,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.8.2"
+APP_VERSION="1.8.3"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"

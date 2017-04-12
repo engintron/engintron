@@ -2,7 +2,7 @@
 <?php
 
 /**
- * @version    1.8.2
+ * @version    1.8.3
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -36,6 +36,7 @@ function generate_https_vhosts() {
 server {
 
     listen '.NGINX_HTTPS_PORT.' ssl http2 default_server;
+    #listen [::]:443 ipv6only=on ssl http2 default_server;
     server_name localhost;
 
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
@@ -44,9 +45,9 @@ server {
     ssl_certificate_key '.$hostnamePemFile.';
 
     # OCSP Stapling
-    ssl_trusted_certificate '.$hostnamePemFile.';
-    ssl_stapling on;
-    ssl_stapling_verify on;
+    #ssl_trusted_certificate '.$hostnamePemFile.';
+    #ssl_stapling on;
+    #ssl_stapling_verify on;
 
     include common_https.conf;
 
@@ -97,9 +98,9 @@ server {
                     $vhostFullChainCert = file_get_contents($vhostCertFile)."\n".file_get_contents($vhostCertCAFile);
                     $ocspStapling = '
     # OCSP Stapling
-    ssl_trusted_certificate '.$fullChainCertName.';
-    ssl_stapling on;
-    ssl_stapling_verify on;
+    #ssl_trusted_certificate '.$fullChainCertName.';
+    #ssl_stapling on;
+    #ssl_stapling_verify on;
                 ';
                 } else {
                     $vhostFullChainCert = file_get_contents($vhostCertFile);
@@ -110,6 +111,7 @@ server {
 # Definition block for domain(s): '.$vhostDomains.' #
 server {
     listen '.NGINX_HTTPS_PORT.' ssl http2;
+    #listen [::]:443 ipv6only=on ssl http2;
     server_name '.$vhostDomains.';
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
     ssl_certificate '.$fullChainCertName.';

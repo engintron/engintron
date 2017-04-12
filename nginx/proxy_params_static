@@ -1,5 +1,5 @@
 # /**
-#  * @version    1.8.2
+#  * @version    1.8.3
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -46,7 +46,6 @@ proxy_hide_header       Vary;
 
 # Reset headers
 add_header              Pragma "public";
-add_header              Vary "Accept-Encoding";
 
 # Disable logging
 access_log              off;

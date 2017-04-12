@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    1.8.2
+ * @version    1.8.3
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -23,10 +23,13 @@ if($grantAccess === false) {
 // A few constants to make updating easier
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.8.2');
-define('PLG_BUILD', 'Build 20170309');
+define('PLG_VERSION', '1.8.3');
+define('PLG_BUILD', 'Build 20170412');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
+define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
+define('CPANEL_VERSION', (int) CPANEL_RELEASE);
+
 if(file_exists("/usr/local/src/engintron/state.conf")) {
     define('ENGINTRON_STATE', trim(file_get_contents("/usr/local/src/engintron/state.conf")));
 } else {
@@ -341,12 +344,13 @@ if(ENGINTRON_STATE!="missing") {
             .clr {clear:both;display:block;height:0;line-height:0;padding:0;margin:0;}
             .sep {padding:0 4px;margin:0;}
             .ngViewDefault {font-size:12px;font-style:italic;}
-            hr {line-height:0;height:0;border:none;border-bottom:1px solid #eaeaea;padding:0;margin:8px 0;}
-            div#ngBreadcrumbs {background:#eee;padding:4px 16px;margin:0;border-bottom:2px solid #eaeaea;}
-                div#ngBreadcrumbs a {color:#999;font-weight:bold;text-decoration:none;font-size:12px;margin:0 4px;}
-                div#ngBreadcrumbs a:hover {color:#666;}
-                div#ngBreadcrumbs a.active {color:#333;}
-            div#ngContainer {margin:0;padding:0 16px 4px;}
+            hr {line-height:0;height:0;border:none;border-bottom:1px solid #d0d0d0;padding:0;margin:8px 0;}
+            div#ngHeader {background:#283a4b;position:fixed;top:0;left:0;right:0;width:auto;}
+	            div#ngBreadcrumbs {background:#eaeaea;padding:10px 16px;<?php if(CPANEL_VERSION > 63): ?>margin:77px 0 0 0;<?php endif; ?>border-bottom:1px solid #d0d0d0;height:42px;box-sizing:border-box;}
+	                div#ngBreadcrumbs a {color:#999;font-weight:bold;text-decoration:none;font-size:12px;margin:0 4px;}
+	                div#ngBreadcrumbs a:hover {color:#666;}
+	                div#ngBreadcrumbs a.active {color:#333;}
+            div#ngContainer {<?php if(CPANEL_VERSION > 63): ?>margin:140px 0 60px;<?php else: ?>margin:70px 0 60px;<?php endif; ?>padding:0 16px 4px;}
                 h1#ngTitle {margin:0;padding:0;text-align:center;}
                 h1#ngTitle a {background:url('https://engintron.com/app/images/Engintron_Logo_316x98_8.png') no-repeat 0 50%;font-size:20px;padding:36px 0 36px 326px;margin:0 0 8px 0;color:#333;display:inline-block;text-decoration:none;text-align:left;}
                 h1#ngTitle a span {display:block;font-size:11px;font-weight:normal;color:#999;}
@@ -374,22 +378,22 @@ if(ENGINTRON_STATE!="missing") {
                         #ngTerminalWindow header .button.yellow {background:#E5C30F;}
                         #ngTerminalWindow header .button.red {background:#E75448;}
                         #ngTerminalWindow header span {line-height:30px;display:block;width:100px;margin:0 auto;}
-                    div#ngOutputWindow {padding:0;margin:0 0 20px 0;border:1px solid #eaeaea;}
+                    div#ngOutputWindow {padding:0;margin:0 0 20px 0;border:1px solid #d0d0d0;}
                     div#ngOutputWindow pre {font-family:'Source Code Pro',monospace;font-size:13px;white-space:pre-wrap;color:#fff;background:#000;padding:8px;margin:0;min-height:300px;max-height:900px;overflow:auto;}
                         div#ngOutputWindow pre b {color:red;}
                         div#ngOutputWindow pre b.green,
                         div#ngOutputWindow pre span {color:green;}
                         div#ngOutputWindow pre b.ngStatus {font-size:18px;}
                         div#ngOutputWindow pre i.ngSep {color:#aaa;font-size:12px;display:block;padding:0;margin:20px 0;}
-                    body.op_edit div#ngOutputWindow {border:1px solid #eaeaea;border-top:0;padding:0;margin:0;}
+                    body.op_edit div#ngOutputWindow {border:1px solid #d0d0d0;border-top:0;padding:0;margin:0;}
                     #ngAceEditor {box-sizing:border-box;border:none;width:100%;padding:8px;margin:0;font-family:'Source Code Pro',monospace;font-size:13px;height:460px;overflow:auto;color:#fff;background:#000;outline:0;}
                     div#ngOutput form#fileEditor textarea#data {display:none;}
-                    div#ngOutput form#fileEditor .editbox {background:#eee;border-top:1px solid #eaeaea;padding:8px;margin:-3px 0 0 0;}
-            div#ngFooter {text-align:center;border-top:2px solid #eaeaea;background:#eee;padding:16px;margin:0;}
+                    div#ngOutput form#fileEditor .editbox {background:#eee;border-top:1px solid #d0d0d0;padding:8px;margin:-3px 0 0 0;}
+            div#ngFooter {text-align:center;border-top:1px solid #d0d0d0;background:#eaeaea;padding:12px;margin:0;position:fixed;bottom:0;left:0;right:0;}
                 div#ngFooter p {margin:0;padding:0;font-size:12px;color:#666;}
                 div#ngFooter a {color:#333;font-weight:bold;text-decoration:none;}
                 div#ngFooter a:hover {text-decoration:underline;}
-            div#ngMessage {position:fixed;z-index:9999;top:16px;right:16px;background:#fff;font-size:12px;line-height:12px;text-align:center;margin:0;padding:16px;border-radius:4px;box-shadow:0 1px 4px 0 #999;}
+            div#ngMessage {position:fixed;z-index:9999;<?php if(CPANEL_VERSION > 63): ?>top:136px;<?php else: ?>top:16px;<?php endif; ?>right:16px;background:#fff;font-size:12px;line-height:12px;text-align:center;margin:0;padding:16px;border-radius:4px;box-shadow:0 1px 4px 0 #999;}
                 div#ngMessage .ngMsgState {width:16px;height:16px;margin:0 10px 0 0;padding:0;display:inline-block;background:#5fca4a;vertical-align:text-top;}
             .hidden {opacity:0;transition:opacity 2s linear;}
         </style>
@@ -403,8 +407,10 @@ if(ENGINTRON_STATE!="missing") {
         </script>
     </head>
     <body class="op_<?php echo $op; ?>">
-        <div id="ngBreadcrumbs">
-            <a href="../scripts/command?PFILE=main">Home</a> &raquo; <a href="../scripts/command?PFILE=Plugins">Plugins</a> &raquo; <a href="engintron.php" class="active"><?php echo PLG_NAME; ?></a>
+	    <div id="ngHeader">
+	        <div id="ngBreadcrumbs">
+	            <a href="../scripts/command?PFILE=main">Home</a> &raquo; <a href="../scripts/command?PFILE=Plugins">Plugins</a> &raquo; <a href="engintron.php" class="active"><?php echo PLG_NAME; ?></a>
+	        </div>
         </div>
         <div id="ngContainer">
             <h1 id="ngTitle">
