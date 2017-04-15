@@ -48,3 +48,7 @@ add_header                    X-Content-Type-Options "nosniff" always;
 # Info
 add_header                    X-Nginx-Cache-Status $upstream_cache_status;
 add_header                    X-Server-Powered-By "Engintron";
+
+# Security
+add_header x-xss-protection "1; mode=block" always;
+add_header X-Content-Type-Options "nosniff" always;
