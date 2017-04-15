@@ -36,8 +36,8 @@ proxy_read_timeout            240s;
 proxy_send_timeout            240s;
 
 # Security Headers
-add_header                    X-XSS-Protection "1; mode=block" always;
-add_header                    X-Content-Type-Options "nosniff" always;
+# add_header                    X-XSS-Protection "1; mode=block" always;
+# add_header                    X-Content-Type-Options "nosniff" always;
 # The HSTS header below force-redirects HTTP to HTTPS traffic & uses the browser's cache
 # to store the redirect. Comment out with caution. More info on HSTS here:
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
