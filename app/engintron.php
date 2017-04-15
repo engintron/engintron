@@ -51,6 +51,7 @@ $allowed_files = array(
     '/etc/nginx/proxy_params_static',
     '/etc/nginx/custom_rules',
     '/etc/nginx/custom_rules.dist',
+    '/etc/nginx/common_https.conf',
     '/etc/nginx/conf.d/default.conf',
     '/etc/my.cnf',
     '/usr/local/apache/conf/php.conf',
@@ -437,6 +438,7 @@ if(ENGINTRON_STATE!="missing") {
                             <li><a href="engintron.php?op=nginx_restart">Restart</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules&s=nginx">Edit your custom_rules for Nginx</a><?php if(file_exists('/etc/nginx/custom_rules.dist')): ?> (<a class="ngViewDefault" href="engintron.php?op=view&f=/etc/nginx/custom_rules.dist">view default</a>)<?php endif; ?></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/conf.d/default.conf&s=nginx">Edit default.conf</a></li>
+                            <li><a href="engintron.php?op=edit&f=/etc/nginx/common_https.conf&s=nginx">Edit common_https.conf</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_common&s=nginx">Edit proxy_params_common</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_dynamic&s=nginx">Edit proxy_params_dynamic</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_static&s=nginx">Edit proxy_params_static</a></li>
