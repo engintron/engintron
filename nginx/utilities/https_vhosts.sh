@@ -14,7 +14,7 @@ COUNTER="0"
 function generate_https_vhosts {
 	if [ -f /etc/nginx/utilities/https_vhosts.php ]; then
 		RUN_CHECK=$(/usr/bin/php -c /dev/null /etc/nginx/utilities/https_vhosts.php)
-		if [[ $RUN_CHECK == 1 ]]; then
+		if [[ $? -eq 1 ]]; then
 			service nginx reload;
 		fi
 	fi
