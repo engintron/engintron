@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.8.3
+#  * @version    1.8.4
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -11,7 +11,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.8.3"
+APP_VERSION="1.8.4"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
@@ -59,7 +59,7 @@ LoadModule remoteip_module modules/mod_remoteip.so
 RemoteIPHeader        X-Forwarded-For
 RemoteIPInternalProxy $SYSTEM_IPS
 EOF
-                sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /etc/apache2/conf/httpd.conf
+                sed -i "s:LogFormat \"%h %l:LogFormat \"%a %l:" /etc/apache2/conf/httpd.conf
             fi
         fi
     else
@@ -89,7 +89,7 @@ EOF
             /bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
             sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
             sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
-            sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /usr/local/apache/conf/httpd.conf
+            sed -i "s:LogFormat \"%h %l:LogFormat \"%a %l:" /usr/local/apache/conf/httpd.conf
         fi
     fi
 
@@ -102,13 +102,13 @@ function remove_mod_remoteip {
 
     if [ -f /etc/apache2/conf/httpd.conf ]; then
         yum -y remove ea-apache24-mod_remoteip
-        sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /etc/apache2/conf/httpd.conf
+        sed -i "s:LogFormat \"%a %l:LogFormat \"%h %l:" /etc/apache2/conf/httpd.conf
     else
         if [ -f /usr/local/apache/conf/includes/remoteip.conf ]; then
             echo "=== Removing mod_remoteip for Apache ==="
             rm -f /usr/local/apache/conf/includes/remoteip.conf
             sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
-            sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
+            sed -i "s:LogFormat \"%a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
         fi
     fi
 
@@ -157,7 +157,7 @@ EOF
         /bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
         sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
         sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/rpaf.conf":' /usr/local/apache/conf/httpd.conf
-        sed -i "s:LogFormat \"%h %l:LogFormat \"%h %a %l:" /usr/local/apache/conf/httpd.conf
+        sed -i "s:LogFormat \"%h %l:LogFormat \"%a %l:" /usr/local/apache/conf/httpd.conf
         echo ""
         echo ""
 
@@ -171,7 +171,7 @@ function remove_mod_rpaf {
         echo "=== Removing mod_rpaf (v0.8.4) for Apache ==="
         rm -f /usr/local/apache/conf/includes/rpaf.conf
         sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
-        sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
+        sed -i "s:LogFormat \"%a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
         echo ""
         echo ""
     fi
@@ -875,11 +875,12 @@ purgecache)
     find /tmp/engintron_static/ -type f | xargs rm -rvf
     find /tmp/engintron_temp/ -type f | xargs rm -rvf
     if [ "$(pstree | grep 'httpd')" ]; then
-        echo "Apache restarting..."
+        echo "Restarting Apache..."
         /scripts/restartsrv_httpd
         echo ""
     fi
     if [ "$(pstree | grep 'nginx')" ]; then
+        echo "Restarting Nginx..."
         service nginx restart
         echo ""
     fi
@@ -897,11 +898,12 @@ purgelogs)
         echo "" > /var/log/nginx/error.log
     fi
     if [ "$(pstree | grep 'httpd')" ]; then
-        echo "Apache restarting..."
+        echo "Restarting Apache..."
         /scripts/restartsrv_httpd
         echo ""
     fi
     if [ "$(pstree | grep 'nginx')" ]; then
+        echo "Restarting Nginx..."
         service nginx restart
         echo ""
     fi
