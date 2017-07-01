@@ -941,6 +941,7 @@ fixownerperms)
         if [ -d /home/$user/public_html ]; then
             echo "=== Fixing permissions for user $user ==="
             chown -R $user:$user /home/$user/public_html
+            chown $user:nobody /home/$user/public_html
         fi
     done
     echo "Operation completed."
