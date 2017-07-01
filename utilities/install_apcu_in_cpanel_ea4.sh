@@ -164,6 +164,9 @@ EOF
 
 fi
 
+# Cleanup apsu.so entries in cPanel's PHP config files
+find /opt/cpanel/ -name "local.ini" | xargs grep -l "apcu.so" | xargs sed -i "s/(\;)extension.*apcu\.so//"
+
 # Restart services
 /engintron.sh res
 
