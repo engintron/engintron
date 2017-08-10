@@ -24,7 +24,7 @@ if($grantAccess === false) {
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_VERSION', '1.8.4');
-define('PLG_BUILD', 'Build 20170627');
+define('PLG_BUILD', 'Build 20170811');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
@@ -345,7 +345,7 @@ if(ENGINTRON_STATE!="missing") {
             .sep {padding:0 4px;margin:0;}
             .ngViewDefault {font-size:12px;font-style:italic;}
             hr {line-height:0;height:0;border:none;border-bottom:1px solid #d0d0d0;padding:0;margin:8px 0;}
-            div#ngHeader {background:#283a4b;position:fixed;top:0;left:0;right:0;width:auto;}
+            div#ngHeader {background:#283a4b;position:fixed;z-index:999;top:0;left:0;right:0;width:auto;}
 	            div#ngBreadcrumbs {background:#eaeaea;padding:10px 16px;<?php if(CPANEL_VERSION > 63): ?>margin:77px 0 0 0;<?php endif; ?>border-bottom:1px solid #d0d0d0;height:42px;box-sizing:border-box;}
 	                div#ngBreadcrumbs a {color:#999;font-weight:bold;text-decoration:none;font-size:12px;margin:0 4px;}
 	                div#ngBreadcrumbs a:hover {color:#666;}
@@ -389,7 +389,7 @@ if(ENGINTRON_STATE!="missing") {
                     #ngAceEditor {box-sizing:border-box;border:none;width:100%;padding:8px;margin:0;font-family:'Source Code Pro',monospace;font-size:13px;height:460px;overflow:auto;color:#fff;background:#000;outline:0;}
                     div#ngOutput form#fileEditor textarea#data {display:none;}
                     div#ngOutput form#fileEditor .editbox {background:#eee;border-top:1px solid #d0d0d0;padding:8px;margin:-3px 0 0 0;}
-            div#ngFooter {text-align:center;border-top:1px solid #d0d0d0;background:#eaeaea;padding:12px;margin:0;position:fixed;bottom:0;left:0;right:0;}
+            div#ngFooter {text-align:center;border-top:1px solid #d0d0d0;background:#eaeaea;padding:12px;margin:0;position:fixed;z-index:999;bottom:0;left:0;right:0;}
                 div#ngFooter p {margin:0;padding:0;font-size:12px;color:#666;}
                 div#ngFooter a {color:#333;font-weight:bold;text-decoration:none;}
                 div#ngFooter a:hover {text-decoration:underline;}
