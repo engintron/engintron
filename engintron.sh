@@ -353,7 +353,7 @@ EOFS
 
     # Adjust log rotation to 7 days
     if [ -f /etc/logrotate.d/nginx ]; then
-        sed -i 's:rotate .*:rotate 7:' /etc/logrotate.d/nginx 
+        sed -i 's:rotate .*:rotate 7:' /etc/logrotate.d/nginx
     fi
 
     echo ""
@@ -547,7 +547,8 @@ function chkserv_nginx_on {
         echo ""
         echo "=== Enable TailWatch chkservd driver for Nginx ==="
 
-        sed -i 's:service[httpd]=80,:service[httpd]=8080,:' /etc/chkserv.d/httpd
+        sed -i 's:service\[httpd\]=80,:service[httpd]=8080,:' /etc/chkserv.d/httpd
+        sed -i -e '$a\' /etc/chkserv.d/chkservd.conf
         echo "nginx:1" >> /etc/chkserv.d/chkservd.conf
         if [ ! -f /etc/chkserv.d/nginx ]; then
             touch /etc/chkserv.d/nginx
@@ -564,8 +565,8 @@ function chkserv_nginx_off {
         echo ""
         echo "=== Disable TailWatch chkservd driver for Nginx ==="
 
-        sed -i 's:service[httpd]=8080,:service[httpd]=80,:' /etc/chkserv.d/httpd
-        sed -i 's:nginx\:1::' /etc/chkserv.d/chkservd.conf
+        sed -i 's:service\[httpd\]=8080,:service[httpd]=80,:' /etc/chkserv.d/httpd
+        sed -i '/^nginx:1/d' /etc/chkserv.d/chkservd.conf
         if [ -f /etc/chkserv.d/nginx ]; then
             /bin/rm -f /etc/chkserv.d/nginx
         fi
