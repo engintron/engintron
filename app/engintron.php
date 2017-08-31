@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    1.8.4
+ * @version    1.8.5
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -8,32 +8,56 @@
  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
-// Permissions check
-$grantAccess = false;
-$checkPrivileges = trim(shell_exec("if whmapi1 myprivs | grep -q 'all: 1'; then echo 'all'; fi;"));
-$user = getenv('REMOTE_USER'); /* legacy check */
-if($checkPrivileges=='all') $grantAccess = true;
-if($user=="root") $grantAccess = true;
-if(strpos($user, 'cp')!==false) $grantAccess = true;
-if($grantAccess === false) {
-    echo "You do not have sufficient permissions to access this page...";
-    exit;
+// Utility functions
+function checkacl() {
+    $user = $_ENV['REMOTE_USER'];
+    if ($user == "root") {
+        return 1;
+    }
+    $reseller = file_get_contents("/var/cpanel/resellers");
+    foreach (split("\n", $reseller) as $line) {
+        if (preg_match( "/^$user:/", $line)) {
+            $line = preg_replace( "/^$user:/", "", $line);
+            foreach (split(",", $line) as $perm) {
+                if ($perm == "all") {
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 // A few constants to make updating easier
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.8.4');
-define('PLG_BUILD', 'Build 20170811');
+define('PLG_VERSION', '1.8.5');
+define('PLG_BUILD', 'Build 20170831');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
 define('CPANEL_VERSION', (int) CPANEL_RELEASE);
 
-if(file_exists("/usr/local/src/engintron/state.conf")) {
+if (file_exists("/usr/local/src/engintron/state.conf")) {
     define('ENGINTRON_STATE', trim(file_get_contents("/usr/local/src/engintron/state.conf")));
 } else {
     define('ENGINTRON_STATE', 'missing');
+}
+
+// Permissions check
+$grantAccess = false;
+if (CPANEL_VERSION > 64) {
+    if (checkacl()) $grantAccess = true;
+} else {
+    $checkPrivileges = trim(shell_exec("if whmapi1 myprivs | grep -q 'all: 1'; then echo 'all'; fi;"));
+    $user = getenv('REMOTE_USER'); /* legacy check */
+    if ($checkPrivileges=='all') $grantAccess = true;
+    if ($user=="root") $grantAccess = true;
+    if (strpos($user, 'cp')!==false) $grantAccess = true;
+}
+if ($grantAccess === false) {
+    echo "You do not have sufficient permissions to access this page...";
+    exit;
 }
 
 // Get params
@@ -58,22 +82,22 @@ $allowed_files = array(
 );
 
 // Operations
-switch($op) {
+switch ($op) {
     case "view":
-        if(isset($f) && in_array($f, $allowed_files)) {
+        if (isset($f) && in_array($f, $allowed_files)) {
             $ret = file_get_contents($f);
         }
         break;
 
     case "edit":
-        if(isset($_POST['data'])) {
+        if (isset($_POST['data'])) {
             $data = $_POST['data'];
-            if(isset($f) && in_array($f, $allowed_files)) {
+            if (isset($f) && in_array($f, $allowed_files)) {
                 file_put_contents($f, str_replace("\r\n", "\n", $data)); // Convert new lines to LF
                 $message = '<b>'.$f.'</b> has been updated';
-                if(isset($_POST['c'])) {
+                if (isset($_POST['c'])) {
                     $message .= '<br /><br />';
-                    switch($_POST['s']) {
+                    switch ($_POST['s']) {
                         case "nginx":
                             $message .= nl2br(shell_exec("service nginx reload"));
                             break;
@@ -117,7 +141,7 @@ switch($op) {
 
     case "nginx_config":
         $ret = "<b>Checking Nginx configuration...</b><br />";
-        if(version_compare(CENTOS_RELEASE, '7', '>=')) {
+        if (version_compare(CENTOS_RELEASE, '7', '>=')) {
             $ret .= shell_exec("nginx -t 2>&1");
         } else {
             $ret .= shell_exec("service nginx configtest 2>&1");
@@ -125,7 +149,7 @@ switch($op) {
         break;
 
     case "nginx_errorlog":
-        if(empty($_POST['access_entries'])) {
+        if (empty($_POST['access_entries'])) {
             $entries = 100;
         } else {
             $entries = $_POST['access_entries'];
@@ -135,7 +159,7 @@ switch($op) {
         break;
 
     case "nginx_accesslog":
-        if(empty($_POST['error_entries'])) {
+        if (empty($_POST['error_entries'])) {
             $entries = 100;
         } else {
             $entries = $_POST['error_entries'];
@@ -207,7 +231,7 @@ switch($op) {
 
     case "mysql_status":
         $ret = "<b>Database Status:</b><br />";
-        if(exec("service mysqld status; echo \$?")){
+        if (exec("service mysqld status; echo \$?")) {
             $ret .= shell_exec("service mysql status");
         } else {
             $ret .= shell_exec("service mysqld status");
@@ -250,9 +274,9 @@ switch($op) {
         break;
 
     case "engintron_toggle":
-        if(ENGINTRON_STATE=="on") {
+        if (ENGINTRON_STATE=="on") {
             $ret = shell_exec("bash /usr/local/src/engintron/engintron.sh disable");
-        } elseif(ENGINTRON_STATE=="off") {
+        } elseif (ENGINTRON_STATE=="off") {
             $ret = shell_exec("bash /usr/local/src/engintron/engintron.sh enable");
         } else {
             $ret = "Couldn't get state of Engintron - please try again.";
@@ -278,9 +302,9 @@ switch($op) {
 
     case "utils_info":
     default:
-        if(ENGINTRON_STATE=="on") {
+        if (ENGINTRON_STATE=="on") {
             $ret = "<b class=\"green ngStatus\">*** Engintron is ENABLED ***</b><i class=\"ngSep\">########################################</i>";
-        } elseif(ENGINTRON_STATE=="off") {
+        } elseif (ENGINTRON_STATE=="off") {
             $ret = "<b class=\"ngStatus\">*** Engintron is DISABLED ***</b><i class=\"ngSep\">########################################</i>";
         } else {
             $ret = "*** Couldn't get state of Engintron - please try again. ***<i class=\"ngSep\">########################################</i>";
@@ -309,15 +333,15 @@ switch($op) {
 }
 
 // UI string changes based on app state
-if(ENGINTRON_STATE!="missing") {
-    if($state=="on") {
+if (ENGINTRON_STATE!="missing") {
+    if ($state=="on") {
         $ng_state_toggler = "off";
         $ng_lang_state_toggler = "Disable";
-    } elseif($state=="off") {
+    } elseif ($state=="off") {
         $ng_state_toggler = "on";
         $ng_lang_state_toggler = "Enable";
     } else {
-        if(ENGINTRON_STATE=="on"){
+        if (ENGINTRON_STATE=="on") {
             $ng_state_toggler = "off";
             $ng_lang_state_toggler = "Disable";
         } else {
@@ -346,11 +370,11 @@ if(ENGINTRON_STATE!="missing") {
             .ngViewDefault {font-size:12px;font-style:italic;}
             hr {line-height:0;height:0;border:none;border-bottom:1px solid #d0d0d0;padding:0;margin:8px 0;}
             div#ngHeader {background:#283a4b;position:fixed;z-index:999;top:0;left:0;right:0;width:auto;}
-	            div#ngBreadcrumbs {background:#eaeaea;padding:10px 16px;<?php if(CPANEL_VERSION > 63): ?>margin:77px 0 0 0;<?php endif; ?>border-bottom:1px solid #d0d0d0;height:42px;box-sizing:border-box;}
-	                div#ngBreadcrumbs a {color:#999;font-weight:bold;text-decoration:none;font-size:12px;margin:0 4px;}
-	                div#ngBreadcrumbs a:hover {color:#666;}
-	                div#ngBreadcrumbs a.active {color:#333;}
-            div#ngContainer {<?php if(CPANEL_VERSION > 63): ?>margin:140px 0 60px;<?php else: ?>margin:70px 0 60px;<?php endif; ?>padding:0 16px 4px;}
+                div#ngBreadcrumbs {background:#eaeaea;padding:10px 16px;<?php if (CPANEL_VERSION > 63): ?>margin:77px 0 0 0;<?php endif; ?>border-bottom:1px solid #d0d0d0;height:42px;box-sizing:border-box;}
+                    div#ngBreadcrumbs a {color:#999;font-weight:bold;text-decoration:none;font-size:12px;margin:0 4px;}
+                    div#ngBreadcrumbs a:hover {color:#666;}
+                    div#ngBreadcrumbs a.active {color:#333;}
+            div#ngContainer {<?php if (CPANEL_VERSION > 63): ?>margin:140px 0 60px;<?php else: ?>margin:70px 0 60px;<?php endif; ?>padding:0 16px 4px;}
                 h1#ngTitle {margin:0;padding:0;text-align:center;}
                 h1#ngTitle a {background:url('https://engintron.com/app/images/Engintron_Logo_316x98_8.png') no-repeat 0 50%;font-size:20px;padding:36px 0 36px 326px;margin:0 0 8px 0;color:#333;display:inline-block;text-decoration:none;text-align:left;}
                 h1#ngTitle a span {display:block;font-size:11px;font-weight:normal;color:#999;}
@@ -393,7 +417,7 @@ if(ENGINTRON_STATE!="missing") {
                 div#ngFooter p {margin:0;padding:0;font-size:12px;color:#666;}
                 div#ngFooter a {color:#333;font-weight:bold;text-decoration:none;}
                 div#ngFooter a:hover {text-decoration:underline;}
-            div#ngMessage {position:fixed;z-index:9999;<?php if(CPANEL_VERSION > 63): ?>top:136px;<?php else: ?>top:16px;<?php endif; ?>right:16px;background:#fff;font-size:12px;line-height:12px;text-align:center;margin:0;padding:16px;border-radius:4px;box-shadow:0 1px 4px 0 #999;}
+            div#ngMessage {position:fixed;z-index:9999;<?php if (CPANEL_VERSION > 63): ?>top:136px;<?php else: ?>top:16px;<?php endif; ?>right:16px;background:#fff;font-size:12px;line-height:12px;text-align:center;margin:0;padding:16px;border-radius:4px;box-shadow:0 1px 4px 0 #999;}
                 div#ngMessage .ngMsgState {width:16px;height:16px;margin:0 10px 0 0;padding:0;display:inline-block;background:#5fca4a;vertical-align:text-top;}
             .hidden {opacity:0;transition:opacity 2s linear;}
         </style>
@@ -407,10 +431,10 @@ if(ENGINTRON_STATE!="missing") {
         </script>
     </head>
     <body class="op_<?php echo $op; ?>">
-	    <div id="ngHeader">
-	        <div id="ngBreadcrumbs">
-	            <a href="../scripts/command?PFILE=main">Home</a> &raquo; <a href="../scripts/command?PFILE=Plugins">Plugins</a> &raquo; <a href="engintron.php" class="active"><?php echo PLG_NAME; ?></a>
-	        </div>
+        <div id="ngHeader">
+            <div id="ngBreadcrumbs">
+                <a href="../scripts/command?PFILE=main">Home</a> &raquo; <a href="../scripts/command?PFILE=Plugins">Plugins</a> &raquo; <a href="engintron.php" class="active"><?php echo PLG_NAME; ?></a>
+            </div>
         </div>
         <div id="ngContainer">
             <h1 id="ngTitle">
@@ -435,7 +459,7 @@ if(ENGINTRON_STATE!="missing") {
                             <li><a href="engintron.php?op=nginx_status">Status</a></li>
                             <li><a href="engintron.php?op=nginx_reload">Reload</a></li>
                             <li><a href="engintron.php?op=nginx_restart">Restart</a></li>
-                            <li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules&s=nginx">Edit your custom_rules for Nginx</a><?php if(file_exists('/etc/nginx/custom_rules.dist')): ?> (<a class="ngViewDefault" href="engintron.php?op=view&f=/etc/nginx/custom_rules.dist">view default</a>)<?php endif; ?></li>
+                            <li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules&s=nginx">Edit your custom_rules for Nginx</a><?php if (file_exists('/etc/nginx/custom_rules.dist')): ?> (<a class="ngViewDefault" href="engintron.php?op=view&f=/etc/nginx/custom_rules.dist">view default</a>)<?php endif; ?></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/conf.d/default.conf&s=nginx">Edit default.conf</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_common&s=nginx">Edit proxy_params_common</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_dynamic&s=nginx">Edit proxy_params_dynamic</a></li>
@@ -475,7 +499,7 @@ if(ENGINTRON_STATE!="missing") {
                         <h3>PHP</h3>
                         <ul>
                             <li><a href="engintron.php?op=edit&f=/usr/local/lib/php.ini&s=apache">Edit php.ini</a> [valid under EA3 only]</li>
-                            <?php if(file_exists('/usr/local/apache/conf/php.conf') && is_readable('/usr/local/apache/conf/php.conf')): ?>
+                            <?php if (file_exists('/usr/local/apache/conf/php.conf') && is_readable('/usr/local/apache/conf/php.conf')): ?>
                             <li><a href="engintron.php?op=edit&f=/usr/local/apache/conf/php.conf&s=phpconf">Edit php.conf</a></li>
                             <?php endif; ?>
                         </ul>
@@ -543,10 +567,10 @@ if(ENGINTRON_STATE!="missing") {
                     <span>$ engintron</span>
                   </header>
                   <div id="ngOutputWindow">
-                    <?php if($ret): ?>
+                    <?php if ($ret): ?>
                     <pre><?php echo $ret; ?></pre>
                     <?php endif; ?>
-                    <?php if($op=='edit'): ?>
+                    <?php if ($op=='edit'): ?>
                     <form action="engintron.php?op=edit&f=<?php echo $f; ?>" method="post" id="fileEditor">
                         <div id="ngAceEditor"></div>
                         <textarea id="data" name="data"><?php echo file_get_contents($f); ?></textarea>
@@ -566,7 +590,7 @@ if(ENGINTRON_STATE!="missing") {
         <div id="ngFooter">
             <p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2014-<?php echo date('Y'); ?> <a target="_blank" href="http://nuevvo.com/">Nuevvo Webware P.C.</a> Released under the <a target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
         </div>
-        <?php if($message): ?>
+        <?php if ($message): ?>
         <div id="ngMessage"><div class="ngMsgState"></div><?php echo $message; ?></div>
         <?php endif; ?>
 
@@ -577,7 +601,7 @@ if(ENGINTRON_STATE!="missing") {
         <script>
 
             // Ace
-            if(document.getElementById('ngAceEditor')){
+            if (document.getElementById('ngAceEditor')) {
                 var editor = ace.edit('ngAceEditor');
                 editor.$blockScrolling = Infinity;
                 editor.setTheme('ace/theme/twilight');
@@ -587,7 +611,7 @@ if(ENGINTRON_STATE!="missing") {
                 var t = document.getElementById('data');
                 var tVal = t.value;
                 editor.getSession().setValue(tVal);
-                editor.getSession().on('change', function(){
+                editor.getSession().on('change', function() {
                     t.value = editor.getSession().getValue();
                 });
             }
@@ -608,13 +632,13 @@ if(ENGINTRON_STATE!="missing") {
                 document.getElementById(el).submit();
                 return false;
             }
-            function ngUpdate(el){
+            function ngUpdate(el) {
                 var updContainer = document.getElementById(el);
-                if(updContainer){
+                if (updContainer) {
                     var updLink = updContainer.getElementsByTagName('a')[0];
-                    updLink.onclick = function(){
+                    updLink.onclick = function() {
                         updContainer.getElementsByTagName('span')[0].setAttribute('style', 'display:inline;');
-                        if(this.className != 'clicked') {
+                        if (this.className != 'clicked') {
                             this.className = 'clicked';
                             return true;
                         } else {
@@ -623,13 +647,13 @@ if(ENGINTRON_STATE!="missing") {
                     }
                 }
             }
-            function ngUtils(){
+            function ngUtils() {
                 // Highlight menu
                 var i = 0,
                     menuItems = document.getElementById('ngOperations').getElementsByTagName('a');
-                for(; i < menuItems.length; ++i){
-                    if(window.location.href === menuItems[i].href){
-                        if(menuItems[i].parentNode.nodeName.toLowerCase() == 'form'){
+                for(; i < menuItems.length; ++i) {
+                    if (window.location.href === menuItems[i].href) {
+                        if (menuItems[i].parentNode.nodeName.toLowerCase() == 'form') {
                             menuItems[i].parentNode.parentNode.className = 'active';
                         } else {
                             menuItems[i].parentNode.className = 'active';
@@ -641,10 +665,10 @@ if(ENGINTRON_STATE!="missing") {
                 ngUpdate('ngUpdateMainline');
                 // Hide message after 3 seconds
                 var ngMsgContainer = document.getElementById('ngMessage');
-                if(ngMsgContainer){
-                    setTimeout(function(){
+                if (ngMsgContainer) {
+                    setTimeout(function() {
                         ngMsgContainer.className += 'hidden';
-                        setTimeout(function(){
+                        setTimeout(function() {
                             ngMsgContainer.parentNode.removeChild(ngMsgContainer);
                         }, 3000);
                     }, 3000);
