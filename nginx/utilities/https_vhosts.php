@@ -94,21 +94,27 @@ server {
                 $vhostDomains = trim($name[1].' '.$vhostAliases);
                 $vhostCertFile = $certfile[1];
                 $vhostCertKeyFile = $certkeyfile[1];
-                $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostCertFile);
-                if ($certcafile[1]) {
-                    $vhostCertCAFile = $certcafile[1];
-                    $vhostFullChainCert = file_get_contents($vhostCertFile)."\n".file_get_contents($vhostCertCAFile);
-                    $ocspStapling = '
+                if (strpos($vhostCertFile, '/combined') !== false) {
+                    $fullChainCertName = $vhostCertFile;
+                    $vhostCertKeyFile = $vhostCertFile;
+                } else {
+                    $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostCertFile);
+                    if ($certcafile[1]) {
+                        $vhostCertCAFile = $certcafile[1];
+                        $vhostFullChainCert = file_get_contents($vhostCertFile)."\n".file_get_contents($vhostCertCAFile);
+                        $ocspStapling = '
     # OCSP Stapling
     #ssl_trusted_certificate '.$fullChainCertName.';
     #ssl_stapling on;
     #ssl_stapling_verify on;
-                ';
-                } else {
-                    $vhostFullChainCert = file_get_contents($vhostCertFile);
-                    $ocspStapling = '';
+	                ';
+                    } else {
+                        $vhostFullChainCert = file_get_contents($vhostCertFile);
+                        $ocspStapling = '';
+                    }
+                    file_put_contents($fullChainCertName, $vhostFullChainCert);
                 }
-                file_put_contents($fullChainCertName, $vhostFullChainCert);
+
                 $output .= '
 # Definition block for domain(s): '.$vhostDomains.' #
 server {
