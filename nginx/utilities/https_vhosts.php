@@ -20,8 +20,8 @@ define('NGINX_HTTPS_PORT', '443');
 //ini_set('display_errors', 0);
 //error_reporting(0);
 
-function generate_https_vhosts() {
-
+function generate_https_vhosts()
+{
     $hostnamePemFile = '';
     if (file_exists('/var/cpanel/ssl/cpanel/cpanel.pem') && is_readable('/var/cpanel/ssl/cpanel/cpanel.pem')) {
         $hostnamePemFile = '/var/cpanel/ssl/cpanel/cpanel.pem';
@@ -76,16 +76,18 @@ server {
         $file = file_get_contents(HTTPD_CONF);
         $regex = "#\<VirtualHost [0-9a-f\.\:\[\]\s]+\:".HTTPD_HTTPS_PORT."\>(.+?)\<\/VirtualHost\>#s";
         preg_match_all($regex, $file, $matches, PREG_PATTERN_ORDER);
-        if(count($matches[1])) {
+        if (count($matches[1])) {
             foreach ($matches[1] as $vhost) {
-                if($hostnamePemFile && strpos($vhost, $hostnamePemFile)!== false) continue; // Skip the main hostname entry
+                if ($hostnamePemFile && strpos($vhost, $hostnamePemFile)!== false) {
+                    continue;
+                } // Skip the main hostname entry
                 preg_match("#ServerName (.+?)\n#s", $vhost, $name);
-                preg_match("#ServerAlias (.+?)\n#s", $vhost, $aliases);
+                preg_match_all("#ServerAlias (.+?)\n#s", $vhost, $aliases);
                 preg_match("#SSLCertificateFile (.+?)(\n|\r)#s", $vhost, $certfile);
                 preg_match("#SSLCertificateKeyFile (.+?)(\n|\r)#s", $vhost, $certkeyfile);
                 preg_match("#SSLCACertificateFile (.+?)(\n|\r)#s", $vhost, $certcafile);
-                if($aliases[1]){
-                    $vhostAliases = $aliases[1];
+                if ($aliases[1]) {
+                    $vhostAliases = implode(' ', $aliases[1]);
                 } else {
                     $vhostAliases = '';
                 }
@@ -93,7 +95,7 @@ server {
                 $vhostCertFile = $certfile[1];
                 $vhostCertKeyFile = $certkeyfile[1];
                 $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostCertFile);
-                if($certcafile[1]){
+                if ($certcafile[1]) {
                     $vhostCertCAFile = $certcafile[1];
                     $vhostFullChainCert = file_get_contents($vhostCertFile)."\n".file_get_contents($vhostCertCAFile);
                     $ocspStapling = '
