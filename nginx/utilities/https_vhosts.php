@@ -10,11 +10,17 @@
  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
-define('HTTPD_CONF_LAST_CHANGED', 10); /* In seconds */
-define('HTTPD_CONF', '/usr/local/apache/conf/httpd.conf'); /* For EA4 the path is /etc/httpd/conf/httpd.conf */
+if (file_exists('/etc/apache2/conf/httpd.conf') && is_readable('/etc/apache2/conf/httpd.conf')) {
+    define('HTTPD_CONF', '/etc/apache2/conf/httpd.conf');
+} elseif (file_exists('/etc/httpd/conf/httpd.conf') && is_readable('/etc/httpd/conf/httpd.conf')) {
+    define('HTTPD_CONF', '/etc/httpd/conf/httpd.conf');
+} else {
+    define('HTTPD_CONF', '/usr/local/apache/conf/httpd.conf');
+}
+define('HTTPD_CONF_LAST_CHANGED', 15); /* In seconds */
 define('HTTPD_HTTPS_PORT', '8443');
-define('NGINX_DEFAULT_HTTPS_VHOST', '/etc/nginx/conf.d/default_https.conf');
 define('NGINX_HTTPS_PORT', '443');
+define('NGINX_DEFAULT_HTTPS_VHOST', '/etc/nginx/conf.d/default_https.conf');
 
 //date_default_timezone_set('UTC');
 //ini_set('display_errors', 0);

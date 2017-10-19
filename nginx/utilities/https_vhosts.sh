@@ -18,10 +18,10 @@ function generate_https_vhosts {
 			bash /usr/local/src/engintron/engintron.sh purgecache
 		fi
 	fi
-	sleep 10
+	sleep 15
 }
 
-while [ $COUNTER -lt 5 ]; do
+while [ $COUNTER -lt 3 ]; do
 	generate_https_vhosts
 	COUNTER=$[$COUNTER+1]
 done
