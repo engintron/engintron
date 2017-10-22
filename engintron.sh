@@ -543,11 +543,11 @@ function cron_for_https_vhosts_remove {
 }
 
 function chkserv_nginx_on {
-    if [ -f /etc/chkserv.d/httpd ]; then
+    if [ -f /usr/local/cpanel/src/chkservd/chkserv.d/httpd ]; then
         echo ""
         echo "=== Enable TailWatch chkservd driver for Nginx ==="
 
-        sed -i 's:service\[httpd\]=80,:service[httpd]=8080,:' /etc/chkserv.d/httpd
+        sed -i 's:service\[httpd\]=80,:service[httpd]=8080,:' /usr/local/cpanel/src/chkservd/chkserv.d/httpd
         echo "nginx:1" >> /etc/chkserv.d/chkservd.conf
         if [ ! -f /etc/chkserv.d/nginx ]; then
             touch /etc/chkserv.d/nginx
@@ -560,11 +560,11 @@ function chkserv_nginx_on {
 }
 
 function chkserv_nginx_off {
-    if [ -f /etc/chkserv.d/httpd ]; then
+    if [ -f /usr/local/cpanel/src/chkservd/chkserv.d/httpd ]; then
         echo ""
         echo "=== Disable TailWatch chkservd driver for Nginx ==="
 
-        sed -i 's:service\[httpd\]=8080,:service[httpd]=80,:' /etc/chkserv.d/httpd
+        sed -i 's:service\[httpd\]=8080,:service[httpd]=80,:' /usr/local/cpanel/src/chkservd/chkserv.d/httpd
         sed -i 's:^nginx\:1::' /etc/chkserv.d/chkservd.conf
         if [ -f /etc/chkserv.d/nginx ]; then
             /bin/rm -f /etc/chkserv.d/nginx
