@@ -9,6 +9,7 @@
 
 # General Proxy Settings
 proxy_pass                    $scheme://$PROXY_DOMAIN_OR_IP:$PROXY_TO_PORT;
+proxy_hide_header             Upgrade;
 proxy_http_version            1.1;                # Always upgrade to HTTP/1.1
 proxy_set_header              Accept-Encoding ""; # Optimize encoding
 proxy_set_header              Connection "";      # Enable keepalives
