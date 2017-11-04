@@ -39,7 +39,13 @@ if ($http_cookie ~* "(joomla_[a-zA-Z0-9_]+|userID|wordpress_[a-zA-Z0-9_]+|wp-pos
     set $EXPIRES_FOR_DYNAMIC 0;
 }
 
-# Invision Power Board (IPB)
+# Invision Power Board (IPB) v4+
+if ($cookie_ips4_member_id ~ "^[1-9][0-9]*$") {
+    set $CACHE_BYPASS_FOR_DYNAMIC 1;
+    set $EXPIRES_FOR_DYNAMIC 0;
+}
+
+# Invision Power Board (IPB) v3+
 if ($cookie_member_id ~ "^[1-9][0-9]*$") {
     set $CACHE_BYPASS_FOR_DYNAMIC 1;
     set $EXPIRES_FOR_DYNAMIC 0;
