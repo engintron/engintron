@@ -40,6 +40,10 @@ if ($http_cookie ~* "(joomla_[a-zA-Z0-9_]+|userID|wordpress_[a-zA-Z0-9_]+|wp-pos
 }
 
 # Invision Community (IPS)
+if ($cookie_member_id ~ "^[1-9][0-9]*$") {
+    set $CACHE_BYPASS_FOR_DYNAMIC 1;
+    set $EXPIRES_FOR_DYNAMIC 0;
+}
 if ($http_cookie ~ "ips4_IPSSessionFront") {
     set $CACHE_BYPASS_FOR_DYNAMIC 1;
     set $EXPIRES_FOR_DYNAMIC 0;
