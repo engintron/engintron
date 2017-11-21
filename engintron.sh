@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.8.6
+#  * @version    1.8.7
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -11,7 +11,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.8.6"
+APP_VERSION="1.8.7"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
@@ -873,9 +873,12 @@ res)
     echo ""
     ;;
 purgecache)
+	NOW=$(date +'%Y.%m.%d at %H:%M:%S')
     echo "==================================================================="
     echo "=== Clean Nginx cache & temp folders and restart Apache & Nginx ==="
     echo "==================================================================="
+    echo ""
+    echo "--- Process started at $NOW ---"
     echo ""
     find /tmp/engintron_dynamic/ -type f | xargs rm -rvf
     find /tmp/engintron_static/ -type f | xargs rm -rvf

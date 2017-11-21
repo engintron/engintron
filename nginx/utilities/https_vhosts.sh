@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.8.6
+#  * @version    1.8.7
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -14,9 +14,9 @@ COUNTER="0"
 
 function generate_https_vhosts {
     if [ -f /etc/nginx/utilities/https_vhosts.php ]; then
-        RUN_CHECK=$(/usr/bin/php -c /dev/null /etc/nginx/utilities/https_vhosts.php)
+        RUN_CHECK=$(/usr/bin/php -c /dev/null -q /etc/nginx/utilities/https_vhosts.php; echo $?)
         if [[ $RUN_CHECK == 1 ]]; then
-            bash /usr/local/src/engintron/engintron.sh purgecache
+            bash /usr/local/src/engintron/engintron.sh purgecache > /etc/nginx/utilities/https_vhosts.log
         fi
     fi
 }

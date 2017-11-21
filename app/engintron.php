@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    1.8.6
+ * @version    1.8.7
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -31,8 +31,8 @@ function checkacl() {
 // A few constants to make updating easier
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.8.6');
-define('PLG_BUILD', 'Build 20171026');
+define('PLG_VERSION', '1.8.7');
+define('PLG_BUILD', 'Build 20171121');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));

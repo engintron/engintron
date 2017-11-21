@@ -2,7 +2,7 @@
 <?php
 
 /**
- * @version    1.8.6
+ * @version    1.8.7
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -143,9 +143,7 @@ server {
 // Run the check
 if (!file_exists(NGINX_DEFAULT_HTTPS_VHOST) || (file_exists(HTTPD_CONF) && is_readable(HTTPD_CONF) && (filemtime(HTTPD_CONF) + HTTPD_CONF_LAST_CHANGED) > time())) {
     generate_https_vhosts();
-    echo "HTTPS vhosts for Nginx re-created.\n";
     exit(1);
 } else {
-    echo "No changes in Apache's vhosts configuration. HTTPS vhosts for Nginx unchanged.\n";
     exit(0);
 }
