@@ -110,7 +110,7 @@ EOF
 
 fi
 
-# Setup APCu 4.x for PHP 7.0
+# Setup APCu 5.x for PHP 7.0
 if [ -f /opt/cpanel/ea-php70/root/usr/bin/pecl ]; then
     echo "*************************************"
     echo "*    Installing APCu for PHP 7.0    *"
@@ -137,7 +137,7 @@ EOF
 
 fi
 
-# Setup APCu 4.x for PHP 7.1
+# Setup APCu 5.x for PHP 7.1
 if [ -f /opt/cpanel/ea-php71/root/usr/bin/pecl ]; then
     echo "*************************************"
     echo "*    Installing APCu for PHP 7.1    *"
@@ -157,6 +157,33 @@ EOF
     echo ""
     echo "************************************************"
     echo "* APCu for PHP 7.1 is now installed"
+    echo "* and configured with a $CACHE_SIZE cache pool"
+    echo "************************************************"
+    echo ""
+    echo ""
+
+fi
+
+# Setup APCu 5.x for PHP 7.2
+if [ -f /opt/cpanel/ea-php72/root/usr/bin/pecl ]; then
+    echo "*************************************"
+    echo "*    Installing APCu for PHP 7.2    *"
+    echo "*************************************"
+    echo ""
+
+    echo "\r" | /opt/cpanel/ea-php72/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
+    touch /opt/cpanel/ea-php72/root/etc/php.d/apcu.ini
+    cat > "/opt/cpanel/ea-php72/root/etc/php.d/apcu.ini" <<EOF
+[apcu]
+extension=/opt/cpanel/ea-php72/root/usr/lib64/php/modules/apcu.so
+apc.enabled = 1
+apc.shm_size = $CACHE_SIZE
+
+EOF
+
+    echo ""
+    echo "************************************************"
+    echo "* APCu for PHP 7.2 is now installed"
     echo "* and configured with a $CACHE_SIZE cache pool"
     echo "************************************************"
     echo ""
