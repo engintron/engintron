@@ -42,7 +42,7 @@ function generate_https_vhosts()
 server {
 
     listen '.NGINX_HTTPS_PORT.' ssl http2 default_server;
-    #listen [::]:443 ipv6only=on ssl http2 default_server;
+    #listen [::]:'.NGINX_HTTPS_PORT.' ssl http2 default_server;
     server_name localhost;
 
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
@@ -125,7 +125,7 @@ server {
 # Definition block for domain(s): '.$vhostDomains.' #
 server {
     listen '.NGINX_HTTPS_PORT.' ssl http2;
-    #listen [::]:443 ipv6only=on ssl http2;
+    #listen [::]:'.NGINX_HTTPS_PORT.' ssl http2;
     server_name '.$vhostDomains.';
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
     ssl_certificate '.$fullChainCertName.';
