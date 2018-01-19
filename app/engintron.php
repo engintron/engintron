@@ -4,7 +4,7 @@
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
- * @copyright  Copyright (c) 2010 - 2017 Nuevvo Webware P.C. All rights reserved.
+ * @copyright  Copyright (c) 2010 - 2018 Nuevvo Webware P.C. All rights reserved.
  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
@@ -32,7 +32,7 @@ function checkacl() {
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_VERSION', '1.8.7');
-define('PLG_BUILD', 'Build 20171121');
+define('PLG_BUILD', 'Build 20180119');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/','',shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
