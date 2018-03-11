@@ -30,7 +30,7 @@ Sign up here https://tinyletter.com/engintron or here https://engintron.com
 ![Engintron App in WHM](https://engintron.com/assets/screenshots/1.6.0_20160216_ad_2048x1072.png)
 
 
-==
+***
 ## Engintron is Nginx on cPanel, done right!
 
 [Nginx®](http://nginx.org/) is a powerful open source web server that was built to scale websites to millions of visitors. cPanel® is the leading hosting control panel worldwide.
