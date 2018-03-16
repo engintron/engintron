@@ -358,7 +358,7 @@ if (ENGINTRON_STATE!="missing") {
         <meta charset="utf-8" />
         <title><?php echo PLG_NAME; ?></title>
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic|Montserrat:400,700|Source+Code+Pro:400,700" />
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <link rel="stylesheet" type="text/css" href="https://engintron.com/app/webfonts/style.css" />
         <style type="text/css">
             body {margin:0;padding:0;font-family:'Open Sans',sans-serif;font-size:13px;color:#333;}
@@ -409,6 +409,8 @@ if (ENGINTRON_STATE!="missing") {
                         div#ngOutputWindow pre span {color:green;}
                         div#ngOutputWindow pre b.ngStatus {font-size:18px;}
                         div#ngOutputWindow pre i.ngSep {color:#aaa;font-size:12px;display:block;padding:0;margin:20px 0;}
+                    div#ngOutputWindow #ngSeriously {text-align:center;padding:40px;background:#000;}
+                    div#ngOutputWindow #ngSeriously h3 {color:#fff;font-size:40px;padding:20px 0 0;margin:0 auto;}
                     body.op_edit div#ngOutputWindow {border:1px solid #d0d0d0;border-top:0;padding:0;margin:0;}
                     #ngAceEditor {box-sizing:border-box;border:none;width:100%;padding:8px;margin:0;font-family:'Source Code Pro',monospace;font-size:13px;height:460px;overflow:auto;color:#fff;background:#000;outline:0;}
                     div#ngOutput form#fileEditor textarea#data {display:none;}
@@ -570,7 +572,7 @@ if (ENGINTRON_STATE!="missing") {
                     <?php if ($ret): ?>
                     <pre><?php echo $ret; ?></pre>
                     <?php endif; ?>
-                    <?php if ($op=='edit'): ?>
+                    <?php if ($op=='edit' && isset($f) && in_array($f, $allowed_files)): ?>
                     <form action="engintron.php?op=edit&f=<?php echo $f; ?>" method="post" id="fileEditor">
                         <div id="ngAceEditor"></div>
                         <textarea id="data" name="data"><?php echo file_get_contents($f); ?></textarea>
@@ -581,6 +583,11 @@ if (ENGINTRON_STATE!="missing") {
                             <input type="submit" value="Update <?php echo $f; ?>" onClick="ngSaveFile('fileEditor')" />
                         </div>
                     </form>
+                    <?php else: ?>
+                    <div id="ngSeriously">
+                        <img src="https://cdn.joomlaworks.org/gifs/galifianakis_santa.gif" alt="Seriously?" />
+                        <h3>Seriously?</h3>
+                    </div>
                     <?php endif; ?>
                     </div>
                 </div>
