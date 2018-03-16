@@ -572,7 +572,8 @@ if (ENGINTRON_STATE!="missing") {
                     <?php if ($ret): ?>
                     <pre><?php echo $ret; ?></pre>
                     <?php endif; ?>
-                    <?php if ($op=='edit' && isset($f) && in_array($f, $allowed_files)): ?>
+                    <?php if ($op=='edit'): ?>
+                    <?php if (isset($f) && in_array($f, $allowed_files)): ?>
                     <form action="engintron.php?op=edit&f=<?php echo $f; ?>" method="post" id="fileEditor">
                         <div id="ngAceEditor"></div>
                         <textarea id="data" name="data"><?php echo file_get_contents($f); ?></textarea>
@@ -588,6 +589,7 @@ if (ENGINTRON_STATE!="missing") {
                         <img src="https://cdn.joomlaworks.org/gifs/galifianakis_santa.gif" alt="Seriously?" />
                         <h3>Seriously?</h3>
                     </div>
+                    <?php endif; ?>
                     <?php endif; ?>
                     </div>
                 </div>
