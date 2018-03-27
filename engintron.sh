@@ -873,7 +873,7 @@ res)
     echo ""
     ;;
 purgecache)
-	NOW=$(date +'%Y.%m.%d at %H:%M:%S')
+    NOW=$(date +'%Y.%m.%d at %H:%M:%S')
     echo "==================================================================="
     echo "=== Clean Nginx cache & temp folders and restart Apache & Nginx ==="
     echo "==================================================================="
@@ -1056,10 +1056,10 @@ info)
     echo " / /___/ /|  / /_/ // // /|  / / / / _, _/ /_/ / /|  /  "
     echo "/_____/_/ |_/\____/___/_/ |_/ /_/ /_/ |_|\____/_/ |_/   "
     echo "                                                        "
-    echo "                  https://engintron.com                 "
+    echo "                 https://engintron.com                  "
     cat <<EOF
 
-Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/WHM server.
+Engintron (v$APP_VERSION) is the easiest way to integrate Nginx on your cPanel/WHM server.
 
 Usage: /engintron.sh [command] [flag]
 
