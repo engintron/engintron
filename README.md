@@ -27,7 +27,7 @@ You can now hire us through Fiverr at: https://www.fiverr.com/engintron/install-
 ***
 
 
-![Engintron App in WHM](https://engintron.com/assets/screenshots/1.6.0_20160216_ad_2048x1072.png)
+![Engintron App in WHM](https://engintron.com/assets/screenshots/20180329_2048x1072_UPD_1.png)
 
 
 ***
