@@ -19,10 +19,10 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 * [Donate & Support the development of Engintron](https://engintron.com/?donate)
 
 ***
-# NEW - Join the Engintron Newsletter / Mailing List
-It's easy to miss an Engintron update on social media. If you want to know for sure when the latest version of Engintron is released, sign up to get notified directly to your inbox. We will never spam you.
+# [NEW] Hire us on Fiverr!
+We have launched 3 new offerings on [Fiverr](https://www.fiverr.com/engintron/install-engintron-and-optimize-the-performance-of-your-cpanel-server) that range from a basic Engintron installation (and Apache optimization) to a fully optimized & secure cPanel setup for either existing on new servers.
 
-Sign up here https://tinyletter.com/engintron or here https://engintron.com
+You can now hire us through Fiverr at: https://www.fiverr.com/engintron/install-engintron-and-optimize-the-performance-of-your-cpanel-server
 
 ***
 
@@ -99,10 +99,11 @@ And finally, Engintron is 100% open source. You can tear it apart, customize it,
 
 
 ***
-# NEW - Join the Engintron Newsletter / Mailing List
-It's easy to miss an Engintron update on social media. If you want to know for sure when the latest version of Engintron is released, sign up to get notified directly to your inbox. We will never spam you.
+# [NEW] Hire us on Fiverr!
+We have launched 3 new offerings on [Fiverr](https://www.fiverr.com/engintron/install-engintron-and-optimize-the-performance-of-your-cpanel-server) that range from a basic Engintron installation (and Apache optimization) to a fully optimized & secure cPanel setup for either existing on new servers.
 
-Sign up here https://tinyletter.com/engintron or here https://engintron.com
+You can now hire us through Fiverr at: https://www.fiverr.com/engintron/install-engintron-and-optimize-the-performance-of-your-cpanel-server
+
 ***
 
 
@@ -123,6 +124,11 @@ Engintron is fully compatible with CentOS version 5, 6 and 7 on both 32-bit and 
 Engintron is also compatible with both EasyApache 3 and EasyApache 4 as of version 1.7.0.
 
 
+### License
+
+Engintron is released under the GNU/GPL license. For more info, have a look here: [http://www.gnu.org/copyleft/gpl.html](http://www.gnu.org/copyleft/gpl.html)
+
+
 ### Documentation
 
 For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: https://github.com/engintron/engintron/wiki
@@ -135,30 +141,25 @@ Please post your feedback and any issues or feature requests/suggestions in the 
 If you use Engintron, please take a moment to post a review and/or rating in the cPanel Applications Directory at: https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel
 
 
+### Join the Engintron Newsletter / Mailing List
+It's easy to miss an Engintron update on social media. If you want to know for sure when the latest version of Engintron is released, sign up to get notified directly to your inbox. We will never spam you.
+
+Sign up here https://tinyletter.com/engintron or here https://engintron.com
+
+
 ### Donate & support the development of Engintron
 Does Engintron bring value to your business? If so, you can donate & support the development of Engintron at: https://engintron.com/?donate
 
 
-### I need commercial support - do you offer such services?
+## I need commercial support - do you offer such services?
 
 If you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through other services that directly affect the performance of your cPanel server (MySQL, Apache, PHP, certain system configuration files and more), feel free to use the contact options from within Engintron to get in touch with us.
 
 Or you can simply email us at: engintron [at] gmail [dot] com
 
-
-### License
-
-Engintron is released under the GNU/GPL license. For more info, have a look here: [http://www.gnu.org/copyleft/gpl.html](http://www.gnu.org/copyleft/gpl.html)
+Or hire us through Fiverr at: https://www.fiverr.com/engintron/install-engintron-and-optimize-the-performance-of-your-cpanel-server
 
 
-==
-### More info
-A proper website is on its way, featuring short tutorials and videos, a forum and a commercial support channel.
+***
 
-If however you require commercial support now, you can contact us via Engintron's app dashboard or simply email us at: engintron [at] gmail [dot] com
-
-https://engintron.com
-
-
-==
-Copyright &copy; 2014-2016 Fotis Evangelou / [Nuevvo Webware P.C.](http://nuevvo.com)
+Copyright &copy; 2014-2018 Fotis Evangelou / [Nuevvo Webware](https://nuevvo.com)
