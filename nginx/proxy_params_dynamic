@@ -34,7 +34,7 @@ if ($http_user_agent ~* "(iPhone|iPod|iPad|Android|Mobile|Tablet)") {
 }
 
 # CMS (& CMS extension) specific cookies (e.g. Joomla, K2 for Joomla, WordPress, WooCommerce)
-if ($http_cookie ~* "(joomla_[a-zA-Z0-9_]+|userID|wordpress_[a-zA-Z0-9_]+|wp-postpass|comment_author_[a-zA-Z0-9_]+|woocommerce_[a-zA-Z0-9_]+|wp_woocommerce_[a-zA-Z0-9_]+)") {
+if ($http_cookie ~* "(joomla_[a-zA-Z0-9_]+|userID|wordpress_[a-zA-Z0-9_]+|wp-postpass|comment_author_[a-zA-Z0-9_]+|woocommerce_[a-zA-Z0-9_]+|wp_woocommerce_[a-zA-Z0-9_]+|sid_customer_|sid_admin_)") {
     set $CACHE_BYPASS_FOR_DYNAMIC 1;
     set $EXPIRES_FOR_DYNAMIC 0;
 }
