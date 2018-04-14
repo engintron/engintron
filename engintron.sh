@@ -250,6 +250,15 @@ function apache_revert_port {
 
 function install_nginx {
 
+    # Disable Nginx from the EPEL repo
+    if [ -f /etc/yum.repos.d/epel.repo ]; then
+        if grep -Fq "#exclude=nginx*" /etc/yum.repos.d/epel.repo; then
+            sed -i "s/\#exclude=nginx\*/exclude=nginx\*/" /etc/yum.repos.d/epel.repo
+        else
+            sed -i "s/enabled=1/enabled=1\nexclude=nginx\*/" /etc/yum.repos.d/epel.repo
+        fi
+    fi
+
     if [ ! -f /etc/yum.repos.d/nginx.repo ]; then
         touch /etc/yum.repos.d/nginx.repo
     fi
@@ -317,6 +326,10 @@ EOFS
     fi
     /bin/cp -f $APP_PATH/nginx/nginx.conf /etc/nginx/
 
+    if [ ! -d /etc/nginx/conf.d ]; then
+        mkdir -p /etc/nginx/conf.d
+    fi
+
     if [ -f /etc/nginx/conf.d/default.conf ]; then
         /bin/cp -f /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bak
     fi
@@ -376,6 +389,11 @@ function remove_nginx {
     /bin/rm -rf /etc/nginx/*
     /bin/rm -f /etc/yum.repos.d/nginx.repo
     /bin/rm -rf /etc/ssl/engintron/*
+
+    # Enable Nginx from the EPEL repo
+    if [ -f /etc/yum.repos.d/epel.repo ]; then
+        sed -i "s/^exclude=nginx\*/#exclude=nginx\*/" /etc/yum.repos.d/epel.repo
+    fi
 
     echo ""
     echo ""
