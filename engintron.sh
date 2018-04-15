@@ -252,10 +252,15 @@ function install_nginx {
 
     # Disable Nginx from the EPEL repo
     if [ -f /etc/yum.repos.d/epel.repo ]; then
-        if grep -Fq "#exclude=nginx*" /etc/yum.repos.d/epel.repo; then
-            sed -i "s/\#exclude=nginx\*/exclude=nginx\*/" /etc/yum.repos.d/epel.repo
-        else
-            sed -i "s/enabled=1/enabled=1\nexclude=nginx\*/" /etc/yum.repos.d/epel.repo
+        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/epel.repo ; then
+            if grep -Fq "#exclude=nginx*" /etc/yum.repos.d/epel.repo; then
+                sed -i "s/\#exclude=nginx\*/exclude=nginx\*/" /etc/yum.repos.d/epel.repo
+            else
+                sed -i "s/enabled=1/enabled=1\nexclude=nginx\*/" /etc/yum.repos.d/epel.repo
+            fi
+            yum -y remove nginx
+            yum clean all
+            yum -y update
         fi
     fi
 
@@ -295,6 +300,10 @@ EOFS
     yum -y install nginx
 
     # Copy Nginx config files
+    if [ ! -d /etc/nginx/conf.d ]; then
+        mkdir -p /etc/nginx/conf.d
+    fi
+
     if [ -f /etc/nginx/custom_rules ]; then
         /bin/cp -f $APP_PATH/nginx/custom_rules /etc/nginx/custom_rules.dist
     else
@@ -325,10 +334,6 @@ EOFS
         /bin/cp -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
     fi
     /bin/cp -f $APP_PATH/nginx/nginx.conf /etc/nginx/
-
-    if [ ! -d /etc/nginx/conf.d ]; then
-        mkdir -p /etc/nginx/conf.d
-    fi
 
     if [ -f /etc/nginx/conf.d/default.conf ]; then
         /bin/cp -f /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bak
