@@ -209,6 +209,7 @@ function apache_change_port {
     echo "=== Distill changes in Apache's configuration and restart Apache ==="
     /usr/local/cpanel/bin/apache_conf_distiller --update
     /scripts/rebuildhttpdconf
+    /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
 
     echo ""
@@ -241,6 +242,7 @@ function apache_revert_port {
     echo "=== Distill changes in Apache's configuration and restart Apache ==="
     /usr/local/cpanel/bin/apache_conf_distiller --update
     /scripts/rebuildhttpdconf
+    /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
 
     echo ""
@@ -576,6 +578,7 @@ function chkserv_nginx_on {
             touch /etc/chkserv.d/nginx
         fi
         echo "service[nginx]=80,GET / HTTP/1.0,HTTP/1..,killall -TERM nginx;sleep 2;killall -9 nginx;service nginx stop;service nginx start" > /etc/chkserv.d/nginx
+        /scripts/restartsrv apache_php_fpm
         /scripts/restartsrv_chkservd
         echo ""
         echo ""
@@ -592,6 +595,7 @@ function chkserv_nginx_off {
         if [ -f /etc/chkserv.d/nginx ]; then
             /bin/rm -f /etc/chkserv.d/nginx
         fi
+        /scripts/restartsrv apache_php_fpm
         /scripts/restartsrv_chkservd
         echo ""
         echo ""
@@ -677,6 +681,7 @@ install)
 
     echo ""
     echo "=== Restarting Apache & Nginx... ==="
+    /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
     fuser -k 80/tcp
     fuser -k 8080/tcp
@@ -698,8 +703,13 @@ install)
     if [ -f $APP_PATH/engintron.sh ]; then
         chmod +x $APP_PATH/engintron.sh
         $APP_PATH/engintron.sh purgecache
+
+        # Update the /engintron.sh file when updating Engiintron with "$ /engintron.sh install"
+        /bin/cp -f $APP_PATH/engintron.sh /
+        chmod +x /engintron.sh
     fi
 
+    /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
 
     sleep 5
@@ -742,6 +752,7 @@ remove)
 
     echo ""
     echo "=== Restarting Apache... ==="
+    /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
 
     echo ""
@@ -931,6 +942,7 @@ purgelogs)
     fi
     if [ "$(pstree | grep 'httpd')" ]; then
         echo "Restarting Apache..."
+        /scripts/restartsrv apache_php_fpm
         /scripts/restartsrv_httpd
         echo ""
     fi
@@ -984,6 +996,7 @@ restoreipfwd)
     else
         install_mod_remoteip
     fi
+    /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
     service nginx reload
     echo "Operation completed."
