@@ -554,10 +554,10 @@ if (ENGINTRON_STATE!="missing") {
                 <p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?></a> integrates the popular <a target="_blank" href="https://nginx.org/">Nginx</a><sup>&reg;</sup> web server as a "reverse caching proxy" in front of Apache in cPanel<sup>&reg;</sup>.</p>
                 <p>Nginx will cache &amp; serve static assets like CSS, JavaScript, images etc. as well as dynamic HTML with a 1 second micro-cache. This process will reduce CPU &amp; RAM usage on your server, while increasing your overall serving capacity. The result is a faster performing cPanel server.</p>
                 <p>Engintron is both free &amp; open source.<br /><br /><a target="_blank" href="https://github.com/engintron/engintron/issues">Report issues/bugs</a> or <a target="_blank" href="https://github.com/engintron/engintron/pulls">help us improve it</a>.</p>
-                <p><a class="github-button" href="https://github.com/engintron/engintron" data-count-href="/engintron/engintron/stargazers" data-count-api="/repos/engintron/engintron#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star engintron/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i> Rate on cPApps</a>
+                <p><a class="github-button" href="https://github.com/engintron/engintron" data-icon="octicon-star" data-show-count="true" aria-label="Star engintron/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i> Rate on cPApps</a>
 </p>
-                <p id="ngSocialIcons"><a target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a><a target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a><a target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a><a target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a><a target="_blank" href="https://plus.google.com/117428375464020763682"><i class="fa fa-google-plus"></i></a><a target="_blank" href="https://tinyletter.com/engintron"><i class="fa fa-newspaper-o"></i></a><a target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a><a href="mailto:4asloy9a"><i class="fa fa-envelope"></i></a></p>
-                <p id="commercialSupport"><b>Looking for commercial support?</b> <a href="mailto:4asloy9a">Get in touch with us</a>.
+                <p id="ngSocialIcons"><a target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a><a target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a><a target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a><a target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a><a target="_blank" href="https://plus.google.com/117428375464020763682"><i class="fa fa-google-plus"></i></a><a target="_blank" href="https://tinyletter.com/engintron"><i class="fa fa-newspaper-o"></i></a><a target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a><a href="mailto:engintron@gmail.com"><i class="fa fa-envelope"></i></a></p>
+                <p id="commercialSupport"><b>Looking for commercial support?</b> <a href="mailto:engintron@gmail.com">Get in touch with us</a>.
             </div>
             <div id="ngOutput">
                 <h2>&gt; Output</h2>
@@ -597,7 +597,7 @@ if (ENGINTRON_STATE!="missing") {
             <div class="clr"></div>
         </div>
         <div id="ngFooter">
-            <p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2014-<?php echo date('Y'); ?> <a target="_blank" href="http://nuevvo.com/">Nuevvo Webware P.C.</a> Released under the <a target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
+            <p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2014-<?php echo date('Y'); ?> <a target="_blank" href="https://nuevvo.com/">Nuevvo Webware P.C.</a> Released under the <a target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
         </div>
         <?php if ($message): ?>
         <div id="ngMessage"><div class="ngMsgState"></div><?php echo $message; ?></div>
@@ -606,7 +606,7 @@ if (ENGINTRON_STATE!="missing") {
         <!-- JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
         <script src="https://squaresend.com/squaresend.js"></script>
-        <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
         <script>
 
             // Ace
