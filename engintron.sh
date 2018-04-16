@@ -793,6 +793,7 @@ enable)
     apache_change_port
     service nginx start
 
+    /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
     service nginx restart
     chkserv_nginx_on
@@ -836,6 +837,7 @@ disable)
     apache_revert_port
     service nginx start
 
+    /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
     service nginx restart
     chkserv_nginx_off
@@ -879,6 +881,7 @@ resall)
     fi
     if [ "$(pstree | grep 'httpd')" ]; then
         echo "Restarting Apache..."
+        /scripts/restartsrv apache_php_fpm
         /scripts/restartsrv_httpd
         echo ""
     fi
@@ -896,6 +899,7 @@ res)
     echo ""
     if [ "$(pstree | grep 'httpd')" ]; then
         echo "Restarting Apache..."
+        /scripts/restartsrv apache_php_fpm
         /scripts/restartsrv_httpd
         echo ""
     fi
@@ -919,6 +923,7 @@ purgecache)
     find /tmp/engintron_temp/ -type f | xargs rm -rvf
     if [ "$(pstree | grep 'httpd')" ]; then
         echo "Restarting Apache..."
+        /scripts/restartsrv apache_php_fpm
         /scripts/restartsrv_httpd
         echo ""
     fi
