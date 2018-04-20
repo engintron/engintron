@@ -105,7 +105,7 @@ switch ($op) {
                             $message .= nl2br(shell_exec("/scripts/restartsrv_httpd"));
                             break;
                         case "mysql":
-                            $message .= nl2br(shell_exec("/scripts/restartsrv_mysql"));
+                            $message .= nl2br(shell_exec("rm -rvf /var/lib/mysql/ib_logfile*; touch /var/lib/mysql/mysql.sock; touch /var/lib/mysql/mysql.pid; chown -R mysql:mysql /var/lib/mysql; /scripts/restartsrv_mysql"));
                             break;
                         case "phpconf":
                             $message .= nl2br(shell_exec("/usr/local/cpanel/bin/apache_conf_distiller --update"));
