@@ -456,7 +456,12 @@ $output_replace = array(
 );
 
 // Output WHM Header
-echo str_replace($output_find, $output_replace, WHM::getHeaderString('Engintron for cPanel/WHM', 1, 1));
+//echo str_replace($output_find, $output_replace, WHM::getHeaderString('Engintron for cPanel/WHM', 1, 1));
+ob_start();
+WHM::header('Engintron for cPanel/WHM', 1, 1);
+$output = ob_get_contents();
+ob_end_clean();
+echo str_replace($output_find, $output_replace, $output);
 
 ?>
 
