@@ -19,10 +19,10 @@ function checkacl()
         return 1;
     }
     $reseller = file_get_contents("/var/cpanel/resellers");
-    foreach (split("\n", $reseller) as $line) {
+    foreach (str_split("\n", $reseller) as $line) {
         if (preg_match("/^$user:/", $line)) {
             $line = preg_replace("/^$user:/", "", $line);
-            foreach (split(",", $line) as $perm) {
+            foreach (str_split(",", $line) as $perm) {
                 if ($perm == "all") {
                     return 1;
                 }
