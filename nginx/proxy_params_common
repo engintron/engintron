@@ -1,5 +1,5 @@
 # /**
-#  * @version    1.8.9
+#  * @version    1.8.10
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -32,9 +32,9 @@ proxy_busy_buffers_size       256k;
 proxy_temp_file_write_size    256k;
 
 # Timeouts
-proxy_connect_timeout         180s;
-proxy_read_timeout            240s;
-proxy_send_timeout            240s;
+proxy_connect_timeout         300s;
+proxy_read_timeout            300s;
+proxy_send_timeout            300s;
 
 # Security Headers
 add_header                    X-XSS-Protection "1; mode=block" always;

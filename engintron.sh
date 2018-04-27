@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.8.9
+#  * @version    1.8.10
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou
 #  * @url        https://engintron.com
@@ -11,7 +11,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.8.9"
+APP_VERSION="1.8.10"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
@@ -354,6 +354,10 @@ EOFS
 
     if [ ! -d /etc/ssl/engintron ]; then
         mkdir -p /etc/ssl/engintron
+    fi
+
+    if [ ! -d /var/cache/nginx ]; then
+        mkdir -p /var/cache/nginx
     fi
 
     if [ -f /sbin/chkconfig ]; then
@@ -918,9 +922,9 @@ purgecache)
     echo ""
     echo "--- Process started at $NOW ---"
     echo ""
-    find /tmp/engintron_dynamic/ -type f | xargs rm -rvf
-    find /tmp/engintron_static/ -type f | xargs rm -rvf
-    find /tmp/engintron_temp/ -type f | xargs rm -rvf
+    find /var/cache/nginx/engintron_dynamic/ -type f | xargs rm -rvf
+    find /var/cache/nginx/engintron_static/ -type f | xargs rm -rvf
+    find /var/cache/nginx/engintron_temp/ -type f | xargs rm -rvf
     if [ "$(pstree | grep 'httpd')" ]; then
         echo "Restarting Apache..."
         /scripts/restartsrv apache_php_fpm

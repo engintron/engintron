@@ -2,7 +2,7 @@
 <?php
 
 /**
- * @version    1.8.9
+ * @version    1.8.10
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
@@ -98,6 +98,10 @@ server {
                     $vhostAliases = '';
                 }
                 $vhostDomains = trim($name[1].' '.$vhostAliases);
+                $vhostDomainsForNginx = explode(' ', $vhostDomains);
+                $vhostDomainsForNginx = implode(PHP_EOL.'        ', $vhostDomainsForNginx);
+                $vhostDomainsAsComment = str_split($vhostDomains, 250);
+                $vhostDomainsAsComment = implode(PHP_EOL.'# ', $vhostDomainsAsComment);
                 $vhostCertFile = $certfile[1];
                 $vhostCertKeyFile = $certkeyfile[1];
                 if (strpos($vhostCertFile, '/combined') !== false) {
@@ -113,7 +117,7 @@ server {
     #ssl_trusted_certificate '.$fullChainCertName.';
     #ssl_stapling on;
     #ssl_stapling_verify on;
-	                ';
+                    ';
                     } else {
                         $vhostFullChainCert = file_get_contents($vhostCertFile);
                         $ocspStapling = '';
@@ -122,11 +126,11 @@ server {
                 }
 
                 $output .= '
-# Definition block for domain(s): '.$vhostDomains.' #
+# Definition block for domain(s): '.$vhostDomainsAsComment.' #
 server {
     listen '.NGINX_HTTPS_PORT.' ssl http2;
     #listen [::]:'.NGINX_HTTPS_PORT.' ssl http2;
-    server_name '.$vhostDomains.';
+    server_name '.$vhostDomainsForNginx.';
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
     ssl_certificate '.$fullChainCertName.';
     ssl_certificate_key '.$vhostCertKeyFile.';
