@@ -192,8 +192,7 @@ function apache_change_port {
         /usr/local/cpanel/bin/whmapi1 set_tweaksetting key=apache_port value=0.0.0.0:8080
         /usr/local/cpanel/bin/whmapi1 set_tweaksetting key=apache_ssl_port value=0.0.0.0:8443
     else
-        if grep -Fxq "^apache_" /var/cpanel/cpanel.config
-        then
+        if grep -Fxq "^apache_" /var/cpanel/cpanel.config; then
             sed -i 's/^apache_port=.*/apache_port=0.0.0.0:8080/' /var/cpanel/cpanel.config
             sed -i 's/^apache_ssl_port=.*/apache_ssl_port=0.0.0.0:8443/' /var/cpanel/cpanel.config
         else
@@ -225,8 +224,7 @@ function apache_revert_port {
         /usr/local/cpanel/bin/whmapi1 set_tweaksetting key=apache_port value=0.0.0.0:80
         /usr/local/cpanel/bin/whmapi1 set_tweaksetting key=apache_ssl_port value=0.0.0.0:443
     else
-        if grep -Fxq "^apache_" /var/cpanel/cpanel.config
-        then
+        if grep -Fxq "^apache_" /var/cpanel/cpanel.config; then
             sed -i 's/^apache_port=.*/apache_port=0.0.0.0:80/' /var/cpanel/cpanel.config
             sed -i 's/^apache_ssl_port=.*/apache_ssl_port=0.0.0.0:443/' /var/cpanel/cpanel.config
         else
@@ -453,8 +451,7 @@ function install_munin_patch {
     if [ -f /etc/munin/plugin-conf.d/cpanel.conf ]; then
         echo "=== Updating Munin's configuration for Apache ==="
 
-        if grep -q "\[apache_status\]" /etc/munin/plugin-conf.d/cpanel.conf
-        then
+        if grep -q "\[apache_status\]" /etc/munin/plugin-conf.d/cpanel.conf; then
             echo "Munin configuration already updated, nothing to do here"
         else
             cat >> "/etc/munin/plugin-conf.d/cpanel.conf" <<EOF
@@ -481,8 +478,7 @@ function remove_munin_patch {
         echo ""
         echo "=== Updating Munin's configuration for Apache ==="
 
-        if grep -q "\[apache_status\]" /etc/munin/plugin-conf.d/cpanel.conf
-        then
+        if grep -q "\[apache_status\]" /etc/munin/plugin-conf.d/cpanel.conf; then
             sed -i 's:\[apache_status\]::' /etc/munin/plugin-conf.d/cpanel.conf
             sed -i 's:env\.ports 8080::' /etc/munin/plugin-conf.d/cpanel.conf
             sed -i 's:env\.label 8080::' /etc/munin/plugin-conf.d/cpanel.conf
@@ -505,8 +501,7 @@ function csf_pignore_add {
         echo ""
         echo "=== Adding Nginx to CSF's process ignore list ==="
 
-        if grep -q "exe\:\/usr\/sbin\/nginx" /etc/csf/csf.pignore
-        then
+        if grep -q "exe\:\/usr\/sbin\/nginx" /etc/csf/csf.pignore; then
             echo "Nginx seems to be already configured with CSF..."
         else
             echo "exe:/usr/sbin/nginx" >> /etc/csf/csf.pignore
@@ -525,8 +520,7 @@ function csf_pignore_remove {
         echo ""
         echo "=== Removing Nginx from CSF's process ignore list ==="
 
-        if grep -q "exe\:\/usr\/sbin\/nginx" /etc/csf/csf.pignore
-        then
+        if grep -q "exe\:\/usr\/sbin\/nginx" /etc/csf/csf.pignore; then
             sed -i 's:^exe\:\/usr\/sbin\/nginx::' /etc/csf/csf.pignore
             csf -r
             service lfd restart
@@ -540,8 +534,7 @@ function csf_pignore_remove {
 
 function cron_for_https_vhosts_add {
     if [ -f /etc/crontab ]; then
-        if grep -q "https_vhosts\.sh" /etc/crontab
-        then
+        if grep -q "https_vhosts\.sh" /etc/crontab; then
             echo "=== Skip adding cron job to generate Nginx's HTTPS vhosts ==="
         else
             echo ""
