@@ -26,10 +26,10 @@ GET_CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
 
 function install_basics {
 
-    echo "=== Let's upgrade our system first & install a few required packages ==="
+    echo "=== Let's upgrade our system first & install any required packages (incl. useful utilities) ==="
     yum -y update
     yum -y upgrade
-    yum -y install atop bash-completion bc cronie curl htop ifstat iftop iotop make nano openssl-devel pcre pcre-devel sudo tree unzip zip zlib-devel
+    yum -y install apr-util atop bash-completion bc bmon bzip2 cron cronie curl dmidecode ethtool git htop httpd-tools httpie ifstat iftop iotop make multitail nano net-tools openssl-devel pcre pcre-devel psmisc redhat-lsb-core rsync siege smartmontools sudo tree unzip vixie-cron wget yum-utils zip zlib-devel
     yum clean all
     echo ""
     echo ""
