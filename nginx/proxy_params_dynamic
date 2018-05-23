@@ -24,7 +24,9 @@
 # server-side caching.
 # The combination of these settings will have Nginx serve all content without issuing requests
 # to Apache except only when it's required to refresh its cache.
+
 set $EXPIRES_FOR_DYNAMIC 1m;
+
 #############################################################################################
 
 # Allow separate cache entries for mobile devices (smartphones & tables)
