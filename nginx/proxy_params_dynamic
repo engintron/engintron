@@ -74,7 +74,7 @@ proxy_no_cache                 $CACHE_BYPASS_FOR_DYNAMIC;
 proxy_cache_bypass             $CACHE_BYPASS_FOR_DYNAMIC;
 
 proxy_cache                    engintron_dynamic;
-proxy_cache_background_update  on;
+#proxy_cache_background_update on;
 proxy_cache_key                "$MOBILE$request_method$scheme$host$request_uri";
 proxy_cache_lock               on;
 proxy_cache_methods            GET HEAD;
