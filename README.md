@@ -1,4 +1,4 @@
-### root@cpanelsrv [~]#   *Engintron v1.8.11 (Build 20180522) released on May 22nd, 2018*
+### root@cpanelsrv [~]#   *Engintron v1.8.12 (Build 20180524) released on May 24th, 2018*
 
 **Have a look at the [CHANGELOG](https://github.com/engintron/engintron/wiki/Changelog) for more information on this latest release**
 
