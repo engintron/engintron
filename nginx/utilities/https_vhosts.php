@@ -38,7 +38,7 @@ function generate_https_vhosts()
 
     // Initialize the output for default_https.conf
     $output = '
-# Default definition block for HTTPS (Generated on '.date('Y.m.d H:i:s').') #
+# Default definition block for HTTPS (Generated on '.@date('Y.m.d H:i:s').') #
 server {
 
     listen '.NGINX_HTTPS_PORT.' ssl http2 default_server;
