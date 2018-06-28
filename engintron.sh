@@ -15,6 +15,7 @@ APP_VERSION="1.8.12"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
+NGINX_RPM_FOR_AMAZON_LINUX_AMI="https://nginx.org/packages/rhel/6/x86_64/RPMS/nginx-1.14.0-1.el6.ngx.x86_64.rpm"
 
 GET_HTTPD_VERSION=$(httpd -v | grep "Server version")
 GET_CENTOS_VERSION=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release))
@@ -264,6 +265,20 @@ function install_nginx {
         fi
     fi
 
+    # Disable Nginx from the Amazon Linux repo
+    if [ -f /etc/yum.repos.d/amzn-main.repo ]; then
+        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/amzn-main.repo ; then
+            if grep -Fq "#exclude=nginx*" /etc/yum.repos.d/amzn-main.repo; then
+                sed -i "s/\#exclude=nginx\*/exclude=nginx\*/" /etc/yum.repos.d/amzn-main.repo
+            else
+                sed -i "s/enabled=1/enabled=1\nexclude=nginx\*/" /etc/yum.repos.d/amzn-main.repo
+            fi
+            yum -y remove nginx
+            yum clean all
+            yum -y update
+        fi
+    fi
+
     if [ ! -f /etc/yum.repos.d/nginx.repo ]; then
         touch /etc/yum.repos.d/nginx.repo
     fi
@@ -276,12 +291,20 @@ function install_nginx {
     fi
 
     # Setup Nginx repo
+    RELEASE_VERSION="\$releasever"
+    if grep -iq "Amazon Linux AMI" /etc/system-release; then
+        RELEASE_VERSION=6
+    fi
+    if grep -iq "Amazon Linux release 2" /etc/system-release; then
+        RELEASE_VERSION=7
+    fi
+
     if [[ $1 == 'mainline' ]]; then
         echo "=== Install Nginx (mainline) from nginx.org ==="
         cat > "/etc/yum.repos.d/nginx.repo" <<EOFM
 [nginx]
 name=nginx repo
-baseurl=http://nginx.org/packages/mainline/centos/\$releasever/\$basearch/
+baseurl=http://nginx.org/packages/mainline/centos/$RELEASE_VERSION/\$basearch/
 gpgcheck=0
 enabled=1
 EOFM
@@ -290,7 +313,7 @@ EOFM
         cat > "/etc/yum.repos.d/nginx.repo" <<EOFS
 [nginx]
 name=nginx repo
-baseurl=http://nginx.org/packages/centos/\$releasever/\$basearch/
+baseurl=http://nginx.org/packages/centos/$RELEASE_VERSION/\$basearch/
 gpgcheck=0
 enabled=1
 EOFS
@@ -402,6 +425,11 @@ function remove_nginx {
     # Enable Nginx from the EPEL repo
     if [ -f /etc/yum.repos.d/epel.repo ]; then
         sed -i "s/^exclude=nginx\*/#exclude=nginx\*/" /etc/yum.repos.d/epel.repo
+    fi
+
+    # Enable Nginx from the Amazon Linux repo
+    if [ -f /etc/yum.repos.d/amzn-main.repo ]; then
+        sed -i "s/^exclude=nginx\*/#exclude=nginx\*/" /etc/yum.repos.d/amzn-main.repo
     fi
 
     echo ""
