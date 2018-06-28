@@ -2,7 +2,7 @@
 <?php
 
 /**
- * @version    1.8.12
+ * @version    1.8.13
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou
  * @url        https://engintron.com
