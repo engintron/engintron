@@ -15,11 +15,10 @@ APP_VERSION="1.8.12"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
-NGINX_RPM_FOR_AMAZON_LINUX_AMI="https://nginx.org/packages/rhel/6/x86_64/RPMS/nginx-1.14.0-1.el6.ngx.x86_64.rpm"
 
 GET_HTTPD_VERSION=$(httpd -v | grep "Server version")
-GET_CENTOS_VERSION=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release))
 GET_CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
+#GET_CENTOS_VERSION=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release))
 
 
 
