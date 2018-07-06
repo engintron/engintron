@@ -197,7 +197,11 @@ switch ($op) {
 
     case "httpd_status":
         $ret = "<b>Apache Status:</b><br />";
-        $ret .= shell_exec("service httpd status");
+        if (version_compare(CENTOS_RELEASE, '7', '>=')) {
+            $ret .= shell_exec("systemctl status httpd");
+        } else {
+            $ret .= shell_exec("service httpd status");
+        }
         break;
 
     case "httpd_restart":
@@ -213,12 +217,20 @@ switch ($op) {
 
     case "httpd_config":
         $ret = "<b>Check configuration for errors...</b><br />";
-        $ret .= shell_exec("service httpd -t 2>&1");
+        if (version_compare(CENTOS_RELEASE, '7', '>=')) {
+            $ret .= shell_exec("apachectl -t");
+        } else {
+            $ret .= shell_exec("service httpd -t 2>&1");
+        }
         break;
 
     case "httpd_modules_compiled":
         $ret = "<b>Show compiled modules...</b><br />";
-        $ret .= shell_exec("service httpd -l");
+        if (version_compare(CENTOS_RELEASE, '7', '>=')) {
+            $ret .= shell_exec("apachectl -M | sort");
+        } else {
+            $ret .= shell_exec("service httpd -l");
+        }
         break;
 
     case "httpd_modules_loaded":
