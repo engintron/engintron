@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/usr/local/cpanel/3rdparty/bin/php
 <?php
 
 /**
