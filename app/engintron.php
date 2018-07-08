@@ -218,7 +218,7 @@ switch ($op) {
     case "httpd_config":
         $ret = "<b>Check configuration for errors...</b><br />";
         if (version_compare(CENTOS_RELEASE, '7', '>=')) {
-            $ret .= shell_exec("apachectl -t");
+            $ret .= shell_exec("apachectl -t 2>&1");
         } else {
             $ret .= shell_exec("service httpd -t 2>&1");
         }
@@ -227,7 +227,7 @@ switch ($op) {
     case "httpd_modules_compiled":
         $ret = "<b>Show compiled modules...</b><br />";
         if (version_compare(CENTOS_RELEASE, '7', '>=')) {
-            $ret .= shell_exec("apachectl -M | sort");
+            $ret .= shell_exec("apachectl -l");
         } else {
             $ret .= shell_exec("service httpd -l");
         }
@@ -235,12 +235,20 @@ switch ($op) {
 
     case "httpd_modules_loaded":
         $ret = "<b>Show loaded modules...</b><br />";
-        $ret .= shell_exec("service httpd -M");
+        if (version_compare(CENTOS_RELEASE, '7', '>=')) {
+            $ret .= shell_exec("apachectl -M");
+        } else {
+            $ret .= shell_exec("service httpd -M");
+        }
         break;
 
     case "httpd_parsed_settings":
         $ret = "<b>Show parsed settings...</b><br />";
-        $ret .= shell_exec("service httpd -S");
+        if (version_compare(CENTOS_RELEASE, '7', '>=')) {
+            $ret .= shell_exec("apachectl -S");
+        } else {
+            $ret .= shell_exec("service httpd -S");
+        }
         break;
 
     case "httpd_restoreipfwd":
