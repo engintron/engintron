@@ -80,17 +80,16 @@ $state = $_GET['state'];
 
 $allowed_files = array(
     '/etc/crontab',
-    '/etc/nginx/nginx.conf',
+    '/etc/my.cnf',
+    '/etc/nginx/common_http.conf',
     '/etc/nginx/common_https.conf',
+    '/etc/nginx/conf.d/default.conf',
+    '/etc/nginx/custom_rules.dist',
+    '/etc/nginx/custom_rules',
+    '/etc/nginx/nginx.conf',
     '/etc/nginx/proxy_params_common',
     '/etc/nginx/proxy_params_dynamic',
-    '/etc/nginx/proxy_params_static',
-    '/etc/nginx/custom_rules',
-    '/etc/nginx/custom_rules.dist',
-    '/etc/nginx/conf.d/default.conf',
-    '/etc/my.cnf',
-    '/usr/local/apache/conf/php.conf',
-    '/usr/local/lib/php.ini'
+    '/etc/nginx/proxy_params_static'
 );
 
 // Operations
@@ -118,11 +117,6 @@ switch ($op) {
                             break;
                         case "mysql":
                             $message .= nl2br(shell_exec("rm -rvf /var/lib/mysql/ib_logfile*; touch /var/lib/mysql/mysql.sock; touch /var/lib/mysql/mysql.pid; chown -R mysql:mysql /var/lib/mysql; /scripts/restartsrv_mysql"));
-                            break;
-                        case "phpconf":
-                            $message .= nl2br(shell_exec("/usr/local/cpanel/bin/apache_conf_distiller --update"));
-                            $message .= nl2br(shell_exec("/scripts/rebuildhttpdconf --update"));
-                            $message .= nl2br(shell_exec("/scripts/restartsrv_httpd"));
                             break;
                         case "cron":
                             $message .= nl2br(shell_exec("service crond restart"));
@@ -514,6 +508,7 @@ echo str_replace($output_find, $output_replace, $output);
                         <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_common&s=nginx">Edit proxy_params_common</a></li>
                         <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_dynamic&s=nginx">Edit proxy_params_dynamic</a></li>
                         <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_static&s=nginx">Edit proxy_params_static</a></li>
+                        <li><a href="engintron.php?op=edit&f=/etc/nginx/common_http.conf&s=nginx">Edit common_http.conf</a></li>
                         <li><a href="engintron.php?op=edit&f=/etc/nginx/common_https.conf&s=nginx">Edit common_https.conf</a></li>
                         <li><a href="engintron.php?op=edit&f=/etc/nginx/nginx.conf&s=nginx">Edit nginx.conf</a></li>
                         <li><a href="engintron.php?op=nginx_config">Check configuration for errors</a></li>
@@ -543,15 +538,6 @@ echo str_replace($output_find, $output_replace, $output);
                         <li><a href="engintron.php?op=httpd_modules_loaded">Show loaded modules</a></li>
                         <li><a href="engintron.php?op=httpd_parsed_settings">Show parsed settings</a></li>
                         <li><a href="engintron.php?op=httpd_restoreipfwd">Restore Nginx IP forwarding in Apache</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <h3>PHP</h3>
-                    <ul>
-                        <li><a href="engintron.php?op=edit&f=/usr/local/lib/php.ini&s=apache">Edit php.ini</a> [valid under EA3 only]</li>
-                        <?php if (file_exists('/usr/local/apache/conf/php.conf') && is_readable('/usr/local/apache/conf/php.conf')): ?>
-                        <li><a href="engintron.php?op=edit&f=/usr/local/apache/conf/php.conf&s=phpconf">Edit php.conf</a></li>
-                        <?php endif; ?>
                     </ul>
                 </li>
                 <li>
