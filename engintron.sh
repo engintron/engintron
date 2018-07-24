@@ -206,7 +206,9 @@ function apache_change_port {
     echo ""
 
     echo "=== Distill changes in Apache's configuration and restart Apache ==="
-    /usr/local/cpanel/bin/apache_conf_distiller --update
+    if [ ! -f /usr/local/cpanel/bin/whmapi1 ]; then
+        /usr/local/cpanel/bin/apache_conf_distiller --update
+    fi
     /scripts/rebuildhttpdconf
     /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
@@ -238,7 +240,9 @@ function apache_revert_port {
     echo ""
 
     echo "=== Distill changes in Apache's configuration and restart Apache ==="
-    /usr/local/cpanel/bin/apache_conf_distiller --update
+    if [ ! -f /usr/local/cpanel/bin/whmapi1 ]; then
+        /usr/local/cpanel/bin/apache_conf_distiller --update
+    fi
     /scripts/rebuildhttpdconf
     /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
