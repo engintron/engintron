@@ -38,14 +38,14 @@ function generate_https_vhosts()
 
     // Initialize the output for default_https.conf
     $output = '
-/**
- * @version    1.9.0
- * @package    Engintron for cPanel/WHM
- * @author     Fotis Evangelou
- * @url        https://engintron.com
- * @copyright  Copyright (c) 2010 - 2018 Nuevvo Webware P.C. All rights reserved.
- * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
- */
+# /**
+#  * @version    1.9.0
+#  * @package    Engintron for cPanel/WHM
+#  * @author     Fotis Evangelou
+#  * @url        https://engintron.com
+#  * @copyright  Copyright (c) 2010 - 2018 Nuevvo Webware P.C. All rights reserved.
+#  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
+#  */
 
 # Default definition block for HTTPS (Generated on '.@date('Y.m.d H:i:s').') #
 server {
