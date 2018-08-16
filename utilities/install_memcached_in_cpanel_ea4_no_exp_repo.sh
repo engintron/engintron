@@ -47,7 +47,7 @@ if [ -f /opt/cpanel/ea-php56/root/usr/bin/pecl ]; then
     echo "*************************************"
     echo ""
 
-    echo | /opt/cpanel/ea-php56/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP5
+    echo "no --disable-memcached-sasl" | /opt/cpanel/ea-php56/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP5
     touch /opt/cpanel/ea-php56/root/etc/php.d/memcached.ini
     cat > "/opt/cpanel/ea-php56/root/etc/php.d/memcached.ini" <<EOF
 [memcached]
@@ -71,7 +71,7 @@ if [ -f /opt/cpanel/ea-php70/root/usr/bin/pecl ]; then
     echo "*************************************"
     echo ""
 
-    echo | /opt/cpanel/ea-php70/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP7
+    echo "no --disable-memcached-sasl" | /opt/cpanel/ea-php70/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP7
     touch /opt/cpanel/ea-php70/root/etc/php.d/memcached.ini
     cat > "/opt/cpanel/ea-php70/root/etc/php.d/memcached.ini" <<EOF
 [memcached]
@@ -95,7 +95,7 @@ if [ -f /opt/cpanel/ea-php71/root/usr/bin/pecl ]; then
     echo "*************************************"
     echo ""
 
-    echo | /opt/cpanel/ea-php71/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP7
+    echo "no --disable-memcached-sasl" | /opt/cpanel/ea-php71/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP7
     touch /opt/cpanel/ea-php71/root/etc/php.d/memcached.ini
     cat > "/opt/cpanel/ea-php71/root/etc/php.d/memcached.ini" <<EOF
 [memcached]
@@ -119,7 +119,7 @@ if [ -f /opt/cpanel/ea-php72/root/usr/bin/pecl ]; then
     echo "*************************************"
     echo ""
 
-    echo | /opt/cpanel/ea-php72/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP7
+    echo "no --disable-memcached-sasl" | /opt/cpanel/ea-php72/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP7
     touch /opt/cpanel/ea-php72/root/etc/php.d/memcached.ini
     cat > "/opt/cpanel/ea-php72/root/etc/php.d/memcached.ini" <<EOF
 [memcached]
@@ -158,9 +158,23 @@ if [ "$(pstree | grep 'nginx')" ]; then
     echo ""
 fi
 
+echo ""
+echo ""
+
 # Print out useful info
+echo ""
+echo "********** Memcached Info **********"
 memcached -h
-php -i | grep -i memcached
+
+echo ""
+echo "********** Memcached PHP configuration **********"
+/opt/cpanel/ea-php56/root/usr/bin/php -i | grep -i memcache
+/opt/cpanel/ea-php70/root/usr/bin/php -i | grep -i memcache
+/opt/cpanel/ea-php71/root/usr/bin/php -i | grep -i memcache
+/opt/cpanel/ea-php72/root/usr/bin/php -i | grep -i memcache
+
+echo ""
+echo ""
 
 echo " ****************************************************"
 echo " *         Memcached installation complete          *"
