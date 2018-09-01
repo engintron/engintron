@@ -806,7 +806,7 @@ enable)
     install_munin_patch
     service nginx stop
 
-    sed -i 's:PROXY_TO_PORT 443:PROXY_TO_PORT 8443:' /etc/nginx/common_https.conf
+    sed -i 's:PROXY_TO_PORT 443;:PROXY_TO_PORT 8443;:' /etc/nginx/common_https.conf
 
     sed -i 's:listen 8080 default_server:listen 80 default_server:' /etc/nginx/conf.d/default.conf
     sed -i 's:listen [\:\:]\:8080 default_server:listen [\:\:]\:80 default_server:' /etc/nginx/conf.d/default.conf
@@ -854,7 +854,7 @@ disable)
     remove_munin_patch
     service nginx stop
 
-    sed -i 's:PROXY_TO_PORT 8443:PROXY_TO_PORT 443:' /etc/nginx/common_https.conf
+    sed -i 's:PROXY_TO_PORT 8443;:PROXY_TO_PORT 443;:' /etc/nginx/common_https.conf
 
     sed -i 's:listen 80 default_server:listen 8080 default_server:' /etc/nginx/conf.d/default.conf
     sed -i 's:listen [\:\:]\:80 default_server:listen [\:\:]\:8080 default_server:' /etc/nginx/conf.d/default.conf
