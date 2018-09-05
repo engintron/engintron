@@ -18,15 +18,6 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 * [Rate and/or review Engintron in the cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
 * [Donate & Support the development of Engintron](https://engintron.com/?donate)
 
-***
-# [NEW] Hire us on Fiverr!
-We have launched 3 new offerings on [Fiverr](https://www.fiverr.com/engintron/install-engintron-and-optimize-the-performance-of-your-cpanel-server) that range from a basic Engintron installation (and Apache optimization) to a fully optimized & secure cPanel setup for either existing on new servers.
-
-You can now hire us through Fiverr at: https://www.fiverr.com/engintron/install-engintron-and-optimize-the-performance-of-your-cpanel-server
-
-***
-
-
 ![Engintron WHM App](https://engintron.com/assets/screenshots/20180329_2048x1072_UPD_1.png?v=20180329)
 
 
@@ -96,15 +87,6 @@ Seventh, it doesn't require Nginx/Apache vhost synchronization when adding new d
 Eighth, Engintron allows for both HTTP and HTTPS traffic to flow through Nginx entirely, as of version 1.8.0.
 
 And finally, Engintron is 100% open source. You can tear it apart, customize it, fork it, knife it or contribute back to its development. Do whatever you want with it :)
-
-
-***
-# [NEW] Hire us on Fiverr!
-We have launched 3 new offerings on [Fiverr](https://www.fiverr.com/engintron/install-engintron-and-optimize-the-performance-of-your-cpanel-server) that range from a basic Engintron installation (and Apache optimization) to a fully optimized & secure cPanel setup for either existing on new servers.
-
-You can now hire us through Fiverr at: https://www.fiverr.com/engintron/install-engintron-and-optimize-the-performance-of-your-cpanel-server
-
-***
 
 
 ### FAQ
