@@ -956,9 +956,6 @@ purgecache)
     echo ""
     echo "--- Process started at $NOW ---"
     echo ""
-    find /var/cache/nginx/engintron_dynamic/ -type f | xargs rm -rvf
-    find /var/cache/nginx/engintron_static/ -type f | xargs rm -rvf
-    find /var/cache/nginx/engintron_temp/ -type f | xargs rm -rvf
     if [ "$(pstree | grep 'httpd')" ]; then
         echo "Restarting Apache..."
         /scripts/restartsrv apache_php_fpm
@@ -966,6 +963,9 @@ purgecache)
         echo ""
     fi
     if [ "$(pstree | grep 'nginx')" ]; then
+        find /var/cache/nginx/engintron_dynamic/ -type f | xargs rm -rvf
+        find /var/cache/nginx/engintron_static/ -type f | xargs rm -rvf
+        find /var/cache/nginx/engintron_temp/ -type f | xargs rm -rvf
         echo "Restarting Nginx..."
         service nginx restart
         echo ""
