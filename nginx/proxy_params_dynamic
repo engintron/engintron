@@ -58,7 +58,7 @@ if ($http_cookie ~ "ips4_IPSSessionFront") {
 }
 
 # Admin sections & generic entry point names for CMSs
-if ($request_uri ~* "(/administrator|com_user|com_users|com_contact|com_mailto|/component/user|/component/users|/component/contact|/component/mailto|/wp-admin|/wp-login.php|/cart|/my-account|/checkout|/wc-api|/addons|/lost-password|\?add-to-cart=|\?wc-api=|/ucp.php|/login|/logout|/connect|/signin|/signup|/register)") {
+if ($request_uri ~* "(/administrator|/admin|com_user|com_users|com_contact|com_mailto|/component/user|/component/users|/component/contact|/component/mailto|/wp-admin|/wp-login.php|/cart|/my-account|/checkout|/wc-api|/addons|/lost-password|\?add-to-cart=|\?wc-api=|/ucp.php|/login|/logout|/connect|/signin|/signup|/register)") {
     set $CACHE_BYPASS_FOR_DYNAMIC 1;
     set $EXPIRES_FOR_DYNAMIC 0;
 }
