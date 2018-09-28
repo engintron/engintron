@@ -21,7 +21,7 @@
 # manager logs into WordPress' backend/admin section.
 
 # Admin sections for CMSs
-if ($request_uri ~* "(/administrator|/wp-admin|/wp-login.php)") {
+if ($request_uri ~* "(/administrator|/admin|/wp-admin|/wp-login.php)") {
     set $CACHE_BYPASS_FOR_STATIC 1;
 }
 
