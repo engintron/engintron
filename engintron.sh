@@ -14,7 +14,7 @@ APP_PATH="/usr/local/src/engintron"
 APP_VERSION="1.9.1"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
-REPO_CDN_URL="https://cdn.rawgit.com/engintron/engintron/master"
+REPO_CDN_URL="https://cdn.jsdelivr.net/gh/engintron/engintron"
 
 GET_HTTPD_VERSION=$(httpd -v | grep "Server version")
 GET_CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
