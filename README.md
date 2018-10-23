@@ -139,8 +139,6 @@ If you wish to go the "extra mile" and optimize your cPanel server both through 
 
 Or you can simply email us at: engintron [at] gmail [dot] com
 
-Or hire us through Fiverr at: https://www.fiverr.com/engintron/install-engintron-and-optimize-the-performance-of-your-cpanel-server
-
 
 ***
 
