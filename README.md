@@ -1,6 +1,6 @@
-### root@cpanelsrv [~]#   *Engintron v1.9.1 (Build 20180817) released on August 17th, 2018*
+### root@cpanelsrv [~]#   *Engintron v1.9.2 (Build 20181115) released on November 15th, 2018*
 
-**Have a look at the [CHANGELOG](https://github.com/engintron/engintron/wiki/Changelog) for more information on this latest release**
+**Have a look at the [CHANGELOG](https://engintron.com/docs/#/pages/Changelog) for more information on this latest release**
 
 ***
 ![Engintron](https://engintron.com/assets/logo/Engintron_Logo_316x98_24_black.png)
@@ -10,8 +10,8 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 ***
 ##### Quick Navigation
 * [engintron.com](https://engintron.com)
-* [Documentation (Wiki)](https://github.com/engintron/engintron/wiki)
-* [FAQ](https://github.com/engintron/engintron/wiki/FAQ)
+* [Documentation (Wiki)](https://engintron.com/docs)
+* [FAQ](https://engintron.com/docs/#/pages/FAQ)
 * [Get support & report bugs (Issues)](https://github.com/engintron/engintron/issues)
 * [Join the Engintron Newsletter / Mailing List](https://tinyletter.com/engintron)
 * Engintron on [Facebook](https://www.facebook.com/engintron/), [Twitter](https://twitter.com/engintron_sh) & [Google+](https://plus.google.com/117428375464020763682)
@@ -63,7 +63,7 @@ In there, you'll find basic options to control Nginx, Apache and MySQL, all in o
 
 Inside the Engintron app dashboard you'll also find some handy utilities to monitor things like your Nginx access & error logs, check processes on your server or see incoming traffic on ports 80 & 443 (HTTP & HTTPS traffic respectively).
 
-_For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://github.com/engintron/engintron/wiki](https://github.com/engintron/engintron/wiki)_
+_For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://engintron.com/docs](https://engintron.com/docs)_
 
 
 ### Why is Engintron a better solution compared to other Nginx installers for cPanel
@@ -91,12 +91,12 @@ And finally, Engintron is 100% open source. You can tear it apart, customize it,
 
 ### FAQ
 
-The FAQ section has been moved in the Engintron Wiki: https://github.com/engintron/engintron/wiki/FAQ
+The FAQ section has been moved in the Engintron Wiki: https://engintron.com/docs/#/pages/FAQ
 
 
 ### Changelog
 
-The Changelog section has been moved in the Engintron Wiki: https://github.com/engintron/engintron/wiki/Changelog
+The Changelog section has been moved in the Engintron Wiki: https://engintron.com/docs/#/pages/Changelog
 
 
 ### Compatibility & Requirements
@@ -113,7 +113,7 @@ Engintron is released under the GNU/GPL license. For more info, have a look here
 
 ### Documentation
 
-For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: https://github.com/engintron/engintron/wiki
+For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://engintron.com/docs](https://engintron.com/docs)
 
 
 ### Feedback, bugs, feature requests & rating
