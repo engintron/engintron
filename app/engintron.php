@@ -2,9 +2,9 @@
 /**
  * @version    1.9.1
  * @package    Engintron for cPanel/WHM
- * @author     Fotis Evangelou
+ * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
- * @copyright  Copyright (c) 2010 - 2018 Nuevvo Webware P.C. All rights reserved.
+ * @copyright  Copyright (c) 2018 Kodeka OÜ. All rights reserved.
  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
@@ -631,7 +631,7 @@ echo str_replace($output_find, $output_replace, $output);
         <div class="clr"></div>
     </div>
     <div id="ngFooter">
-        <p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2014-<?php echo date('Y'); ?> <a target="_blank" href="https://nuevvo.com/">Nuevvo Webware P.C.</a> Released under the <a target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
+        <p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; <?php echo date('Y'); ?> <a target="_blank" href="https://kodeka.io/">Kodeka OÜ.</a> Released under the <a target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
     </div>
     <?php if ($message): ?>
     <div id="ngMessage"><div class="ngMsgState"></div><?php echo $message; ?></div>

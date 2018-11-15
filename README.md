@@ -142,4 +142,4 @@ Or you can simply email us at: engintron [at] gmail [dot] com
 
 ***
 
-Copyright &copy; 2014-2018 Fotis Evangelou / [Nuevvo Webware](https://nuevvo.com)
+Copyright &copy; 2018 [Kodeka OÜ](https://kodeka.io)

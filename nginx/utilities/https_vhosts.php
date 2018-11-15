@@ -4,9 +4,9 @@
 /**
  * @version    1.9.1
  * @package    Engintron for cPanel/WHM
- * @author     Fotis Evangelou
+ * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
- * @copyright  Copyright (c) 2010 - 2018 Nuevvo Webware P.C. All rights reserved.
+ * @copyright  Copyright (c) 2018 Kodeka OÜ. All rights reserved.
  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
@@ -41,9 +41,9 @@ function generate_https_vhosts()
 # /**
 #  * @version    1.9.1
 #  * @package    Engintron for cPanel/WHM
-#  * @author     Fotis Evangelou
+#  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2010 - 2018 Nuevvo Webware P.C. All rights reserved.
+#  * @copyright  Copyright (c) 2018 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
