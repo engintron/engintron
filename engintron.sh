@@ -252,6 +252,106 @@ function apache_revert_port {
 
 }
 
+function update_nginx {
+    if [[ $1 == 'mainline' ]]; then
+        echo "=== Install Nginx (mainline) from nginx.org ==="
+        cat > "/etc/yum.repos.d/nginx.repo" <<EOFM
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/mainline/centos/$RELEASE_VERSION/\$basearch/
+gpgcheck=0
+enabled=1
+EOFM
+
+yum install -y nginx
+    else
+        echo "=== Install Nginx (stable) from nginx.org ==="
+        cat > "/etc/yum.repos.d/nginx.repo" <<EOFS
+[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/$RELEASE_VERSION/\$basearch/
+gpgcheck=0
+enabled=1
+EOFS
+
+yum install -y nginx
+    fi
+    # Copy Nginx config files
+    if [ ! -d /etc/nginx/conf.d ]; then
+        mkdir -p /etc/nginx/conf.d
+    fi
+
+    if [ -f /etc/nginx/custom_rules ]; then
+        /bin/cp -f $APP_PATH/nginx/custom_rules /etc/nginx/custom_rules.dist
+    else
+        /bin/cp -f $APP_PATH/nginx/custom_rules /etc/nginx/
+    fi
+
+    if [ -f /etc/nginx/proxy_params_common ]; then
+        /bin/cp -f /etc/nginx/proxy_params_common /etc/nginx/proxy_params_common.bak
+    fi
+    /bin/cp -f $APP_PATH/nginx/proxy_params_common /etc/nginx/
+
+    if [ -f /etc/nginx/proxy_params_dynamic ]; then
+        /bin/cp -f /etc/nginx/proxy_params_dynamic /etc/nginx/proxy_params_dynamic.bak
+    fi
+    /bin/cp -f $APP_PATH/nginx/proxy_params_dynamic /etc/nginx/
+
+    if [ -f /etc/nginx/proxy_params_static ]; then
+        /bin/cp -f /etc/nginx/proxy_params_static /etc/nginx/proxy_params_static.bak
+    fi
+    /bin/cp -f $APP_PATH/nginx/proxy_params_static /etc/nginx/
+
+    if [ -f /etc/nginx/mime.types ]; then
+        /bin/cp -f /etc/nginx/mime.types /etc/nginx/mime.types.bak
+    fi
+    /bin/cp -f $APP_PATH/nginx/mime.types /etc/nginx/
+
+    if [ -f /etc/nginx/nginx.conf ]; then
+        /bin/cp -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+    fi
+    /bin/cp -f $APP_PATH/nginx/nginx.conf /etc/nginx/
+
+    if [ -f /etc/nginx/conf.d/default.conf ]; then
+        /bin/cp -f /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bak
+    fi
+    /bin/rm -f /etc/nginx/conf.d/*.conf
+    /bin/cp -f $APP_PATH/nginx/conf.d/default.conf /etc/nginx/conf.d/
+
+    /bin/cp -f $APP_PATH/nginx/common_http.conf /etc/nginx/
+    /bin/cp -f $APP_PATH/nginx/common_https.conf /etc/nginx/
+
+    if [ ! -d /etc/nginx/utilities ]; then
+        mkdir -p /etc/nginx/utilities
+    fi
+    /bin/cp -f $APP_PATH/nginx/utilities/https_vhosts.php /etc/nginx/utilities/
+    /bin/cp -f $APP_PATH/nginx/utilities/https_vhosts.sh /etc/nginx/utilities/
+    chmod +x /etc/nginx/utilities/*
+
+    if [ ! -d /etc/ssl/engintron ]; then
+        mkdir -p /etc/ssl/engintron
+    fi
+
+    if [ ! -d /var/cache/nginx ]; then
+        mkdir -p /var/cache/nginx
+    fi
+
+    if [ -f /sbin/chkconfig ]; then
+        /sbin/chkconfig nginx on
+    else
+        systemctl enable nginx
+    fi
+
+    if [ -f /usr/lib/systemd/system/nginx.service ]; then
+        sed -i 's/PrivateTmp=true/PrivateTmp=false/' /usr/lib/systemd/system/nginx.service
+        systemctl daemon-reload
+    fi
+
+    if [ "$(pstree | grep 'nginx')" ]; then
+        service nginx stop
+    fi
+
+}
 function install_nginx {
 
     # Disable Nginx from the EPEL repo
