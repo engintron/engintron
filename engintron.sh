@@ -758,7 +758,7 @@ update)
         exit 0
     fi
     echo "**************************************"
-    echo "*        Installing Engintron        *"
+    echo "*        Updating Engintron        *"
     echo "**************************************"
 
     echo ""
@@ -804,7 +804,7 @@ update)
 
     echo ""
     echo "**************************************"
-    echo "*       Installation Complete        *"
+    echo "*       Update Complete        *"
     echo "**************************************"
     echo ""
     echo ""
