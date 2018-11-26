@@ -356,7 +356,7 @@ function install_nginx {
 
     # Disable Nginx from the EPEL repo
     if [ -f /etc/yum.repos.d/epel.repo ]; then
-        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/epel.repo�; then
+        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/epel.repo; then
             if grep -Fq "#exclude=nginx*" /etc/yum.repos.d/epel.repo; then
                 sed -i "s/\#exclude=nginx\*/exclude=nginx\*/" /etc/yum.repos.d/epel.repo
             else
@@ -370,7 +370,7 @@ function install_nginx {
 
     # Disable Nginx from the Amazon Linux repo
     if [ -f /etc/yum.repos.d/amzn-main.repo ]; then
-        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/amzn-main.repo�; then
+        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/amzn-main.repo; then
             if grep -Fq "#exclude=nginx*" /etc/yum.repos.d/amzn-main.repo; then
                 sed -i "s/\#exclude=nginx\*/exclude=nginx\*/" /etc/yum.repos.d/amzn-main.repo
             else
@@ -826,8 +826,7 @@ install)
         echo " --- Exiting ---"
         echo ""
         echo "***********************************************"
-        echo "
-        i"
+        echo ""
         echo ""
         exit 0
     fi
