@@ -256,7 +256,7 @@ function install_nginx {
 
     # Disable Nginx from the EPEL repo
     if [ -f /etc/yum.repos.d/epel.repo ]; then
-        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/epel.repo ; then
+        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/epel.repo�; then
             if grep -Fq "#exclude=nginx*" /etc/yum.repos.d/epel.repo; then
                 sed -i "s/\#exclude=nginx\*/exclude=nginx\*/" /etc/yum.repos.d/epel.repo
             else
@@ -270,7 +270,7 @@ function install_nginx {
 
     # Disable Nginx from the Amazon Linux repo
     if [ -f /etc/yum.repos.d/amzn-main.repo ]; then
-        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/amzn-main.repo ; then
+        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/amzn-main.repo�; then
             if grep -Fq "#exclude=nginx*" /etc/yum.repos.d/amzn-main.repo; then
                 sed -i "s/\#exclude=nginx\*/exclude=nginx\*/" /etc/yum.repos.d/amzn-main.repo
             else
@@ -402,7 +402,7 @@ EOFS
 
     # Adjust log rotation to 7 days
     if [ -f /etc/logrotate.d/nginx ]; then
-        sed -i 's:rotate .*:rotate 7:' /etc/logrotate.d/nginx 
+        sed -i 's:rotate .*:rotate 7:' /etc/logrotate.d/nginx�
     fi
 
     echo ""
@@ -1143,8 +1143,9 @@ Engintron (v$APP_VERSION) is the easiest way to integrate Nginx on your cPanel/W
 Usage: /engintron.sh [command] [flag]
 
 Main commands:
-    install          Install, re-install or update Engintron (enables Nginx by default).
+    install          Install, re-install Engintron (enables Nginx by default).
                      Add optional flag "mainline" to install Nginx mainline release.
+    update           Update already installed Engintron. Add optional flag "mainline" to install or replace Nginx mainline release.
     remove           Remove Engintron completely.
     enable           Set Nginx to ports 80/443 & Apache to ports 8080/8443
     disable          Set Nginx to ports 8080/8443 & switch Apache to ports 80/443
