@@ -637,6 +637,79 @@ function chkserv_nginx_off {
 
 ### Define actions ###
 case $1 in
+update)
+    clear
+
+    if [ ! -f /engintron.sh ]; then
+        echo ""
+        echo ""
+        echo "***********************************************"
+        echo ""
+        echo " ENGINTRON NOTICE:"
+        echo " You must place & execute engintron.sh"
+        echo " from the root directory (/) of your server!"
+        echo ""
+        echo " --- Exiting ---"
+        echo ""
+        echo "***********************************************"
+        echo "
+        i"
+        echo ""
+        exit 0
+    fi
+    echo "**************************************"
+    echo "*        Installing Engintron        *"
+    echo "**************************************"
+
+    echo ""
+    echo ""
+
+   chmod +x /engintron.sh
+
+    if [[ $2 == 'local' ]]; then
+        echo -e "\033[36m=== Performing local installation from $APP_PATH... ===\033[0m"
+        cd /
+    else
+        # Set Engintron src file path
+        if [[ ! -d $APP_PATH ]]; then
+            mkdir -p $APP_PATH
+        fi
+
+        # Get the files
+        cd $APP_PATH
+        wget --no-check-certificate -O engintron.zip https://github.com/engintron/engintron/archive/master.zip
+        unzip engintron.zip
+        /bin/cp -rf $APP_PATH/engintron-master/* $APP_PATH/
+        /bin/rm -rvf $APP_PATH/engintron-master/*
+        /bin/rm -f $APP_PATH/engintron.zip
+        cd /
+    fi
+
+    echo ""
+    echo ""
+    update_nginx $2
+    install_engintron_ui
+    install_munin_patch
+
+    service nginx restart
+    
+    if [ -f $APP_PATH/engintron.sh ]; then
+        chmod +x $APP_PATH/engintron.sh
+        $APP_PATH/engintron.sh purgecache
+
+        # Update the /engintron.sh file when updating Engiintron with "$ /engintron.sh install"
+        /bin/cp -f $APP_PATH/engintron.sh /
+        chmod +x /engintron.sh
+    fi    
+
+    echo ""
+    echo "**************************************"
+    echo "*       Installation Complete        *"
+    echo "**************************************"
+    echo ""
+    echo ""
+    ;;
+
 install)
 
     clear
@@ -653,7 +726,8 @@ install)
         echo " --- Exiting ---"
         echo ""
         echo "***********************************************"
-        echo ""
+        echo "
+        i"
         echo ""
         exit 0
     fi
