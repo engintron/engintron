@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.9.2
+#  * @version    1.9.3
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2018 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2018 - 2019 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.9.2"
+APP_VERSION="1.9.3"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.jsdelivr.net/gh/engintron/engintron"
@@ -811,7 +811,7 @@ enable)
     sed -i 's:listen 8080 default_server:listen 80 default_server:' /etc/nginx/conf.d/default.conf
     sed -i 's:listen [\:\:]\:8080 default_server:listen [\:\:]\:80 default_server:' /etc/nginx/conf.d/default.conf
     sed -i 's:deny all; #:# deny all; #:' /etc/nginx/conf.d/default.conf
-    sed -i 's:PROXY_TO_PORT 8080;:PROXY_TO_PORT 80;:' /etc/nginx/conf.d/default.conf
+    sed -i 's:PROXY_TO_PORT 80;:PROXY_TO_PORT 8080;:' /etc/nginx/conf.d/default.conf
     sed -i 's:\:80; # Apache Status Page:\:8080; # Apache Status Page:' /etc/nginx/conf.d/default.conf
 
     if [ -f /etc/nginx/conf.d/default_https.conf ]; then
@@ -859,7 +859,7 @@ disable)
     sed -i 's:listen 80 default_server:listen 8080 default_server:' /etc/nginx/conf.d/default.conf
     sed -i 's:listen [\:\:]\:80 default_server:listen [\:\:]\:8080 default_server:' /etc/nginx/conf.d/default.conf
     sed -i 's:# deny all; #:deny all; #:' /etc/nginx/conf.d/default.conf
-    sed -i 's:PROXY_TO_PORT 80;:PROXY_TO_PORT 8080;:' /etc/nginx/conf.d/default.conf
+    sed -i 's:PROXY_TO_PORT 8080;:PROXY_TO_PORT 80;:' /etc/nginx/conf.d/default.conf
     sed -i 's:\:8080; # Apache Status Page:\:80; # Apache Status Page:' /etc/nginx/conf.d/default.conf
 
     if [ -f /etc/nginx/conf.d/default_https.conf ]; then
