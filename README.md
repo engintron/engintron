@@ -10,11 +10,11 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 ***
 ##### Quick Navigation
 * [engintron.com](https://engintron.com)
-* [Documentation (Wiki)](https://engintron.com/docs)
+* [Documentation](https://engintron.com/docs)
 * [FAQ](https://engintron.com/docs/#/pages/FAQ)
 * [Get support & report bugs (Issues)](https://github.com/engintron/engintron/issues)
 * [Join the Engintron Newsletter / Mailing List](https://tinyletter.com/engintron)
-* Engintron on [Facebook](https://www.facebook.com/engintron/), [Twitter](https://twitter.com/engintron_sh) & [Google+](https://plus.google.com/117428375464020763682)
+* Engintron on [Facebook](https://www.facebook.com/engintron/) & [Twitter](https://twitter.com/engintron_sh)
 * [Rate and/or review Engintron in the cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
 * [Donate & Support the development of Engintron](https://engintron.com/?donate)
 
@@ -23,8 +23,7 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 
 ***
 ## Engintron is Nginx on cPanel, done right!
-
-[Nginx®](http://nginx.org/) is a powerful open source web server that was built to scale websites to millions of visitors. cPanel® is the leading hosting control panel worldwide.
+[Nginx®](https://nginx.org/) is a powerful open source web server that was built to scale websites to millions of visitors. cPanel® is the leading hosting control panel worldwide.
 
 Engintron integrates Nginx into cPanel so you can enjoy amazing performance for your sites, without having to sacrifice important hosting features found in cPanel.
 
@@ -32,7 +31,6 @@ _And best of all? Engintron is totally free to use!_
 
 
 ### But why should you use Nginx in your cPanel server?
-
 cPanel uses the Apache webserver to serve websites by default. Apache however is not known to perform well under heavy web traffic (especially traffic spikes) and it's also CPU/RAM hungry. So how can you mitigate these issues? The answer is simple: by deploying Nginx, another popular web server software, in front of Apache. Nginx acts as a web traffic proxy, directly serving all static assets like CSS, JS, images etc. by default, instead of Apache. This drops significantly the CPU/RAM resources consumed by Apache, leaving your server with more available resources for other tasks or, better still, with room for more websites to host.
 
 The way Engintron sets up Nginx inside your cPanel is a lot like how the popular CloudFlare CDN works. Nginx (like CloudFlare) directly serves all static content like CSS, JS, images etc. instead of your actual web server, thus lowering the load on your cPanel server. But unlike CloudFlare which requires that all your domains are set up with that service, you do everything inside your cPanel server. And better still? You also have an additional caching layer for when your traffic spikes, not just on one website, but entirely for your server. This additional caching layer is referred to as a "micro cache" and it only caches GET & HEAD requests (never POST requests) which means that it is possible to use it on any type of website, either a small dynamic Joomla corporate website or WordPress blog to a more complex news portal or forum or e-commerce website, that requires users to log in and handle personalized content or even generate content. Engintron's 1 second "micro cache" solution setup with Nginx is therefore ideal for any type of website and it can raise the number of concurrent requests served by your cPanel server from a few hundred per second (using just Apache) to thousands (using Nginx in front of Apache).
@@ -45,12 +43,11 @@ If you can sign up for a cPanel/WHM server on any hosting company and work your 
 
 
 ### OK, I'm sold! How do I install Engintron on my cPanel server?
-
 Installation is a process that lasts only a few minutes. You'll need root SSH access to your cPanel server. Also check the current requirements (listed lower). If everything is ok, log in as root and type the following commands, one at a time:
 
-    cd /  
-    rm -f engintron.sh  
-    wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh  
+    cd /
+    rm -f engintron.sh
+    wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh
     bash engintron.sh install
 
 Or in one quick command to paste in the terminal:
@@ -67,7 +64,6 @@ _For more information regarding setup, configuration or uninstallation, as well 
 
 
 ### Why is Engintron a better solution compared to other Nginx installers for cPanel
-
 There are 9 key differences when comparing Engintron with other Nginx installers for cPanel.
 
 First and foremost, caching actually works with Engintron. It works as it should and it works universally. You install it and ALL your cPanel websites will get accelerated, even the slowest ones. Not only that, your serving capacity will increase tremendously. Simple Apache Benchmark (ab) tests reveal a phenomenal increase in concurrent requests served per second, from just 3-300 in Apache to 15,000-20,000 or even more using Nginx via Engintron. It's our carefully crafted "black box" configuration that does all the magic. And it requires literally almost zero maintenance.
@@ -90,34 +86,28 @@ And finally, Engintron is 100% open source. You can tear it apart, customize it,
 
 
 ### FAQ
-
-The FAQ section has been moved in the Engintron Wiki: https://engintron.com/docs/#/pages/FAQ
+The FAQ section has been moved in the Engintron Docs: https://engintron.com/docs/#/pages/FAQ
 
 
 ### Changelog
-
-The Changelog section has been moved in the Engintron Wiki: https://engintron.com/docs/#/pages/Changelog
+The Changelog section has been moved in the Engintron Docs: https://engintron.com/docs/#/pages/Changelog
 
 
 ### Compatibility & Requirements
-
-Engintron is fully compatible with CentOS version 5, 6 and 7 on both 32-bit and 64-bit platforms. Additionally, users have already reported a 100% compatibility with CloudLinux versions 6 & 7.
+Engintron is fully compatible with CentOS version 6 and 7 on both 32-bit and 64-bit platforms. Additionally, users have already reported a 100% compatibility with CloudLinux versions 6 & 7.
 
 Engintron is also compatible with both EasyApache 3 and EasyApache 4 as of version 1.7.0.
 
 
 ### License
-
-Engintron is released under the GNU/GPL license. For more info, have a look here: [http://www.gnu.org/copyleft/gpl.html](http://www.gnu.org/copyleft/gpl.html)
+Engintron is released under the GNU/GPL license. For more info, have a look here: [https://www.gnu.org/copyleft/gpl.html](https://www.gnu.org/copyleft/gpl.html)
 
 
 ### Documentation
-
-For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://engintron.com/docs](https://engintron.com/docs)
+For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's documentation pages at: [https://engintron.com/docs](https://engintron.com/docs)
 
 
 ### Feedback, bugs, feature requests & rating
-
 Please post your feedback and any issues or feature requests/suggestions in the project's issue tracker at: https://github.com/engintron/engintron/issues
 
 If you use Engintron, please take a moment to post a review and/or rating in the cPanel Applications Directory at: https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel
@@ -134,8 +124,7 @@ Does Engintron bring value to your business? If so, you can donate & support the
 
 
 ## I need commercial support - do you offer such services?
-
-If you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through other services that directly affect the performance of your cPanel server (MySQL, Apache, PHP, certain system configuration files and more), feel free to use the contact options from within Engintron to get in touch with us.
+If you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through other services that directly affect the performance of your cPanel server (MySQL, Apache, PHP, Memcached, caching, certain system configuration files and more), feel free to use the contact options from within Engintron to get in touch with us.
 
 Or you can simply email us at: engintron [at] gmail [dot] com
 
