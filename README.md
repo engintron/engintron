@@ -96,13 +96,13 @@ The Changelog section has been moved in the Engintron Docs: https://engintron.co
 
 
 ### Compatibility & Requirements
-Engintron is fully compatible with CentOS (or its variant CloudLinux) version 6 and 7 on both 32-bit and 64-bit platforms.
+Engintron is fully compatible with CentOS (and its variant CloudLinux) versions 6 and 7, on both 32-bit and 64-bit platforms.
 
 Engintron is also compatible with both EasyApache 3 and EasyApache 4 as of version 1.7.0.
 
 Keep in mind though that Engintron follows cPanel development tightly and as such, once cPanel drops support for a specific CentOS version or deprecates one of its features, Engintron will do the same.
 
-According to cPanel's "[Third-Party Software End Of Life Policy](https://documentation.cpanel.net/display/CKB/Third-Party+Software+End+Of+Life+Policy)", CentOS 6 support will be dropped after November 30, 2020. Likewise, EasyApache 3 is already end-of-like as of cPanel v76 (Dec 2018) according to [this cPanel blog post](https://blog.cpanel.com/the-beginning-is-the-end-is-the-beginning-of-easyapache/) and will be completely removed in cPanel v78. So please plan ahead.
+According to cPanel's "[Third-Party Software End Of Life Policy](https://documentation.cpanel.net/display/CKB/Third-Party+Software+End+Of+Life+Policy)", CentOS 6 support will be dropped after November 30, 2020. Likewise, EasyApache 3 is already end-of-like as of cPanel v76 (Dec 2018) according to [this cPanel blog post](https://blog.cpanel.com/the-beginning-is-the-end-is-the-beginning-of-easyapache/) and will be completely removed in cPanel v78. [Version 1.9.3 of Engintron](https://github.com/engintron/engintron/releases/tag/v1.9.3) is already marked as the last to support EasyApache 3, so please plan ahead.
 
 
 ### License
