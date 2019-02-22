@@ -129,12 +129,18 @@ Sign up here https://tinyletter.com/engintron or here https://engintron.com
 Does Engintron bring value to your business? If so, you can donate & support the development of Engintron at: https://engintron.com/?donate
 
 
-## I need commercial support - do you offer such services?
-If you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through other services that directly affect the performance of your cPanel server (MySQL, Apache, PHP, Memcached, caching, certain system configuration files and more), feel free to use the contact options from within Engintron to get in touch with us.
+## Commercial support & server optimization services
+Engintron will greatly improve your cPanel server's performance, but it will only get you halfway through to what your hardware can actually support, if all the other services like Apache, MySQL, PHP, caching, the firewall or the system's throughput etc. are "stock" configurations (or worse, badly optimized configurations) for your server's specifications.
 
-Or you can simply email us at: engintron [at] gmail [dot] com
+And although we do provide optimization guides in the Engintron documentation site (see "BEYOND ENGINTRON - OPTIMIZATION GUIDES" here [https://engintron.com/docs](https://engintron.com/docs)), it takes experience to fine tune any configuration to match a server's specifications.
+
+The performance optimization package we offer involves tuning the most essential services (MySQL, Apache, PHP & PHP-FPM) & the system's throughput, installing a new optimized EasyApache 4 profile with PHP versions 5.6 to 7.x, switching the server to PHP-FPM exclusively and setting up caching options like APCu, Opcache & Memcached. We also configure the server's firewall for basic DoS protection.
+
+At the end you get a full report of what has been optimized.
+
+So, if you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through the services that directly affect the server's performance, feel free to use the contact options from within Engintron's WHM app to get in touch with us. Or you can simply email us at: engintron [at] gmail [dot] com
 
 
 ***
 
-Copyright &copy; 2018 [Kodeka OÜ](https://kodeka.io)
+Copyright &copy; 2018 - 2019 [Kodeka OÜ](https://kodeka.io)
