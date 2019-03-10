@@ -9,7 +9,7 @@
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
-CACHE_SIZE="256M"
+CACHE_SIZE="512M"
 
 if [[ $1 ]]; then
     CACHE_SIZE=$1

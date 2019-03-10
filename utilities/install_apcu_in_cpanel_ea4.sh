@@ -195,7 +195,19 @@ fi
 find /opt/cpanel/ -name "local.ini" | xargs grep -l "apcu.so" | xargs sed -i "s/(\;)extension.*apcu\.so//"
 find /opt/cpanel/ -name "*pecl.ini" | xargs grep -l "apcu.so" | xargs sed -i "s/.*\"apcu\.so\"//"
 
-# Restart services
-/engintron.sh res
+# Restart Apache & PHP-FPM
+if [ "$(pstree | grep 'httpd')" ]; then
+    echo "Restarting Apache..."
+    /scripts/restartsrv apache_php_fpm
+    /scripts/restartsrv_httpd
+    echo ""
+fi
+
+# Restart Nginx (if it's installed via Engintron)
+if [ "$(pstree | grep 'nginx')" ]; then
+    echo "Restarting Nginx..."
+    service nginx restart
+    echo ""
+fi
 
 exit 0

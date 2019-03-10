@@ -9,7 +9,7 @@
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
-CACHE_SIZE="256M"
+CACHE_SIZE="512M"
 MEMCACHED_FOR_PHP5="https://pecl.php.net/get/memcached-2.2.0.tgz"
 MEMCACHED_FOR_PHP7="https://pecl.php.net/get/memcached-3.0.4.tgz"
 
