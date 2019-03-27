@@ -36,7 +36,7 @@ function checkacl()
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_VERSION', '1.9.3');
-define('PLG_BUILD', 'Build 20190122');
+define('PLG_BUILD', 'Build 20190327');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
@@ -135,14 +135,19 @@ switch ($op) {
         $ret .= shell_exec("curl http://localhost/nginx_status");
         break;
 
+    case "nginx_reload":
+        $ret = "<b>Reloading Nginx...</b><br />";
+        $ret .= shell_exec("service nginx reload");
+        break;
+
     case "nginx_restart":
         $ret = "<b>Restarting Nginx...</b><br />";
         $ret .= shell_exec("service nginx restart");
         break;
 
-    case "nginx_reload":
-        $ret = "<b>Reloading Nginx...</b><br />";
-        $ret .= shell_exec("service nginx reload");
+    case "nginx_forcerestart":
+        $ret = "<b>Force restarting Nginx...</b><br />";
+        $ret .= shell_exec("killall -9 nginx; killall -9 nginx; killall -9 nginx; service nginx restart");
         break;
 
     case "nginx_config":
@@ -322,6 +327,10 @@ switch ($op) {
         $ret = shell_exec("bash /usr/local/src/engintron/engintron.sh res 2>&1");
         break;
 
+    case "engintron_res_force":
+        $ret = shell_exec("bash /usr/local/src/engintron/engintron.sh res force 2>&1");
+        break;
+
     case "engintron_resall":
         $ret = shell_exec("bash /usr/local/src/engintron/engintron.sh resall 2>&1");
         break;
@@ -494,7 +503,8 @@ echo str_replace($output_find, $output_replace, $output);
                     <ul>
                         <li><a href="engintron.php">System Status &amp; Info</a></li>
                         <li><a href="engintron.php?op=engintron_res">Restart Apache &amp; Nginx</a></li>
-                        <li><a href="engintron.php?op=engintron_resall">Restart all services</a></li>
+                        <li><a href="engintron.php?op=engintron_res_force">Restart Apache &amp; force restart Nginx</a></li>
+                        <li><a href="engintron.php?op=engintron_resall">Restart all essential services</a></li>
                     </ul>
                 </li>
                 <li>
@@ -503,6 +513,7 @@ echo str_replace($output_find, $output_replace, $output);
                         <li><a href="engintron.php?op=nginx_status">Status</a></li>
                         <li><a href="engintron.php?op=nginx_reload">Reload</a></li>
                         <li><a href="engintron.php?op=nginx_restart">Restart</a></li>
+                        <li><a href="engintron.php?op=nginx_forcerestart">Force Restart</a></li>
                         <li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules&s=nginx">Edit your custom_rules for Nginx</a><?php if (file_exists('/etc/nginx/custom_rules.dist')): ?> (<a class="ngViewDefault" href="engintron.php?op=view&f=/etc/nginx/custom_rules.dist">view default</a>)<?php endif; ?></li>
                         <li><a href="engintron.php?op=edit&f=/etc/nginx/conf.d/default.conf&s=nginx">Edit default.conf</a></li>
                         <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_common&s=nginx">Edit proxy_params_common</a></li>

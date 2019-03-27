@@ -942,6 +942,12 @@ res)
         echo ""
     fi
     if [ "$(pstree | grep 'nginx')" ]; then
+        if [ "$2" == "force" ]; then
+            echo "Kill all Nginx processes..."
+            killall -9 nginx
+            killall -9 nginx
+            killall -9 nginx
+        fi
         echo "Restarting Nginx..."
         service nginx restart
         echo ""
@@ -1156,6 +1162,7 @@ Main commands:
 
 Utility commands:
     res              Restart web servers only (Apache & Nginx)
+    res force        Restart Apache & force restart Nginx (kills all previous Nginx processes)
     resall           Restart Cron, CSF & LFD (if installed), Munin (if installed),
                      MySQL, Apache, Nginx
     80               Show active connections on port 80 sorted by connection count & IP,
