@@ -28,61 +28,6 @@ yum -y install make pcre-devel
 echo ""
 echo ""
 
-# Setup APCu 4.x for PHP 5.4
-if [ -f /opt/cpanel/ea-php54/root/usr/bin/pecl ]; then
-
-    echo "*************************************"
-    echo "*    Installing APCu for PHP 5.4    *"
-    echo "*************************************"
-    echo ""
-
-    echo "\r" | /opt/cpanel/ea-php54/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP5
-    touch /opt/cpanel/ea-php54/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php54/root/etc/php.d/apcu.ini" <<EOF
-[apcu]
-extension=/opt/cpanel/ea-php54/root/usr/lib64/php/modules/apcu.so
-apc.enabled = 1
-apc.shm_size = $CACHE_SIZE
-
-EOF
-
-    echo ""
-    echo "************************************************"
-    echo "* APCu for PHP 5.4 is now installed"
-    echo "* and configured with a $CACHE_SIZE cache pool"
-    echo "************************************************"
-    echo ""
-    echo ""
-
-fi
-
-# Setup APCu 4.x for PHP 5.5
-if [ -f /opt/cpanel/ea-php55/root/usr/bin/pecl ]; then
-    echo "*************************************"
-    echo "*    Installing APCu for PHP 5.5    *"
-    echo "*************************************"
-    echo ""
-
-    echo "\r" | /opt/cpanel/ea-php55/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP5
-    touch /opt/cpanel/ea-php55/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php55/root/etc/php.d/apcu.ini" <<EOF
-[apcu]
-extension=/opt/cpanel/ea-php55/root/usr/lib64/php/modules/apcu.so
-apc.enabled = 1
-apc.shm_size = $CACHE_SIZE
-
-EOF
-
-    echo ""
-    echo "************************************************"
-    echo "* APCu for PHP 5.5 is now installed"
-    echo "* and configured with a $CACHE_SIZE cache pool"
-    echo "************************************************"
-    echo ""
-    echo ""
-
-fi
-
 # Setup APCu 4.x for PHP 5.6
 if [ -f /opt/cpanel/ea-php56/root/usr/bin/pecl ]; then
     echo "*************************************"
@@ -184,6 +129,33 @@ EOF
     echo ""
     echo "************************************************"
     echo "* APCu for PHP 7.2 is now installed"
+    echo "* and configured with a $CACHE_SIZE cache pool"
+    echo "************************************************"
+    echo ""
+    echo ""
+
+fi
+
+# Setup APCu 5.x for PHP 7.3
+if [ -f /opt/cpanel/ea-php73/root/usr/bin/pecl ]; then
+    echo "*************************************"
+    echo "*    Installing APCu for PHP 7.3    *"
+    echo "*************************************"
+    echo ""
+
+    echo "\r" | /opt/cpanel/ea-php73/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
+    touch /opt/cpanel/ea-php73/root/etc/php.d/apcu.ini
+    cat > "/opt/cpanel/ea-php73/root/etc/php.d/apcu.ini" <<EOF
+[apcu]
+extension=/opt/cpanel/ea-php73/root/usr/lib64/php/modules/apcu.so
+apc.enabled = 1
+apc.shm_size = $CACHE_SIZE
+
+EOF
+
+    echo ""
+    echo "************************************************"
+    echo "* APCu for PHP 7.3 is now installed"
     echo "* and configured with a $CACHE_SIZE cache pool"
     echo "************************************************"
     echo ""

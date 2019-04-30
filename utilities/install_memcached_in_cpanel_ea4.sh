@@ -37,8 +37,8 @@ if [ -e "/etc/sysconfig/memcached" ]; then
 fi
 service memcached restart
 
-# Install related PHP modules for PHP versions 5.6 to 7.2
-yum -y install ea-php56-php-memcached ea-php70-php-memcached ea-php71-php-memcached ea-php72-php-memcached
+# Install related PHP modules for PHP versions 5.6 to 7.3
+yum -y install ea-php56-php-memcached ea-php70-php-memcached ea-php71-php-memcached ea-php72-php-memcached ea-php73-php-memcached
 
 # Finish things up by restarting web services
 service memcached restart

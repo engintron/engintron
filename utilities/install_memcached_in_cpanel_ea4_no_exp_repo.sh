@@ -39,12 +39,12 @@ if [ -e "/etc/sysconfig/memcached" ]; then
 fi
 service memcached restart
 
-# Install related PHP modules for PHP versions 5.6 to 7.2
+# Install related PHP modules for PHP versions 5.6 to 7.3
 # Setup Memcached 2.x for PHP 5.6
 if [ -f /opt/cpanel/ea-php56/root/usr/bin/pecl ]; then
-    echo "*************************************"
+    echo "******************************************"
     echo "*    Installing Memcached for PHP 5.6    *"
-    echo "*************************************"
+    echo "******************************************"
     echo ""
 
     echo "no --disable-memcached-sasl" | /opt/cpanel/ea-php56/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP5
@@ -66,9 +66,9 @@ fi
 
 # Setup Memcached 3.x for PHP 7.0
 if [ -f /opt/cpanel/ea-php70/root/usr/bin/pecl ]; then
-    echo "*************************************"
+    echo "******************************************"
     echo "*    Installing Memcached for PHP 7.0    *"
-    echo "*************************************"
+    echo "******************************************"
     echo ""
 
     echo "no --disable-memcached-sasl" | /opt/cpanel/ea-php70/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP7
@@ -90,9 +90,9 @@ fi
 
 # Setup Memcached 3.x for PHP 7.1
 if [ -f /opt/cpanel/ea-php71/root/usr/bin/pecl ]; then
-    echo "*************************************"
+    echo "******************************************"
     echo "*    Installing Memcached for PHP 7.1    *"
-    echo "*************************************"
+    echo "******************************************"
     echo ""
 
     echo "no --disable-memcached-sasl" | /opt/cpanel/ea-php71/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP7
@@ -114,9 +114,9 @@ fi
 
 # Setup Memcached 3.x for PHP 7.2
 if [ -f /opt/cpanel/ea-php72/root/usr/bin/pecl ]; then
-    echo "*************************************"
+    echo "******************************************"
     echo "*    Installing Memcached for PHP 7.2    *"
-    echo "*************************************"
+    echo "******************************************"
     echo ""
 
     echo "no --disable-memcached-sasl" | /opt/cpanel/ea-php72/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP7
@@ -130,6 +130,30 @@ EOF
     echo ""
     echo "************************************************"
     echo "* Memcached for PHP 7.2 is now installed"
+    echo "************************************************"
+    echo ""
+    echo ""
+
+fi
+
+# Setup Memcached 3.x for PHP 7.3
+if [ -f /opt/cpanel/ea-php73/root/usr/bin/pecl ]; then
+    echo "******************************************"
+    echo "*    Installing Memcached for PHP 7.3    *"
+    echo "******************************************"
+    echo ""
+
+    echo "no --disable-memcached-sasl" | /opt/cpanel/ea-php73/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP7
+    touch /opt/cpanel/ea-php73/root/etc/php.d/memcached.ini
+    cat > "/opt/cpanel/ea-php73/root/etc/php.d/memcached.ini" <<EOF
+[memcached]
+extension=/opt/cpanel/ea-php73/root/usr/lib64/php/modules/memcached.so
+
+EOF
+
+    echo ""
+    echo "************************************************"
+    echo "* Memcached for PHP 7.3 is now installed"
     echo "************************************************"
     echo ""
     echo ""
