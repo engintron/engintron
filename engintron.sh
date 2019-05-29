@@ -887,6 +887,18 @@ disable)
     echo ""
     echo ""
     ;;
+reload)
+    echo "======================="
+    echo "=== Reloading Nginx ==="
+    echo "======================="
+    echo ""
+    if [ "$(pstree | grep 'nginx')" ]; then
+        echo "Reloading Nginx..."
+        service nginx reload
+        echo ""
+    fi
+    echo ""
+    ;;
 resall)
     echo "========================================="
     echo "=== Restarting All Important Services ==="
