@@ -1,4 +1,4 @@
-### root@cpanelsrv [~]#   *Engintron v1.9.3 (Build 20190327) released on March 27th, 2019*
+### root@cpanelsrv [~]#   *Engintron v1.10.0 (Build 20190529) released on May 29th, 2019*
 
 **Have a look at the [CHANGELOG](https://engintron.com/docs/#/pages/Changelog) for more information on this latest release**
 

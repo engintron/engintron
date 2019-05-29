@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.9.3
+#  * @version    1.10.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
