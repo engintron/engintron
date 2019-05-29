@@ -13,10 +13,11 @@
 #
 # === Basic Usage ===
 # $ cd /usr/local/src/engintron/utilities/
+# $ chmod +x healthcheck.sh
 # $ ./healthcheck.sh "https://domain.tld"
 #
 # === Cron Example ===
-# Check health (uptime) for domain.tld
+# Check health (uptime) for domain.tld (make the script executable first)
 # */3 * * * * root /usr/local/src/engintron/utilities/healthcheck.sh "https://domain.tld" >> /dev/null 2>&1
 #
 # === If you don't get emails when a restart occurs ===
