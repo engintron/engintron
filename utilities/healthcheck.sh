@@ -60,8 +60,8 @@ else
             /engintron.sh res
         fi
 
-        # Prepare the email to send
-        cat > "/tmp/healthcheck_email.html" <<EOF
+        # Send email
+        mail -s "$(echo -e "Apache & Nginx on $HOSTNAME restarted\nContent-Type: text/html")" "$EMAIL_TO" <<EOF
 <!DOCTYPE html>
 <html>
     <head>
@@ -79,9 +79,6 @@ else
     </body>
 </html>
 EOF
-
-        # Send email
-        mailx -s "Apache & Nginx on $HOSTNAME restarted" "$EMAIL_TO" < /tmp/healthcheck_email.html
     fi
 fi
 
