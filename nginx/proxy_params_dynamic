@@ -36,7 +36,7 @@ if ($http_user_agent ~* "(iPhone|iPod|iPad|Android|Mobile|Tablet)") {
 }
 
 # CMS (& CMS extension) specific cookies (e.g. Joomla, K2 for Joomla, WordPress, WooCommerce, PrestaShop etc.)
-if ($http_cookie ~* "(joomla_[a-zA-Z0-9_]+|userID|wordpress_[a-zA-Z0-9_]+|wp-postpass|comment_author_[a-zA-Z0-9_]+|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_[a-zA-Z0-9]+|sid_customer_|sid_admin_|PrestaShop-[a-zA-Z0-9]+)") {
+if ($http_cookie ~* "(joomla_[a-zA-Z0-9_]+|userID|wordpress_(?!test_)[a-zA-Z0-9_]+|wp-postpass|comment_author_[a-zA-Z0-9_]+|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_[a-zA-Z0-9]+|sid_customer_|sid_admin_|PrestaShop-[a-zA-Z0-9]+)") {
     set $CACHE_BYPASS_FOR_DYNAMIC 1;
     set $EXPIRES_FOR_DYNAMIC 0;
 }
@@ -89,4 +89,4 @@ proxy_ignore_headers           Cache-Control Expires Set-Cookie Vary;
 #proxy_hide_header             Expires;
 #proxy_hide_header             Pragma;
 #proxy_hide_header             Set-Cookie;
-#proxy_hide_header             Vary;
+proxy_hide_header              Vary;

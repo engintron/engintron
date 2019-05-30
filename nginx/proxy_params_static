@@ -37,7 +37,7 @@ proxy_cache_revalidate  on;
 proxy_cache_use_stale   error timeout invalid_header updating http_500 http_502 http_503 http_504; # Additional options: http_403 http_404
 proxy_cache_valid       200 301 302 1m; # Adjust for longer server-side cache times (unfortunately, we cannot use a variable here)
 
-proxy_ignore_headers    Cache-Control Expires Set-Cookie Vary;
+proxy_ignore_headers    Cache-Control Expires Pragma Set-Cookie Vary;
 proxy_hide_header       Cache-Control;
 proxy_hide_header       Expires;
 proxy_hide_header       Pragma;
