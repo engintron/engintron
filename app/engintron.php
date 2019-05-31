@@ -36,7 +36,7 @@ function checkacl()
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_VERSION', '1.10.0');
-define('PLG_BUILD', 'Build 20190327');
+define('PLG_BUILD', 'Build 20190529');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
