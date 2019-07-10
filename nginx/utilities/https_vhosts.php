@@ -49,9 +49,8 @@ function generate_https_vhosts()
 
 # Default definition block for HTTPS (Generated on '.@date('Y.m.d H:i:s').') #
 server {
-
-    listen '.NGINX_HTTPS_PORT.' ssl http2 default_server;
-    #listen [::]:'.NGINX_HTTPS_PORT.' ssl http2 default_server ipv6only=off;
+    #listen '.NGINX_HTTPS_PORT.' ssl http2 default_server;
+    listen [::]:'.NGINX_HTTPS_PORT.' ssl http2 default_server ipv6only=off;
     server_name localhost;
 
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
@@ -82,7 +81,6 @@ server {
         allow 127.0.0.1;
         deny all;
     }
-
 }
     ';
 
@@ -91,8 +89,9 @@ server {
         $file = file_get_contents(HTTPD_CONF);
         $regex = "#\<VirtualHost [0-9a-f\.\:\[\]\s]+\:".HTTPD_HTTPS_PORT."\>(.+?)\<\/VirtualHost\>#s";
         preg_match_all($regex, $file, $matches, PREG_PATTERN_ORDER);
-        if (count($matches[1])) {
-            foreach ($matches[1] as $vhost) {
+        $vhosts = $matches[1];
+        if (count($vhosts)) {
+            foreach ($vhosts as $vhost) {
                 if ($hostnamePemFile && strpos($vhost, $hostnamePemFile)!== false) {
                     continue;
                 } // Skip the main hostname entry
@@ -137,8 +136,8 @@ server {
                 $output .= '
 # Definition block for domain(s): '.$vhostDomainsAsComment.' #
 server {
-    listen '.NGINX_HTTPS_PORT.' ssl http2;
-    #listen [::]:'.NGINX_HTTPS_PORT.' ssl http2 ipv6only=off;
+    #listen '.NGINX_HTTPS_PORT.' ssl http2;
+    listen [::]:'.NGINX_HTTPS_PORT.' ssl http2;
     server_name '.$vhostDomainsForNginx.';
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
     ssl_certificate '.$fullChainCertName.';
