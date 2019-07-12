@@ -28,7 +28,7 @@
 
 
 # BASIC CONFIGURATION
-EMAIL_TO="alerts@domain.tld" # Email address to receive alerts when a health check fails
+#EMAIL_TO="alerts@domain.tld" # Email address to receive alerts when a health check fails
 TIME_TO_WAIT_IN_SECONDS=20   # Time for curl to wait for a response
 FORCE_RESTART_NGINX="no"     # Default: "no" - Set to "yes" to force-restart Nginx by killing all previous Nginx processes
 
@@ -42,6 +42,7 @@ FORCE_RESTART_NGINX="no"     # Default: "no" - Set to "yes" to force-restart Ngi
 DOMAIN=$1
 URL=$1/?timestamp=$(date +'%Y%m%d_%H%M%S')
 HOSTNAME=$(hostname -f)
+EMAIL_TO="root@$HOSTNAME";
 NOW=$(date +'%Y.%m.%d at %H:%M:%S')
 RESPONSE=$(curl -s -o /dev/null -m $TIME_TO_WAIT_IN_SECONDS -w "Responded with status code %{http_code} after %{time_total} seconds" $URL)
 
