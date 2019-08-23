@@ -649,7 +649,7 @@ echo str_replace($output_find, $output_replace, $output);
     <?php endif; ?>
 
     <!-- JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"></script>
     <script src="https://squaresend.com/squaresend.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script>
