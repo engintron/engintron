@@ -166,7 +166,7 @@ switch ($op) {
             $entries = $_POST['access_entries'];
         }
         $ret = "<b>Showing last {$entries} entries from /var/log/nginx/error.log</b><br /><br />";
-        $ret .= shell_exec("tail -{$entries} /var/log/nginx/error.log");;
+        $ret .= shell_exec("tail -{$entries} /var/log/nginx/error.log");
         break;
 
     case "nginx_accesslog":
@@ -176,7 +176,7 @@ switch ($op) {
             $entries = $_POST['error_entries'];
         }
         $ret = "<b>Showing last {$entries} entries from /var/log/nginx/access.log</b><br /><br />";
-        $ret .= shell_exec("tail -{$entries} /var/log/nginx/access.log");;
+        $ret .= shell_exec("tail -{$entries} /var/log/nginx/access.log");
         break;
 
     case "nginx_modules":
