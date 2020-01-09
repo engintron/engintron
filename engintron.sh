@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.11.0
+#  * @version    1.12.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2018 - 2019 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2018 - 2020 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.11.0"
+APP_VERSION="1.12.0"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.jsdelivr.net/gh/engintron/engintron"

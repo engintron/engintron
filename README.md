@@ -1,4 +1,4 @@
-### root@cpanelsrv [~]#   *Engintron v1.11.0 (Build 20190710) released on July 10th, 2019*
+### root@cpanelsrv [~]#   *Engintron v1.12.0 (Build 20200109) released on January 9th, 2019*
 
 **Have a look at the [CHANGELOG](https://engintron.com/docs/#/pages/Changelog) for more information on this latest release**
 
@@ -143,4 +143,4 @@ So, if you wish to go the "extra mile" and optimize your cPanel server both thro
 
 ***
 
-Copyright &copy; 2018 - 2019 [Kodeka OÜ](https://kodeka.io)
+Copyright &copy; 2018 - 2020 [Kodeka OÜ](https://kodeka.io)

@@ -1,10 +1,10 @@
 <?php
 /**
- * @version    1.11.0
+ * @version    1.12.0
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
- * @copyright  Copyright (c) 2018 - 2019 Kodeka OÜ. All rights reserved.
+ * @copyright  Copyright (c) 2018 - 2020 Kodeka OÜ. All rights reserved.
  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
@@ -18,13 +18,17 @@ function checkacl()
     if ($user == "root") {
         return 1;
     }
-    $reseller = file_get_contents("/var/cpanel/resellers");
-    foreach (str_split("\n", $reseller) as $line) {
-        if (preg_match("/^$user:/", $line)) {
-            $line = preg_replace("/^$user:/", "", $line);
-            foreach (str_split(",", $line) as $perm) {
-                if ($perm == "all") {
-                    return 1;
+    if (file_exists('/var/cpanel/resellers') && is_readable('/var/cpanel/resellers')) {
+        $reseller = file_get_contents('/var/cpanel/resellers');
+        if (trim($reseller) != '') {
+            foreach (str_split("\n", $reseller) as $line) {
+                if (preg_match("/^$user:/", $line)) {
+                    $line = preg_replace("/^$user:/", "", $line);
+                    foreach (str_split(",", $line) as $perm) {
+                        if ($perm == "all") {
+                            return 1;
+                        }
+                    }
                 }
             }
         }
@@ -35,8 +39,8 @@ function checkacl()
 // A few constants to make updating easier
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.11.0');
-define('PLG_BUILD', 'Build 20190710');
+define('PLG_VERSION', '1.12.0');
+define('PLG_BUILD', 'Build 20200109');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
@@ -166,7 +170,7 @@ switch ($op) {
             $entries = $_POST['access_entries'];
         }
         $ret = "<b>Showing last {$entries} entries from /var/log/nginx/error.log</b><br /><br />";
-        $ret .= shell_exec("tail -{$entries} /var/log/nginx/error.log");
+        $ret .= strip_tags(shell_exec("tail -{$entries} /var/log/nginx/error.log"));
         break;
 
     case "nginx_accesslog":
@@ -176,7 +180,7 @@ switch ($op) {
             $entries = $_POST['error_entries'];
         }
         $ret = "<b>Showing last {$entries} entries from /var/log/nginx/access.log</b><br /><br />";
-        $ret .= shell_exec("tail -{$entries} /var/log/nginx/access.log");
+        $ret .= strip_tags(shell_exec("tail -{$entries} /var/log/nginx/access.log"));
         break;
 
     case "nginx_modules":

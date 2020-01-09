@@ -2,11 +2,11 @@
 <?php
 
 /**
- * @version    1.11.0
+ * @version    1.12.0
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
- * @copyright  Copyright (c) 2018 - 2019 Kodeka OÜ. All rights reserved.
+ * @copyright  Copyright (c) 2018 - 2020 Kodeka OÜ. All rights reserved.
  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
@@ -39,11 +39,11 @@ function generate_https_vhosts()
     // Initialize the output for default_https.conf
     $output = '
 # /**
-#  * @version    1.11.0
+#  * @version    1.12.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2018 - 2019 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2018 - 2020 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
