@@ -21,10 +21,10 @@ function checkacl()
     if (file_exists('/var/cpanel/resellers') && is_readable('/var/cpanel/resellers')) {
         $reseller = file_get_contents('/var/cpanel/resellers');
         if (trim($reseller) != '') {
-            foreach (str_split("\n", $reseller) as $line) {
+            foreach (preg_split('/\r\n|\r|\n/', $reseller) as $line) {
                 if (preg_match("/^$user:/", $line)) {
                     $line = preg_replace("/^$user:/", "", $line);
-                    foreach (str_split(",", $line) as $perm) {
+                    foreach (explode(',', $line) as $perm) {
                         if ($perm == "all") {
                             return 1;
                         }
