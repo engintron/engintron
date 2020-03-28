@@ -1,5 +1,5 @@
 # /**
-#  * @version    1.12.0
+#  * @version    1.13.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -36,7 +36,7 @@ if ($http_user_agent ~* "(iPhone|iPod|iPad|Android|Mobile|Tablet)") {
 }
 
 # CMS (& CMS extension) specific cookies (e.g. Joomla, K2 for Joomla, WordPress, WooCommerce, PrestaShop etc.)
-if ($http_cookie ~* "(joomla_[a-zA-Z0-9_]+|userID|wordpress_(?!test_)[a-zA-Z0-9_]+|wp-postpass|comment_author_[a-zA-Z0-9_]+|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_[a-zA-Z0-9]+|sid_customer_|sid_admin_|PrestaShop-[a-zA-Z0-9]+)") {
+if ($http_cookie ~* "(joomla_[a-zA-Z0-9_]+|userID|wordpress_(?!test_)[a-zA-Z0-9_]+|wp-postpass|comment_author_[a-zA-Z0-9_]+|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_[a-zA-Z0-9]+|sid_customer_|sid_admin_|PrestaShop-[a-zA-Z0-9]+|SESS[a-zA-Z0-9]+|SSESS[a-zA-Z0-9]+|NO_CACHE)") {
     set $CACHE_BYPASS_FOR_DYNAMIC 1;
     set $EXPIRES_FOR_DYNAMIC 0;
 }
@@ -57,8 +57,8 @@ if ($http_cookie ~ "ips4_IPSSessionFront") {
     set $EXPIRES_FOR_DYNAMIC 0;
 }
 
-# Admin sections & generic entry point names for CMSs
-if ($request_uri ~* "(/administrator|com_user|com_users|com_contact|com_mailto|/component/user|/component/users|/component/contact|/component/mailto|/wp-admin|/wp-login.php|/cart|/my-account|/checkout|/wc-api|/addons|/lost-password|\?add-to-cart=|\?wc-api=|/ucp.php|/login|/logout|/connect|/signin|/signup|/register)") {
+# Admin sections & generic entry points for CMSs (incl. Joomla, WordPress, phpBB, Drupal, Craft)
+if ($request_uri ~* "(/administrator|com_user|com_users|com_contact|com_mailto|/component/user|/component/users|/component/contact|/component/mailto|/installation|/wp-admin|/wp-login.php|/cart|/my-account|/checkout|/wc-api|/addons|/lost-password|\?add-to-cart=|\?wc-api=|/ucp.php|^/status\.php|^/update\.php|^/install\.php|^/apc\.php$|^/apcu\.php$|^/admin|^/admin/.*$|^/user|^/user/.*$|^/users/.*$|^/info/.*$|^/flag/.*$|^.*/ajax/.*$|^.*/ahah/.*$|^/system/files/.*$|p=admin|/actions|/login|/logout|/connect|/signin|/signup|/register)") {
     set $CACHE_BYPASS_FOR_DYNAMIC 1;
     set $EXPIRES_FOR_DYNAMIC 0;
 }
