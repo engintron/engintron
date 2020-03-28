@@ -11,7 +11,7 @@
 
 CACHE_SIZE="512M"
 MEMCACHED_FOR_PHP5="https://pecl.php.net/get/memcached-2.2.0.tgz"
-MEMCACHED_FOR_PHP7="https://pecl.php.net/get/memcached-3.1.3.tgz"
+MEMCACHED_FOR_PHP7="https://pecl.php.net/get/memcached-3.1.5.tgz"
 
 if [[ $1 ]]; then
     CACHE_SIZE=$1
