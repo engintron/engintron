@@ -1,0 +1,175 @@
+--- 
+"Apache":                                     
+  "optmods":                                  
+    "Access":                                 1
+    "Actions":                                1
+    "Alias":                                  1
+    "Asis":                                   1
+    "AuthAnon":                               0
+    "AuthDB":                                 0
+    "AuthDBM":                                0
+    "AuthDigest":                             0
+    "AuthLDAP":                               0
+    "AuthnAlias":                             0
+    "AuthnAnon":                              0
+    "AuthnDBD":                               0
+    "AuthnDBM":                               0
+    "AuthnDefault":                           1
+    "AuthnzLDAP":                             0
+    "AuthzDBM":                               0
+    "AuthzHost":                              1
+    "AuthzOwner":                             0
+    "Autoindex":                              1
+    "Bucketeer":                              0
+    "Cache":                                  0
+    "CaseFilter":                             0
+    "CaseFilterIn":                           0
+    "CernMeta":                               0
+    "CharsetLite":                            0
+    "DAVFs":                                  0
+    "DAVLock":                                0
+    "DBD":                                    0
+    "DIR":                                    1
+    "Dav":                                    0
+    "Deflate":                                1
+    "DiskCache":                              0
+    "Distcache":                              0
+    "Dumpio":                                 0
+    "Echo":                                   0
+    "Env":                                    1
+    "Expires":                                1
+    "ExtFilter":                              0
+    "Fastcgi":                                1
+    "FileCache":                              0
+    "Fileprotect":                            1
+    "Headers":                                1
+    "Ident":                                  0
+    "Imagemap":                               0
+    "LDAP":                                   0
+    "LogAgent":                               0
+    "LogConfig":                              1
+    "LogForensic":                            0
+    "LogReferer":                             0
+    "MPMEvent":                               0
+    "MPMItk":                                 0
+    "MPMLeader":                              0
+    "MPMPerchild":                            0
+    "MPMPrefork":                             1
+    "MPMThreadpool":                          0
+    "MPMWorker":                              0
+    "MemCache":                               0
+    "Mime":                                   1
+    "MimeMagic":                              0
+    "MmapStatic":                             0
+    "Negotiation":                            1
+    "OptionalFnExport":                       0
+    "OptionalFnImport":                       0
+    "OptionalHookExport":                     0
+    "OptionalHookImport":                     0
+    "PHPAsUser":                              0
+    "Proxy":                                  1
+    "RaiseFDSetsize":                         0
+    "RaiseHardServerLimit":                   0
+    "Rewrite":                                0
+    "Setenvif":                               1
+    "SlowRestartPatch":                       0
+    "Speling":                                0
+    "Status":                                 1
+    "SymlinkProtection":                      0
+    "UniqueId":                               1
+    "Userdir":                                1
+    "Usertrack":                              0
+    "Version":                                1
+    "VhostAlias":                             0
+    "Watchdog":                               0
+  "version":                                  '2_4'
+"Cpanel::Easy::EAccelerator":                 0
+"Cpanel::Easy::IonCube5":                     0
+"Cpanel::Easy::IonCubeLoader":                0
+"Cpanel::Easy::ModBandwidth":                 0
+"Cpanel::Easy::ModJk":                        0
+"Cpanel::Easy::ModJk5":                       0
+"Cpanel::Easy::ModMono":                      0
+"Cpanel::Easy::ModMono2":                     0
+"Cpanel::Easy::ModPerl":                      0
+"Cpanel::Easy::ModQos":                       0
+"Cpanel::Easy::ModRuid2":                     0
+"Cpanel::Easy::ModSec":                       1
+"Cpanel::Easy::PHP5":                         1
+"Cpanel::Easy::PHP5::3_29":                   0
+"Cpanel::Easy::PHP5::4_45":                   0
+"Cpanel::Easy::PHP5::5_38":                   0
+"Cpanel::Easy::PHP5::6_29":                   1
+"Cpanel::Easy::PHP5::Bcmath":                 1
+"Cpanel::Easy::PHP5::Bz2":                    1
+"Cpanel::Easy::PHP5::CGI":                    0
+"Cpanel::Easy::PHP5::Calendar":               1
+"Cpanel::Easy::PHP5::Curl":                   0
+"Cpanel::Easy::PHP5::CurlSSL":                1
+"Cpanel::Easy::PHP5::Curlwrappers":           0
+"Cpanel::Easy::PHP5::DBX":                    0
+"Cpanel::Easy::PHP5::Dbase":                  0
+"Cpanel::Easy::PHP5::DiscardPath":            0
+"Cpanel::Easy::PHP5::Enchant":                0
+"Cpanel::Easy::PHP5::Exif":                   1
+"Cpanel::Easy::PHP5::Expat":                  0
+"Cpanel::Easy::PHP5::FTP":                    1
+"Cpanel::Easy::PHP5::Fastcgi":                0
+"Cpanel::Easy::PHP5::FileInfo":               0
+"Cpanel::Easy::PHP5::ForceCGIRedirect":       0
+"Cpanel::Easy::PHP5::GD":                     1
+"Cpanel::Easy::PHP5::Gettext":                1
+"Cpanel::Easy::PHP5::HardPHP":                0
+"Cpanel::Easy::PHP5::Iconv":                  0
+"Cpanel::Easy::PHP5::Imap":                   1
+"Cpanel::Easy::PHP5::Intl":                   0
+"Cpanel::Easy::PHP5::Java":                   0
+"Cpanel::Easy::PHP5::MM":                     0
+"Cpanel::Easy::PHP5::MagicQuotes":            0
+"Cpanel::Easy::PHP5::MailHeaders":            0
+"Cpanel::Easy::PHP5::Mbregex":                0
+"Cpanel::Easy::PHP5::Mbstring":               1
+"Cpanel::Easy::PHP5::Mcrypt":                 1
+"Cpanel::Easy::PHP5::MemoryLimit":            0
+"Cpanel::Easy::PHP5::Mhash":                  0
+"Cpanel::Easy::PHP5::MimeMagic":              0
+"Cpanel::Easy::PHP5::Mysql":                  1
+"Cpanel::Easy::PHP5::MysqlOfSystem":          0
+"Cpanel::Easy::PHP5::Mysqli":                 1
+"Cpanel::Easy::PHP5::Opcache":                1
+"Cpanel::Easy::PHP5::Openssl":                1
+"Cpanel::Easy::PHP5::PDO":                    1
+"Cpanel::Easy::PHP5::PDOMySQL":               1
+"Cpanel::Easy::PHP5::POSIX":                  0
+"Cpanel::Easy::PHP5::Pear":                   0
+"Cpanel::Easy::PHP5::Pgsql":                  1
+"Cpanel::Easy::PHP5::Phar":                   0
+"Cpanel::Easy::PHP5::Pspell":                 0
+"Cpanel::Easy::PHP5::SNMP":                   0
+"Cpanel::Easy::PHP5::SOAP":                   1
+"Cpanel::Easy::PHP5::SQLite3":                0
+"Cpanel::Easy::PHP5::SafeMode":               0
+"Cpanel::Easy::PHP5::SafePHPCGI":             0
+"Cpanel::Easy::PHP5::SilenceDeprecatedPatch": 0
+"Cpanel::Easy::PHP5::Sockets":                1
+"Cpanel::Easy::PHP5::SysTimezone":            1
+"Cpanel::Easy::PHP5::TTF":                    1
+"Cpanel::Easy::PHP5::Tidy":                   1
+"Cpanel::Easy::PHP5::Versioning":             0
+"Cpanel::Easy::PHP5::Wddx":                   0
+"Cpanel::Easy::PHP5::WithoutIconv":           0
+"Cpanel::Easy::PHP5::XSL":                    0
+"Cpanel::Easy::PHP5::XmlRPC":                 0
+"Cpanel::Easy::PHP5::ZendMultibyte":          0
+"Cpanel::Easy::PHP5::Zip":                    1
+"Cpanel::Easy::PHP5::Zlib":                   1
+"Cpanel::Easy::PHP5::cPPHPOpts":              1
+"Cpanel::Easy::PHPSuHosin":                   0
+"Cpanel::Easy::SourceGuardian":               0
+"Cpanel::Easy::Tomcat::7_0":                  0
+"Cpanel::Easy::Xcache":                       0
+"Cpanel::Easy::Zendopt":                      0
+"_meta":                                      
+  "name":                                     'Engintron_EA3_2016'
+  "note":                                     'Engintron_EA3_2016 profile with Apache 2.4 and PHP 5.6 (via FastCGI)'
+  "revision":                                 'b5gBLE0e3ojZ0F6hyLz472gdGI2_GSOdiAeu67zjCLOXsTD41rz9C8iLDqspWFW5'
