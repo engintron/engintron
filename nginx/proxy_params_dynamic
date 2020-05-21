@@ -35,8 +35,8 @@ if ($http_user_agent ~* "(iPhone|iPod|iPad|Android|Mobile|Tablet)") {
     set $MOBILE "mobile_";
 }
 
-# CMS (& CMS extension) specific cookies (e.g. Joomla, K2 for Joomla, WordPress, WooCommerce, PrestaShop etc.)
-if ($http_cookie ~* "(joomla_[a-zA-Z0-9_]+|userID|wordpress_(?!test_)[a-zA-Z0-9_]+|wp-postpass|comment_author_[a-zA-Z0-9_]+|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_[a-zA-Z0-9]+|sid_customer_|sid_admin_|PrestaShop-[a-zA-Z0-9]+|SESS[a-zA-Z0-9]+|SSESS[a-zA-Z0-9]+|NO_CACHE)") {
+# CMS (& CMS extension) specific cookies (e.g. Joomla, K2 for Joomla, WordPress, WooCommerce, PrestaShop, Magento etc.)
+if ($http_cookie ~* "(joomla_[a-zA-Z0-9_]+|userID|wordpress_(?!test_)[a-zA-Z0-9_]+|wp-postpass|comment_author_[a-zA-Z0-9_]+|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_[a-zA-Z0-9]+|sid_customer_|sid_admin_|PrestaShop-[a-zA-Z0-9]+|SESS[a-zA-Z0-9]+|SSESS[a-zA-Z0-9]+|NO_CACHE|external_no_cache|adminhtml|private_content_version)") {
     set $CACHE_BYPASS_FOR_DYNAMIC 1;
     set $EXPIRES_FOR_DYNAMIC 0;
 }
