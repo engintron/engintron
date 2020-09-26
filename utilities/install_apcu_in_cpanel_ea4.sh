@@ -163,6 +163,33 @@ EOF
 
 fi
 
+# Setup APCu 5.x for PHP 7.4
+if [ -f /opt/cpanel/ea-php74/root/usr/bin/pecl ]; then
+    echo "*************************************"
+    echo "*    Installing APCu for PHP 7.4    *"
+    echo "*************************************"
+    echo ""
+
+    echo "\r" | /opt/cpanel/ea-php74/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
+    touch /opt/cpanel/ea-php74/root/etc/php.d/apcu.ini
+    cat > "/opt/cpanel/ea-php74/root/etc/php.d/apcu.ini" <<EOF
+[apcu]
+extension=/opt/cpanel/ea-php74/root/usr/lib64/php/modules/apcu.so
+apc.enabled = 1
+apc.shm_size = $CACHE_SIZE
+
+EOF
+
+    echo ""
+    echo "************************************************"
+    echo "* APCu for PHP 7.4 is now installed"
+    echo "* and configured with a $CACHE_SIZE cache pool"
+    echo "************************************************"
+    echo ""
+    echo ""
+
+fi
+
 # Cleanup apsu.so entries in cPanel's PHP config files
 find /opt/cpanel/ -name "local.ini" | xargs grep -l "apcu.so" | xargs sed -i "s/(\;)extension.*apcu\.so//"
 find /opt/cpanel/ -name "*pecl.ini" | xargs grep -l "apcu.so" | xargs sed -i "s/.*\"apcu\.so\"//"
