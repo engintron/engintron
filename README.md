@@ -50,6 +50,13 @@ Installation is a process that lasts only a few minutes. You'll need root SSH ac
     wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh
     bash engintron.sh install
 
+    Or in alternative with CURL
+    
+    cd /
+    rm -f engintron.sh
+    curl -k -s https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh -o engintron.sh | sleep 1 && bash engintron.sh install
+    
+
 Or in one quick command to paste in the terminal:
 
     cd /; rm -f engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh; bash engintron.sh install
