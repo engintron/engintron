@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.13.0
+#  * @version    1.14.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -11,7 +11,7 @@
 
 # Constants
 APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.13.0"
+APP_VERSION="1.14.0"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 REPO_CDN_URL="https://cdn.jsdelivr.net/gh/engintron/engintron"

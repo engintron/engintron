@@ -1,4 +1,4 @@
-### root@cpanelsrv [~]#   *Engintron v1.13.0 (Build 20200731) updated on July 31st, 2020*
+### root@cpanelsrv [~]#   *Engintron v1.14.0 (Build 20201028) updated on October 28th, 2020*
 
 **Have a look at the [CHANGELOG](https://engintron.com/docs/#/pages/Changelog) for more information on this latest release**
 

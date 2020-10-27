@@ -2,7 +2,7 @@
 <?php
 
 /**
- * @version    1.13.0
+ * @version    1.14.0
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
@@ -39,7 +39,7 @@ function generate_https_vhosts()
     // Initialize the output for default_https.conf
     $output = '
 # /**
-#  * @version    1.13.0
+#  * @version    1.14.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
