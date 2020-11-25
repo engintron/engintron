@@ -12,6 +12,7 @@
 CACHE_SIZE="512M"
 MEMCACHED_FOR_PHP5="https://pecl.php.net/get/memcached-2.2.0.tgz"
 MEMCACHED_FOR_PHP7="https://pecl.php.net/get/memcached-3.1.5.tgz"
+MEMCACHED_FOR_PHP8="https://pecl.php.net/get/memcached-3.1.5.tgz"
 
 if [[ $1 ]]; then
     CACHE_SIZE=$1
@@ -184,6 +185,30 @@ EOF
 
 fi
 
+# Setup Memcached 3.x for PHP 8.0
+if [ -f /opt/cpanel/ea-php8.0/root/usr/bin/pecl ]; then
+    echo "******************************************"
+    echo "*    Installing Memcached for PHP 8.0    *"
+    echo "******************************************"
+    echo ""
+
+    echo -e "\n\n\n\n\n\n\nno\n\n" | /opt/cpanel/ea-php80/root/usr/bin/pecl install -f $MEMCACHED_FOR_PHP8
+    touch /opt/cpanel/ea-php80/root/etc/php.d/memcached.ini
+    cat > "/opt/cpanel/ea-php80/root/etc/php.d/memcached.ini" <<EOF
+[memcached]
+extension=/opt/cpanel/ea-php80/root/usr/lib64/php/modules/memcached.so
+
+EOF
+
+    echo ""
+    echo "************************************************"
+    echo "* Memcached for PHP 8.0 is now installed"
+    echo "************************************************"
+    echo ""
+    echo ""
+
+fi
+
 # Cleanup apsu.so entries in cPanel's PHP config files
 find /opt/cpanel/ -name "local.ini" | xargs grep -l "memcached.so" | xargs sed -i "s/(\;)extension.*memcached\.so//"
 find /opt/cpanel/ -name "*pecl.ini" | xargs grep -l "memcached.so" | xargs sed -i "s/.*\"memcached\.so\"//"
@@ -222,6 +247,7 @@ echo "********** Memcached PHP configuration **********"
 /opt/cpanel/ea-php72/root/usr/bin/php -i | grep -i memcache
 /opt/cpanel/ea-php73/root/usr/bin/php -i | grep -i memcache
 /opt/cpanel/ea-php74/root/usr/bin/php -i | grep -i memcache
+/opt/cpanel/ea-php80/root/usr/bin/php -i | grep -i memcache
 
 echo ""
 echo ""
