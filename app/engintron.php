@@ -605,7 +605,15 @@ echo str_replace($output_find, $output_replace, $output);
             <p>Engintron is both free &amp; open source.<br /><br /><a target="_blank" href="https://github.com/engintron/engintron/issues">Report issues/bugs</a> or <a target="_blank" href="https://github.com/engintron/engintron/pulls">help us improve it</a>.</p>
             <p><a class="github-button" href="https://github.com/engintron/engintron" data-icon="octicon-star" data-show-count="true" aria-label="Star engintron/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i> Rate on cPApps</a>
     </p>
-            <p id="ngSocialIcons"><a target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a><a target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a><a target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a><a target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a><a target="_blank" href="https://plus.google.com/117428375464020763682"><i class="fa fa-google-plus"></i></a><a target="_blank" href="https://tinyletter.com/engintron"><i class="fa fa-newspaper-o"></i></a><a target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a><a href="mailto:engintron@gmail.com"><i class="fa fa-envelope"></i></a></p>
+            <p id="ngSocialIcons">
+                <a target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a>
+                <a target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a>
+                <a target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a>
+                <a target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a>
+                <a target="_blank" href="https://tinyletter.com/engintron"><i class="fa fa-newspaper-o"></i></a>
+                <a target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a>
+                <a href="mailto:engintron@gmail.com"><i class="fa fa-envelope"></i></a>
+            </p>
             <p id="commercialSupport"><b>Looking for commercial support?</b> <a href="mailto:engintron@gmail.com">Get in touch with us</a>.</p>
         </div>
         <div id="ngOutput">
@@ -646,7 +654,7 @@ echo str_replace($output_find, $output_replace, $output);
         <div class="clr"></div>
     </div>
     <div id="ngFooter">
-        <p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; <?php echo date('Y'); ?> <a target="_blank" href="https://kodeka.io/">Kodeka OÜ.</a> Released under the <a target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
+        <p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2018-<?php echo date('Y'); ?> <a target="_blank" href="https://kodeka.io/">Kodeka OÜ.</a> Released under the <a target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
     </div>
     <?php if ($message): ?>
     <div id="ngMessage"><div class="ngMsgState"></div><?php echo $message; ?></div>
