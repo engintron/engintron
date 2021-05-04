@@ -1,10 +1,10 @@
 <?php
 /**
- * @version    1.14.0
+ * @version    1.15.0
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
- * @copyright  Copyright (c) 2018 - 2020 Kodeka OÜ. All rights reserved.
+ * @copyright  Copyright (c) 2018 - 2021 Kodeka OÜ. All rights reserved.
  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
@@ -39,8 +39,8 @@ function checkacl()
 // A few constants to make updating easier
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.14.0');
-define('PLG_BUILD', 'Build 20201028');
+define('PLG_VERSION', '1.15.0');
+define('PLG_BUILD', 'Build 20210504');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
