@@ -11,7 +11,8 @@
 
 CACHE_SIZE="128M"
 APCU_FOR_PHP5="APCu-4.0.11"
-APCU_FOR_PHP7="APCu-5.1.18"
+APCU_FOR_PHP7="APCu-5.1.19"
+APCU_FOR_PHP8="APCu-5.1.19"
 
 if [[ $1 ]]; then
     CACHE_SIZE=$1
@@ -183,6 +184,33 @@ EOF
     echo ""
     echo "************************************************"
     echo "* APCu for PHP 7.4 is now installed"
+    echo "* and configured with a $CACHE_SIZE cache pool"
+    echo "************************************************"
+    echo ""
+    echo ""
+
+fi
+
+# Setup APCu 5.x for PHP 8.0
+if [ -f /opt/cpanel/ea-php80/root/usr/bin/pecl ]; then
+    echo "*************************************"
+    echo "*    Installing APCu for PHP 8.0    *"
+    echo "*************************************"
+    echo ""
+
+    echo "\r" | /opt/cpanel/ea-php80/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP8
+    touch /opt/cpanel/ea-php80/root/etc/php.d/apcu.ini
+    cat > "/opt/cpanel/ea-php80/root/etc/php.d/apcu.ini" <<EOF
+[apcu]
+extension=/opt/cpanel/ea-php80/root/usr/lib64/php/modules/apcu.so
+apc.enabled = 1
+apc.shm_size = $CACHE_SIZE
+
+EOF
+
+    echo ""
+    echo "************************************************"
+    echo "* APCu for PHP 8.0 is now installed"
     echo "* and configured with a $CACHE_SIZE cache pool"
     echo "************************************************"
     echo ""
