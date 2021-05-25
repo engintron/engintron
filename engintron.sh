@@ -39,9 +39,16 @@ function install_basics {
 function install_mod_remoteip {
 
     # Get system IPs
-    SYSTEM_IPS=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+    SYSTEM_IPv4=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+    SYSTEM_IPv6=$(ip addr show | grep -o "inet6 [0-9a-f:]*" | grep -v "fe80::[0-9a-f]*" | cut -c7- | sed ':a;N;$!ba;s/\n/ /g');
+    SYSTEM_IPS="$SYSTEM_IPv4 $SYSTEM_IPv6";
+    
     if [[ ! $(echo $SYSTEM_IPS | grep "127.0.0.1") ]]; then
         SYSTEM_IPS="127.0.0.1 $SYSTEM_IPS"
+    fi
+    
+    if [[ ! $(echo $SYSTEM_IPS | grep "::1") ]]; then
+        SYSTEM_IPS="::1 $SYSTEM_IPS"
     fi
 
     echo "=== Installing mod_remoteip for Apache ==="
@@ -137,9 +144,16 @@ function install_mod_rpaf {
     if [ -f /usr/local/apache/modules/mod_rpaf.so ]; then
 
         # Get system IPs
-        SYSTEM_IPS=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+        SYSTEM_IPv4=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+        SYSTEM_IPv6=$(ip addr show | grep -o "inet6 [0-9a-f:]*" | grep -v "fe80::[0-9a-f]*" | cut -c7- | sed ':a;N;$!ba;s/\n/ /g');
+        SYSTEM_IPS="$SYSTEM_IPv4 $SYSTEM_IPv6";
+
         if [[ ! $(echo $SYSTEM_IPS | grep "127.0.0.1") ]]; then
             SYSTEM_IPS="127.0.0.1 $SYSTEM_IPS"
+        fi
+
+        if [[ ! $(echo $SYSTEM_IPS | grep "::1") ]]; then
+            SYSTEM_IPS="::1 $SYSTEM_IPS"
         fi
 
         if [ ! -f /usr/local/apache/conf/includes/rpaf.conf ]; then
