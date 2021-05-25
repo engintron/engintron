@@ -79,6 +79,7 @@ server {
         proxy_pass http://127.0.0.1:8080;
         # Comment the following 2 lines to make the Apache status page public
         allow 127.0.0.1;
+        allow ::1;
         deny all;
     }
 }
