@@ -1141,24 +1141,24 @@ info)
 80)
     echo "=== Connections on port 80 (HTTP traffic) sorted by connection count & IP ==="
     echo ""
-    netstat -anp | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n
+    netstat -anp | grep -P ':80\s' | awk '$6 !~ /LISTEN/ {print $5 " " $6 " " $7}' | sort | uniq -c | sort -n
     echo ""
     echo ""
     echo "=== Concurrent connections on port 80 (HTTP traffic) ==="
     echo ""
-    netstat -an | grep :80 | wc -l
+    netstat -an | grep -P ':80\s' | awk '$6 !~ /LISTEN/ {print $5}' | wc -l
     echo ""
     echo ""
     ;;
 443)
     echo "=== Connections on port 443 (HTTPS traffic) sorted by connection count & IP ==="
     echo ""
-    netstat -anp | grep :443 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n
+    netstat -anp | grep -P ':443\s' | awk '$6 !~ /LISTEN/ {print $5 " " $6 " " $7}' | sort | uniq -c | sort -n
     echo ""
     echo ""
     echo "=== Concurrent connections on port 443 (HTTPS traffic) ==="
     echo ""
-    netstat -an | grep :443 | wc -l
+    netstat -an | grep -P ':443\s' | awk '$6 !~ /LISTEN/ {print $5}' | wc -l
     echo ""
     echo ""
     ;;
