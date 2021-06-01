@@ -69,16 +69,17 @@ server {
         stub_status;
         access_log off;
         log_not_found off;
-        # Uncomment the following 2 lines to make the Nginx status page private.
-        # If you do this and you have Munin installed, graphs for Nginx will stop working.
-        #allow 127.0.0.1;
-        #deny all;
+        # Comment the following 3 lines to make the Nginx status page public
+        allow 127.0.0.1;
+        allow ::1;
+        deny all;
     }
 
     location = /whm-server-status {
         proxy_pass http://127.0.0.1:8080;
-        # Comment the following 2 lines to make the Apache status page public
+        # Comment the following 3 lines to make the Apache status page public
         allow 127.0.0.1;
+        allow ::1;
         deny all;
     }
 }

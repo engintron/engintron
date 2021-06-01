@@ -39,9 +39,16 @@ function install_basics {
 function install_mod_remoteip {
 
     # Get system IPs
-    SYSTEM_IPS=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+    SYSTEM_IPv4=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+    SYSTEM_IPv6=$(ip addr show | grep -o "inet6 [0-9a-f:]*" | grep -v "fe80::[0-9a-f]*" | cut -c7- | sed ':a;N;$!ba;s/\n/ /g');
+    SYSTEM_IPS="$SYSTEM_IPv4 $SYSTEM_IPv6";
+    
     if [[ ! $(echo $SYSTEM_IPS | grep "127.0.0.1") ]]; then
         SYSTEM_IPS="127.0.0.1 $SYSTEM_IPS"
+    fi
+    
+    if [[ ! $(echo $SYSTEM_IPS | grep "::1") ]]; then
+        SYSTEM_IPS="::1 $SYSTEM_IPS"
     fi
 
     echo "=== Installing mod_remoteip for Apache ==="
@@ -137,9 +144,16 @@ function install_mod_rpaf {
     if [ -f /usr/local/apache/modules/mod_rpaf.so ]; then
 
         # Get system IPs
-        SYSTEM_IPS=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+        SYSTEM_IPv4=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
+        SYSTEM_IPv6=$(ip addr show | grep -o "inet6 [0-9a-f:]*" | grep -v "fe80::[0-9a-f]*" | cut -c7- | sed ':a;N;$!ba;s/\n/ /g');
+        SYSTEM_IPS="$SYSTEM_IPv4 $SYSTEM_IPv6";
+
         if [[ ! $(echo $SYSTEM_IPS | grep "127.0.0.1") ]]; then
             SYSTEM_IPS="127.0.0.1 $SYSTEM_IPS"
+        fi
+
+        if [[ ! $(echo $SYSTEM_IPS | grep "::1") ]]; then
+            SYSTEM_IPS="::1 $SYSTEM_IPS"
         fi
 
         if [ ! -f /usr/local/apache/conf/includes/rpaf.conf ]; then
@@ -1127,24 +1141,24 @@ info)
 80)
     echo "=== Connections on port 80 (HTTP traffic) sorted by connection count & IP ==="
     echo ""
-    netstat -anp | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n
+    netstat -anp | grep -P ':80\s' | awk '$6 !~ /LISTEN/ {print $5 " " $6 " " $7}' | sort | uniq -c | sort -n
     echo ""
     echo ""
     echo "=== Concurrent connections on port 80 (HTTP traffic) ==="
     echo ""
-    netstat -an | grep :80 | wc -l
+    netstat -an | grep -P ':80\s' | awk '$6 !~ /LISTEN/ {print $5}' | wc -l
     echo ""
     echo ""
     ;;
 443)
     echo "=== Connections on port 443 (HTTPS traffic) sorted by connection count & IP ==="
     echo ""
-    netstat -anp | grep :443 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n
+    netstat -anp | grep -P ':443\s' | awk '$6 !~ /LISTEN/ {print $5 " " $6 " " $7}' | sort | uniq -c | sort -n
     echo ""
     echo ""
     echo "=== Concurrent connections on port 443 (HTTPS traffic) ==="
     echo ""
-    netstat -an | grep :443 | wc -l
+    netstat -an | grep -P ':443\s' | awk '$6 !~ /LISTEN/ {print $5}' | wc -l
     echo ""
     echo ""
     ;;
