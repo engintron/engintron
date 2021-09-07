@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    1.15.0
+ * @version    1.16.0
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
@@ -39,8 +39,8 @@ function checkacl()
 // A few constants to make updating easier
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_NAME_SHORT', 'Engintron');
-define('PLG_VERSION', '1.15.0');
-define('PLG_BUILD', 'Build 20210504');
+define('PLG_VERSION', '1.16.0');
+define('PLG_BUILD', 'Build 20210908');
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec('nginx -v 2>&1'))));
 define('CENTOS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
@@ -77,11 +77,6 @@ if ($grantAccess === false) {
 }
 
 // Get params
-$op = $_GET['op'];
-$f = $_GET['f'];
-$s = $_GET['s'];
-$state = $_GET['state'];
-
 $allowed_files = array(
     '/etc/crontab',
     '/etc/my.cnf',
@@ -95,6 +90,19 @@ $allowed_files = array(
     '/etc/nginx/proxy_params_dynamic',
     '/etc/nginx/proxy_params_static'
 );
+
+$allowed_services = array(
+    'apache',
+    'cron',
+    'mysql',
+    'nginx',
+);
+
+$op = $_GET['op'];
+$f = $_GET['f'];
+$s = (isset($_GET['s']) && in_array($_GET['s'], $allowed_services)) ? $_GET['s'] : '';
+$ps = (isset($_POST['s']) && in_array($_POST['s'], $allowed_services)) ? $_POST['s'] : '';
+$state = $_GET['state'];
 
 // Operations
 switch ($op) {
@@ -112,19 +120,21 @@ switch ($op) {
                 $message = '<b>'.$f.'</b> has been updated';
                 if (isset($_POST['c'])) {
                     $message .= '<br /><br />';
-                    switch ($_POST['s']) {
-                        case "nginx":
-                            $message .= nl2br(shell_exec("service nginx reload"));
-                            break;
-                        case "apache":
-                            $message .= nl2br(shell_exec("/scripts/restartsrv_httpd"));
-                            break;
-                        case "mysql":
-                            $message .= nl2br(shell_exec("rm -rvf /var/lib/mysql/ib_logfile*; touch /var/lib/mysql/mysql.sock; touch /var/lib/mysql/mysql.pid; chown -R mysql:mysql /var/lib/mysql; /scripts/restartsrv_mysql"));
-                            break;
-                        case "cron":
-                            $message .= nl2br(shell_exec("service crond restart"));
-                            break;
+                    if ($ps) {
+                        switch ($ps) {
+                            case "nginx":
+                                $message .= nl2br(shell_exec("service nginx reload"));
+                                break;
+                            case "apache":
+                                $message .= nl2br(shell_exec("/scripts/restartsrv_httpd"));
+                                break;
+                            case "mysql":
+                                $message .= nl2br(shell_exec("rm -rvf /var/lib/mysql/ib_logfile*; touch /var/lib/mysql/mysql.sock; touch /var/lib/mysql/mysql.pid; chown -R mysql:mysql /var/lib/mysql; /scripts/restartsrv_mysql"));
+                                break;
+                            case "cron":
+                                $message .= nl2br(shell_exec("service crond restart"));
+                                break;
+                        }
                     }
                 }
             }
@@ -167,7 +177,7 @@ switch ($op) {
         if (empty($_POST['access_entries'])) {
             $entries = 100;
         } else {
-            $entries = $_POST['access_entries'];
+            $entries = (int) $_POST['access_entries'];
         }
         $ret = "<b>Showing last {$entries} entries from /var/log/nginx/error.log</b><br /><br />";
         $ret .= strip_tags(shell_exec("tail -{$entries} /var/log/nginx/error.log"));
@@ -177,7 +187,7 @@ switch ($op) {
         if (empty($_POST['error_entries'])) {
             $entries = 100;
         } else {
-            $entries = $_POST['error_entries'];
+            $entries = (int) $_POST['error_entries'];
         }
         $ret = "<b>Showing last {$entries} entries from /var/log/nginx/access.log</b><br /><br />";
         $ret .= strip_tags(shell_exec("tail -{$entries} /var/log/nginx/access.log"));
@@ -600,21 +610,21 @@ echo str_replace($output_find, $output_replace, $output);
                 </li>
             </ul>
             <h2>About</h2>
-            <p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?></a> integrates the popular <a target="_blank" href="https://nginx.org/">Nginx</a><sup>&reg;</sup> web server as a "reverse caching proxy" in front of Apache in cPanel<sup>&reg;</sup>.</p>
+            <p><a rel="noopener" target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?></a> integrates the popular <a rel="noopener" target="_blank" href="https://nginx.org/">Nginx</a><sup>&reg;</sup> web server as a "reverse caching proxy" in front of Apache in cPanel<sup>&reg;</sup>.</p>
             <p>Nginx will cache &amp; serve static assets like CSS, JavaScript, images etc. as well as dynamic HTML with a 1 second micro-cache. This process will reduce CPU &amp; RAM usage on your server, while increasing your overall serving capacity. The result is a faster performing cPanel server.</p>
-            <p>Engintron is both free &amp; open source.<br /><br /><a target="_blank" href="https://github.com/engintron/engintron/issues">Report issues/bugs</a> or <a target="_blank" href="https://github.com/engintron/engintron/pulls">help us improve it</a>.</p>
-            <p><a class="github-button" href="https://github.com/engintron/engintron" data-icon="octicon-star" data-show-count="true" aria-label="Star engintron/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i> Rate on cPApps</a>
+            <p>Engintron is both free &amp; open source.<br /><br /><a rel="noopener" target="_blank" href="https://github.com/engintron/engintron/issues">Report issues/bugs</a> or <a rel="noopener" target="_blank" href="https://github.com/engintron/engintron/pulls">help us improve it</a>.</p>
+            <p><a class="github-button" href="https://github.com/engintron/engintron" data-icon="octicon-star" data-show-count="true" aria-label="Star engintron/engintron on GitHub">Star</a><span class="sep">&nbsp;</span><a href="https://twitter.com/intent/tweet?button_hashtag=engintron&text=Just%20installed%20Engintron%20for%20cPanel%2FWHM%20to%20improve%20my%20cPanel%20server's%20performance" class="twitter-hashtag-button" data-url="https://engintron.com">Tweet #engintron</a><span class="sep">&nbsp;</span><a id="cpAppsLink" rel="noopener" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i> Rate on cPApps</a>
     </p>
             <p id="ngSocialIcons">
-                <a target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a>
-                <a target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a>
-                <a target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a>
-                <a target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a>
-                <a target="_blank" href="https://tinyletter.com/engintron"><i class="fa fa-newspaper-o"></i></a>
-                <a target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a>
-                <a href="mailto:engintron@gmail.com"><i class="fa fa-envelope"></i></a>
+                <a rel="noopener" target="_blank" href="https://engintron.com/"><i class="fa fa-globe"></i></a>
+                <a rel="noopener" target="_blank" href="https://github.com/engintron/engintron"><i class="fa fa-github"></i></a>
+                <a rel="noopener" target="_blank" href="https://www.facebook.com/engintron"><i class="fa fa-facebook"></i></a>
+                <a rel="noopener" target="_blank" href="https://twitter.com/engintron_sh"><i class="fa fa-twitter"></i></a>
+                <a rel="noopener" target="_blank" href="https://tinyletter.com/engintron"><i class="fa fa-newspaper-o"></i></a>
+                <a rel="noopener" target="_blank" href="https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel"><i class="icon-ng-cpanel"></i></a>
+                <a rel="noopener" target="_blank" href="https://github.com/engintron/engintron#commercial-support--server-optimization-services"><i class="fa fa-envelope"></i></a>
             </p>
-            <p id="commercialSupport"><b>Looking for commercial support?</b> <a href="mailto:engintron@gmail.com">Get in touch with us</a>.</p>
+            <p id="commercialSupport"><b>Looking for commercial support?</b> <a rel="noopener" target="_blank" href="https://github.com/engintron/engintron#commercial-support--server-optimization-services">Get in touch with us</a>.</p>
         </div>
         <div id="ngOutput">
             <h2>&gt; Output</h2>
@@ -635,7 +645,7 @@ echo str_replace($output_find, $output_replace, $output);
                     <div id="ngAceEditor"></div>
                     <textarea id="data" name="data"><?php echo file_get_contents($f); ?></textarea>
                     <div class="editbox">
-                        <input type="checkbox" name="c" checked />Reload or restart related services (<?php echo (isset($_POST['s'])) ? $_POST['s'] : ucfirst($s); ?>)? <small>(recommended if you want changes to take effect immediately)</small>
+                        <input type="checkbox" name="c" checked />Reload or restart related services (<?php echo ($ps) ? ucfirst($ps) : ucfirst($s); ?>)? <small>(recommended if you want changes to take effect immediately)</small>
                         <br /><br />
                         <input type="hidden" name="s" value="<?php echo $s; ?>" />
                         <input type="submit" value="Update <?php echo $f; ?>" onClick="ngSaveFile('fileEditor')" />
@@ -654,17 +664,33 @@ echo str_replace($output_find, $output_replace, $output);
         <div class="clr"></div>
     </div>
     <div id="ngFooter">
-        <p><a target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2018-<?php echo date('Y'); ?> <a target="_blank" href="https://kodeka.io/">Kodeka OÜ.</a> Released under the <a target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
+        <p><a rel="noopener" target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2018-<?php echo date('Y'); ?> <a rel="noopener" target="_blank" href="https://kodeka.io/">Kodeka OÜ.</a> Released under the <a rel="noopener" target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
     </div>
     <?php if ($message): ?>
     <div id="ngMessage"><div class="ngMsgState"></div><?php echo $message; ?></div>
     <?php endif; ?>
 
     <!-- JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"></script>
-    <script src="https://squaresend.com/squaresend.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script>
+
+        // Fix cPanel UI issues
+        document.addEventListener('DOMContentLoaded', function() {
+            var sidebarMenu = document.querySelectorAll('ul#mainCommand li.category');
+            if (sidebarMenu.length) {
+                sidebarMenu.forEach(function(el) {
+                    el.className = 'category collapsed';
+                    if (el.id == 'Plugins') {
+                        el.className = 'category expanded';
+                        el.querySelector('#PluginsContent li[searchtext*="Engintron"]').className = 'highlighted activePage';
+                    }
+                });
+            }
+            if (document.querySelector('#cp-analytics-whm')) {
+                document.querySelector('#cp-analytics-whm').remove();
+            }
+        });
 
         // Ace
         if (document.getElementById('ngAceEditor')) {
@@ -681,11 +707,6 @@ echo str_replace($output_find, $output_replace, $output);
                 t.value = editor.getSession().getValue();
             });
         }
-
-        // Squaresend
-        sqs_title = "Commercial Support for Engintron";
-        sqs_placeholder_subject = "I'm interested in commercial support for Engintron";
-        sqs_placeholder_message = "Please provide as much information as possible to help us understand how we can help you - there is no need to send us access credentials at this point."
 
         // Twitter
         !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
