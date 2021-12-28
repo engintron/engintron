@@ -574,7 +574,7 @@ function cron_for_https_vhosts_add {
 
             cat >> "/etc/crontab" <<EOF
 
-* * * * * root /etc/nginx/utilities/https_vhosts.sh >> /dev/null 2>&1
+* * * * * root /etc/nginx/utilities/https_vhosts.sh > /dev/null 2>&1
 
 EOF
 
@@ -590,6 +590,7 @@ function cron_for_https_vhosts_remove {
         echo "=== Removing cron job used for generating Nginx's HTTPS vhosts ==="
 
         sed -i 's:* * * * * root /etc/nginx/utilities/https_vhosts.sh >> /dev/null 2>&1::' /etc/crontab
+        sed -i 's:* * * * * root /etc/nginx/utilities/https_vhosts.sh > /dev/null 2>&1::' /etc/crontab
 
         echo ""
         echo ""
