@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.16.0
+#  * @version    2.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2018 - 2021 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2018 - 2022 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
@@ -16,8 +16,8 @@ function generate_https_vhosts {
     if [ -f /etc/nginx/utilities/https_vhosts.php ]; then
         RUN_CHECK=$(/usr/local/cpanel/3rdparty/bin/php -c /dev/null -q /etc/nginx/utilities/https_vhosts.php; echo $?)
         if [[ $RUN_CHECK == 1 ]]; then
-            #bash /usr/local/src/engintron/engintron.sh purgecache > /etc/nginx/utilities/https_vhosts.log
-            bash /usr/local/src/engintron/engintron.sh reload > /etc/nginx/utilities/https_vhosts.log
+            #bash /opt/engintron/engintron.sh purgecache > /etc/nginx/utilities/https_vhosts.log
+            bash /opt/engintron/engintron.sh reload > /etc/nginx/utilities/https_vhosts.log
         fi
     fi
 }

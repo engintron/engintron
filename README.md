@@ -1,4 +1,4 @@
-### root@cpanelsrv [~]#   *Engintron v1.16.0 (Build 20210908) updated on September 8th, 2021*
+### root@cpanelsrv [~]#   *Engintron v2.0 (Build 20220102) updated on January 2nd, 2022*
 
 **Have a look at the [CHANGELOG](https://engintron.com/docs/#/pages/Changelog) for more information on this latest release**
 
@@ -43,38 +43,43 @@ If you can sign up for a cPanel/WHM server on any hosting company and work your 
 
 
 ### OK, I'm sold! How do I install Engintron on my cPanel server?
-Installation is a process that lasts only a few minutes. You'll need root SSH access to your cPanel server. Also check the current requirements (listed lower). If everything is ok, log in as root and type the following commands, one at a time:
+Installation is a process that lasts only a few minutes.
 
-    cd /
-    rm -f engintron.sh
-    wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh
-    bash engintron.sh install
+You'll need root SSH access to your cPanel server. Also check the current requirements (listed lower).
 
-Or in one quick command to paste in the terminal:
+If everything is ok, log in as root and type the following command:
 
-    cd /; rm -f engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh; bash engintron.sh install
+```
+curl -sSL https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh | bash -s -- install
+```
 
-The process will take a couple of minutes to complete and after that, Engintron will be installed on your cPanel server. Engintron has a nice user interface which is activated inside WHM, under the Plugins section. After installation, refresh WHM in your browser and you should see Engintron in the Plugins section (it's the absolute last section in WHM's sidebar).
+If cURL is not available on your system, you can use wget like so:
+
+```
+wget --no-check-certificate -O - https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh | bash -s -- install
+```
+
+The process will take a couple of minutes to complete and after that, Engintron will be installed on your cPanel server. Engintron has a nice & simple user interface which is activated inside WHM, under the Plugins section. After installation, refresh WHM in your browser and you should see Engintron in the Plugins section (it's the absolute last section in WHM's sidebar).
 
 In there, you'll find basic options to control Nginx, Apache and MySQL, all in one convenient place. Additionally, you can edit all of Nginx's configuration files (as well as some from Apache & MySQL) to get even more from Engintron (e.g. configure Engintron for use with CloudFlare). If however all you want is to accelerate both static & dynamic content delivery, then Engintron is already setup for you and you don't need to do anything more.
 
-Inside the Engintron app dashboard you'll also find some handy utilities to monitor things like your Nginx access & error logs, check processes on your server or see incoming traffic on ports 80 & 443 (HTTP & HTTPS traffic respectively).
+Inside the Engintron app dashboard you'll also find some handy utilities to monitor things like your Nginx access & error logs, check processes on your server, run database diagnostics or list active connections on ports 80 & 443 (for HTTP & HTTPS traffic respectively).
 
 _For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://engintron.com/docs](https://engintron.com/docs)_
 
 
 ### Why is Engintron a better solution compared to other Nginx (or performance related) plugins for cPanel
-There are 10 key differences (as of February 2019) when comparing Engintron with other Nginx installers for cPanel.
+There are 10 key differences when comparing Engintron with other Nginx installers for cPanel.
 
-First and foremost, caching actually works with Engintron. It works as it should and it works universally. You install it and ALL your cPanel websites will get accelerated, even the slowest ones. Not only that, your serving capacity will increase tremendously. Simple Apache Benchmark (ab) tests reveal a phenomenal increase in concurrent requests served per second, from just 3-300 in Apache to 15,000-20,000 or even more using Nginx via Engintron. It's our carefully crafted "black box" configuration that does all the magic. And it requires literally almost zero maintenance.
+First and foremost, caching actually works with Engintron. It works as it should and it works universally. You install it and ALL your cPanel websites will get accelerated, even the slowest ones. Not only that, your serving capacity will increase tremendously. Simple Apache Benchmark (ab) tests reveal a phenomenal increase in concurrent requests served per second, from just 3-300 in Apache to 15,000-20,000 or even more using Nginx via Engintron. It's our carefully crafted Nginx proxy configuration that does all the magic. And it requires literally almost zero maintenance.
 
 Second, Engintron is a single shell script (weighing only a few KBs) that installs all required software (to make Nginx work as intended) from the official software package vendors' repositories. Both installation and updates are very fast (they take only a few seconds).
 
-Third, since we're using the official repositories for Nginx, all Engintron software is updated whenever cPanel (or the server's software) is updated. So you essentially set it and forget it. Whenever you perform "yum update/upgrade" or upgrade the server software from within WHM, Nginx will be updated if a new release is available. If something is changed on Engintron and you need to re-install it or a new version of Engintron is released, you simply install it on top of the previous installation, either from the terminal or using the Engintron WHM app. You don't need to uninstall it first like other Nginx plugins for cPanel require you to do so before upgrading!
+Third, since we're using the official repositories for Nginx, all Engintron software is updated whenever cPanel (or the server's software) is updated. So you essentially set it and forget it. Whenever you perform "yum update" or "dnf update" from the terminal or upgrade the server's software from within WHM, Nginx will be updated if a new release is available. If something is changed on Engintron and you need to re-install it or a new version of Engintron is released, you simply install it on top of the previous installation, either from the terminal or using the Engintron WHM app. You don't need to uninstall it first like other Nginx plugins for cPanel require you to do so before upgrading!
 
 Fourth, you can safely uninstall Engintron and it will *revert* your entire system to how it was before you installed Engintron. Simple as that. Which means you can try Engintron and if you don't like it or you find it doesn't fit your needs, you can simply uninstall it. Your system will revert to how it was before. Period.
 
-Fifth, it has an amazingly simple yet practical app dashboard inside WHM with all the basic controls for Nginx, Apache, MySQL, the option to edit all important configuration files for these 3 services and even some handy utilities that make Engintron the dashboard in cPanel for your day-to-day sysadmin tasks. Think of it as your cPanel server's mission control. And did we mention you can easily update Engintron from within WHM? Yeap! You even get update notifications when a new version is available.
+Fifth, it has an amazingly simple yet practical app dashboard inside WHM with all the basic controls for Nginx, Apache, MySQL, the option to edit all important configuration files for these services and even some handy utilities that make Engintron the dashboard in cPanel for your day-to-day sysadmin tasks. Think of it as your cPanel server's mission control. And did we mention you can easily update Engintron from within WHM? Yeap! You even get update notifications when a new version is available.
 
 Sixth, it's CloudFlare friendly. Because both CloudFlare and Engintron use Nginx as a reverse caching proxy, unless we configure Nginx in cPanel to properly act as the secondary proxy (after CloudFlare of course), chances are that CloudFlare will freak out and serve your sites with 10xx errors. So, if you have any domains hosted on your cPanel server that use CloudFlare for their CDN, you just set your server IPs inside your "custom_rules" Nginx configuration file (the file is commented for your help) and just restart Nginx for the changes to take effect. All this is done entirely inside WHM of course.
 
@@ -84,7 +89,18 @@ Eighth, Engintron allows for both HTTP and HTTPS traffic to flow through Nginx e
 
 Ninth, Engintron is 100% open source. You can easily examine its code here on GitHub, tear it apart, customize it, fork it, knife it or contribute back to its development. Do whatever you want with it :)
 
-And finally, Engintron (launched April 2014) is nowadays a mature project and one of the most popular cPanel plugins, not just the most popular Nginx installer for cPanel. It is by far [the most reviewed plugin on the cPanel Applications Directory](https://applications.cpanel.net/listings#/listings/index/sort:Listing.review_count/direction:desc) and [the cPanel plugin/addon with most stars here on GitHub](https://github.com/topics/cpanel?o=desc&s=stars). According to simplified analytics from the Engintron WHM app that were added in February 2016, it is actively used by dozens of thousands of sysadmins in 150 countries around the world (with users increased at a rate of 300% every year). In 3 years time (from Feb 2016 to Feb 2019), Engintron has been installed by more than 100,000 sysadmins around the world (the actual server number is obviously higher than that).
+And finally, Engintron (which was originally launched in April 2014) is nowadays a mature project, one of the most popular cPanel plugins and the defacto Nginx installer for cPanel. It is by far [the most reviewed plugin on the cPanel Applications Directory](https://applications.cpanel.net/listings#/listings/index/sort:Listing.review_count/direction:desc) and [the cPanel plugin/addon with most stars on GitHub](https://github.com/topics/cpanel?o=desc&s=stars). According to simplified analytics from the Engintron WHM app (added in February 2016), it is actively used by dozens of thousands of sysadmins in 150+ countries around the world. According to [BuiltWith](https://trends.builtwith.com/framework/Engintron), more than 300,000 sites worldwide are powered by Engintron optimized cPanel servers. BuiltWith also reports around 1,5 million sites powered by cPanel. In other words, 1 in 5 cPanel servers worldwide has Engintron installed. The actual numbers may differ of course, but statistically speaking, it's an interesting fact nevertheless...
+
+
+### Not so fast buddy... cPanel officially added support for Nginx in 2021. Why should I use Engintron?
+cPanel indeed added support for Nginx back in 2021. In fact, they integrate Nginx in 2 ways: as a proxy (like Engintron) and as a direct replacement for Apache.
+
+Engintron is different for 3 + 1 reasons really:
+
+* Engintron has a kick-ass, flexible proxy configuration for Nginx, which has powered hundreds of thousands of sites worldwide since 2014, unlike any other system, even cPanel's own proxy option in Nginx. The latter also follows an entirely different logic to Engintron. We'd like to think Engintron's is more flexible and also truly plug-n-play. Performance wise, Engintron's proxy configuration for Nginx is also faster compared to cPanel's (not our word, cPanel's... have a look [here](https://web.archive.org/web/20210420034851/https://blog.cpanel.com/how-to-install-and-manage-nginx-on-cpanel/) or [here](https://archive.ph/NOI2v)...).
+* Engintron uses the official Nginx packages, provided by Nginx.org. So you get instant Nginx updates and don't have to wait for cPanel to bundle Nginx separately.
+* Because of Engintron's kick-ass proxy configuration for Nginx, you can continue using Apache as your main web server. That's a huge plus for existing webhosts. The alternative of using cPanel's Nginx as a direct Apache replacement opens up all kinds of issues, as Nginx was never really built to support shared hosting environments for which Apache is more suitable.
+* And finally, Engintron has a cool WHM dashboard (and CLI interface) which is not tied exclusively to Nginx. Instead you get additional options and utilities to make managing your cPanel server much more efficient. And these options and utilities are regularly updated and expanded. Once you use Engintron for a while, it'll become your go-to dashboard in WHM.
 
 
 ### FAQ
@@ -96,13 +112,13 @@ The Changelog section has been moved in the Engintron Docs: https://engintron.co
 
 
 ### Compatibility & Requirements
-Engintron is fully compatible with CentOS (and its variant CloudLinux) versions 6 and 7, on both 32-bit and 64-bit platforms.
+Engintron is tested only on platforms that are actively supported by cPanel itself.
 
-Engintron is also compatible with both EasyApache 3 and EasyApache 4 as of version 1.7.0.
+As such, as of January 2022, Engintron is fully compatible with CentOS 6 with CloudLinux (the only actively supported Enterprise Linux variant by cPanel as CentOS 6 is officially EOL since 2020), CentOS 7 and all EL 8 variants such as Almalinux, Rocky Linux & CentOS 8 (for which support by Red Hat stopped at the end of 2021).
 
-Keep in mind though that Engintron follows cPanel development tightly and as such, once cPanel drops support for a specific CentOS version or deprecates one of its features, Engintron will do the same.
+Engintron should also work on other EL 8 variants (e.g. Oracle Linux, Amazon Linux etc.) that can run cPanel (albeit "unofficially")...
 
-According to cPanel's "[Third-Party Software End Of Life Policy](https://documentation.cpanel.net/display/CKB/Third-Party+Software+End+Of+Life+Policy)", CentOS 6 support will be dropped after November 30, 2020. Likewise, EasyApache 3 is already end-of-like as of cPanel v76 (Dec 2018) according to [this cPanel blog post](https://blog.cpanel.com/the-beginning-is-the-end-is-the-beginning-of-easyapache/) and will be completely removed in cPanel v78. [Version 1.9.3 of Engintron](https://github.com/engintron/engintron/releases/tag/v1.9.3) is already marked as the last to support EasyApache 3, so please plan ahead.
+Additionally, once cPanel is officially released to also support Ubuntu (in the near future), Engintron will also be released to support Ubuntu as well.
 
 
 ### License
@@ -130,11 +146,15 @@ Does Engintron bring value to your business? If so, you can donate & support the
 
 
 ## Commercial support & server optimization services
-Engintron will greatly improve your cPanel server's performance, but it will only get you halfway through to what your hardware can actually support, if all the other services like Apache, MySQL, PHP, caching, the firewall or the system's throughput etc. are "stock" configurations (or worse, badly optimized configurations) for your server's specifications.
+Engintron will greatly improve your cPanel server's performance, but it will only get you halfway through to what your hardware can actually support, especially when all crucial server components like Apache, MySQL/MariaDB or PHP use "stock" configurations (or worse, badly optimized configurations), unsuitable for your server's hardware specifications.
 
 And although we do provide optimization guides in the Engintron documentation site (see "BEYOND ENGINTRON - OPTIMIZATION GUIDES" here [https://engintron.com/docs](https://engintron.com/docs)), it takes experience to fine tune any configuration to match a server's specifications.
 
-The performance optimization package we offer involves tuning the most essential services (MySQL, Apache, PHP & PHP-FPM) & the system's throughput, installing a new optimized EasyApache 4 profile with PHP versions 5.6 to 7.x, switching the server to PHP-FPM exclusively and setting up caching options like APCu, Opcache & Memcached. We also configure the server's firewall for basic DoS protection.
+The performance optimization package we offer involves tuning the most essential services:
+* Apache, MySQL/MariaDB and PHP
+* the system's network throughput and disk I/O
+* installing a new optimized EasyApache 4 profile with support for PHP versions 5.6, 7.x and 8.x & switching the server to PHP-FPM exclusively while setting up caching options like APCu, Opcache & Memcached (with support for PHP code)
+* properly configuring the server's firewall for basic DoS protection
 
 At the end you get a full report of what has been optimized.
 
@@ -143,4 +163,4 @@ So, if you wish to go the "extra mile" and optimize your cPanel server both thro
 
 ***
 
-Copyright &copy; 2018 - 2021 [Kodeka OÜ](https://kodeka.io)
+Copyright &copy; 2018 - 2022 [Kodeka OÜ](https://kodeka.io)

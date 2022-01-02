@@ -1,20 +1,30 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.16.0
+#  * @version    2.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2018 - 2021 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2018 - 2022 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
 CACHE_SIZE="128M"
 APCU_FOR_PHP5="APCu-4.0.11"
-APCU_FOR_PHP7="APCu-5.1.18"
+APCU_FOR_PHP7="APCu-5.1.21"
 
 if [[ $1 ]]; then
     CACHE_SIZE=$1
+fi
+
+INITSYS=$(cat /proc/1/comm)
+if [ -f "/etc/redhat-release" ]; then
+    DISTRO="el"
+    RELEASE=$(rpm -q --qf %{version} `rpm -q --whatprovides redhat-release` | cut -c 1)
+else
+    DISTRO="ubuntu"
+    CODENAME=$(lsb_release -c -s)
+    RELEASE=$(lsb_release -r -s)
 fi
 
 clear
@@ -23,7 +33,12 @@ echo "**************************************"
 echo "* Checking for required dependencies *"
 echo "**************************************"
 echo ""
-yum -y install make pcre-devel
+
+if [ "$RELEASE" -gt "7" ]; then
+    dnf -y install make pcre pcre-devel
+else
+    yum -y install make pcre pcre-devel
+fi
 
 echo ""
 echo ""
@@ -183,6 +198,60 @@ EOF
     echo ""
     echo "************************************************"
     echo "* APCu for PHP 7.4 is now installed"
+    echo "* and configured with a $CACHE_SIZE cache pool"
+    echo "************************************************"
+    echo ""
+    echo ""
+
+fi
+
+# Setup APCu 5.x for PHP 8.0
+if [ -f /opt/cpanel/ea-php80/root/usr/bin/pecl ]; then
+    echo "*************************************"
+    echo "*    Installing APCu for PHP 8.0    *"
+    echo "*************************************"
+    echo ""
+
+    echo "\r" | /opt/cpanel/ea-php80/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
+    touch /opt/cpanel/ea-php80/root/etc/php.d/apcu.ini
+    cat > "/opt/cpanel/ea-php80/root/etc/php.d/apcu.ini" <<EOF
+[apcu]
+extension=/opt/cpanel/ea-php80/root/usr/lib64/php/modules/apcu.so
+apc.enabled = 1
+apc.shm_size = $CACHE_SIZE
+
+EOF
+
+    echo ""
+    echo "************************************************"
+    echo "* APCu for PHP 8.0 is now installed"
+    echo "* and configured with a $CACHE_SIZE cache pool"
+    echo "************************************************"
+    echo ""
+    echo ""
+
+fi
+
+# Setup APCu 5.x for PHP 8.1
+if [ -f /opt/cpanel/ea-php81/root/usr/bin/pecl ]; then
+    echo "*************************************"
+    echo "*    Installing APCu for PHP 8.1    *"
+    echo "*************************************"
+    echo ""
+
+    echo "\r" | /opt/cpanel/ea-php81/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
+    touch /opt/cpanel/ea-php81/root/etc/php.d/apcu.ini
+    cat > "/opt/cpanel/ea-php81/root/etc/php.d/apcu.ini" <<EOF
+[apcu]
+extension=/opt/cpanel/ea-php81/root/usr/lib64/php/modules/apcu.so
+apc.enabled = 1
+apc.shm_size = $CACHE_SIZE
+
+EOF
+
+    echo ""
+    echo "************************************************"
+    echo "* APCu for PHP 8.1 is now installed"
     echo "* and configured with a $CACHE_SIZE cache pool"
     echo "************************************************"
     echo ""

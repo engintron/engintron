@@ -1,24 +1,24 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.16.0
+#  * @version    2.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2018 - 2021 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2018 - 2022 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
 ########################################################################
 #
 # === Basic Usage ===
-# $ cd /usr/local/src/engintron/utilities/
+# $ cd /opt/engintron/utilities/
 # $ chmod +x healthcheck.sh
 # $ ./healthcheck.sh "https://domain.tld"
 #
 # === Cron Example ===
 # Check health (uptime) for domain.tld (make the script executable first)
-# */3 * * * * root /usr/local/src/engintron/utilities/healthcheck.sh "https://domain.tld" > /dev/null 2>&1
+# */3 * * * * root /opt/engintron/utilities/healthcheck.sh "https://domain.tld" > /dev/null 2>&1
 #
 # === If you don't get emails when a restart occurs ===
 # $ yum install mailx
@@ -52,12 +52,12 @@ else
     echo $RESPONSE
     echo "Site requested at URL $URL is down!"
 
-    if [ -f /engintron.sh ]; then
+    if [ -f /opt/engintron/engintron.sh ]; then
         # Restart services
         if [[ $FORCE_RESTART_NGINX == "yes" ]]; then
-            /engintron.sh res force
+            /opt/engintron/engintron.sh res force
         else
-            /engintron.sh res
+            /opt/engintron/engintron.sh res
         fi
 
         # Send email

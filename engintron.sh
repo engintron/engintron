@@ -1,24 +1,30 @@
 #!/bin/bash
 
 # /**
-#  * @version    1.16.0
+#  * @version    2.0
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2018 - 2021 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2018 - 2022 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
 # Constants
-APP_PATH="/usr/local/src/engintron"
-APP_VERSION="1.16.0"
+APP_PATH="/opt/engintron"
+APP_VERSION="2.0"
+APP_RELEASE_DATE="January 2nd, 2022"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
-REPO_CDN_URL="https://cdn.jsdelivr.net/gh/engintron/engintron"
 
-GET_HTTPD_VERSION=$(httpd -v | grep "Server version")
-GET_CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
-#GET_CENTOS_VERSION=$(rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release))
+INITSYS=$(cat /proc/1/comm)
+if [ -f "/etc/redhat-release" ]; then
+    DISTRO="el"
+    RELEASE=$(rpm -q --qf %{version} `rpm -q --whatprovides redhat-release` | cut -c 1)
+else
+    DISTRO="ubuntu"
+    CODENAME=$(lsb_release -c -s)
+    RELEASE=$(lsb_release -r -s)
+fi
 
 
 
@@ -27,10 +33,30 @@ GET_CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
 function install_basics {
 
     echo "=== Let's upgrade our system first & install any required packages (incl. useful utilities) ==="
-    yum -y update
-    yum -y upgrade
-    yum -y install apr-util atop bash-completion bc bmon bzip2 cron cronie curl dmidecode ethtool git htop httpd-tools httpie ifstat iftop iotop make multitail nano net-tools openssl-devel pcre pcre-devel psmisc redhat-lsb-core rsync siege smartmontools sudo tree unzip vixie-cron wget yum-utils zip zlib-devel
-    yum clean all
+
+    if [ "$RELEASE" -gt "7" ]; then
+        dnf -y update
+        dnf -y install epel-release
+        dnf -y update
+        dnf -y install bash-completion bc bmon bzip2 curl dmidecode ethtool git htop httpie ifstat iftop iotop iptraf iptraf-ng jpegoptim libwebp make multitail mutt nano ncdu net-tools nload nmon openssl-devel optipng pcre pcre-devel psmisc redhat-lsb redhat-lsb-core rsync siege smartmontools sudo tree unzip wget yum-utils zip zlib-devel
+        dnf -y install memcached libmemcached
+        dnf -y install ea4-experimental
+    else
+        yum -y update
+        if [ "$RELEASE" = "6" ]; then
+            if [ "$(arch)" = "x86_64" ]; then
+                yum -y install https://archives.fedoraproject.org/pub/archive/epel/6/x86_64/epel-release-6-8.noarch.rpm
+            else
+                yum -y install https://archives.fedoraproject.org/pub/archive/epel/6/i386/epel-release-6-8.noarch.rpm
+            fi
+        fi
+        yum -y install epel-release
+        yum -y update
+        yum -y install apr-util bash-completion bc bmon bzip2 curl dmidecode ethtool git htop httpd-tools httpie ifstat iftop iotop iptraf iptraf-ng jpegoptim libwebp make multitail mutt nano ncdu net-tools nload nmon openssl-devel optipng pcre pcre-devel psmisc redhat-lsb redhat-lsb-core rename rsync screenfetch siege smartmontools sudo tree unzip wget yum-utils zip zlib-devel
+        yum -y install memcached memcached-devel libmemcached libmemcached-devel
+        yum -y install ea4-experimental
+    fi
+
     echo ""
     echo ""
 
@@ -46,8 +72,13 @@ function install_mod_remoteip {
 
     echo "=== Installing mod_remoteip for Apache ==="
 
+    # EL7+
     if [ -f /etc/apache2/conf/httpd.conf ]; then
-        yum -y install ea-apache24-mod_remoteip
+        if [ "$RELEASE" -gt "7" ]; then
+            dnf -y install ea-apache24-mod_remoteip
+        else
+            yum -y install ea-apache24-mod_remoteip
+        fi
 
         if [ -f /etc/apache2/modules/mod_remoteip.so ]; then
             REMOTEIP_CONF=$(find /etc/apache2/conf.modules.d/ -iname "*_mod_remoteip.conf")
@@ -63,19 +94,19 @@ EOF
                 sed -i "s:LogFormat \"%h %l:LogFormat \"%a %l:" /etc/apache2/conf/httpd.conf
             fi
         fi
+    # EL6
     else
         cd /usr/local/src
-        /bin/rm -f mod_remoteip.c
-        #wget --no-check-certificate https://svn.apache.org/repos/asf/httpd/httpd/trunk/modules/metadata/mod_remoteip.c
-        wget --no-check-certificate $REPO_CDN_URL/apache/mod_remoteip.c
-        wget --no-check-certificate $REPO_CDN_URL/apache/apxs.sh
+        rm -f mod_remoteip.c
+        rm -f apxs.sh
+        cp -f $APP_PATH/apache/mod_remoteip.c /usr/local/src/
+        cp -f $APP_PATH/apache/apxs.sh /usr/local/src/
         chmod +x apxs.sh
         ./apxs.sh -i -c -n mod_remoteip.so mod_remoteip.c
-        /bin/rm -f mod_remoteip.c
-        /bin/rm -f apxs.sh
+        rm -f mod_remoteip.c
+        rm -f apxs.sh
 
         if [ -f /usr/local/apache/modules/mod_remoteip.so ]; then
-
             if [ ! -f /usr/local/apache/conf/includes/remoteip.conf ]; then
                 touch /usr/local/apache/conf/includes/remoteip.conf
             fi
@@ -87,7 +118,7 @@ RemoteIPHeader        X-Forwarded-For
 RemoteIPInternalProxy $SYSTEM_IPS
 EOF
 
-            /bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
+            cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
             sed -i 's:Include "/usr/local/apache/conf/includes/remoteip.conf"::' /usr/local/apache/conf/httpd.conf
             sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/remoteip.conf":' /usr/local/apache/conf/httpd.conf
             sed -i "s:LogFormat \"%h %a %l:LogFormat \"%a %l:" /usr/local/apache/conf/httpd.conf
@@ -102,10 +133,16 @@ EOF
 
 function remove_mod_remoteip {
 
+    # EL7+
     if [ -f /etc/apache2/conf/httpd.conf ]; then
-        yum -y remove ea-apache24-mod_remoteip
+        if [ "$RELEASE" -gt "7" ]; then
+            dnf -y remove ea-apache24-mod_remoteip
+        else
+            yum -y remove ea-apache24-mod_remoteip
+        fi
         sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /etc/apache2/conf/httpd.conf
         sed -i "s:LogFormat \"%a %l:LogFormat \"%h %l:" /etc/apache2/conf/httpd.conf
+    # EL6
     else
         if [ -f /usr/local/apache/conf/includes/remoteip.conf ]; then
             echo "=== Removing mod_remoteip for Apache ==="
@@ -118,69 +155,6 @@ function remove_mod_remoteip {
 
     echo ""
     echo ""
-
-}
-
-function install_mod_rpaf {
-
-    echo "=== Installing mod_rpaf (v0.8.4) for Apache ==="
-    cd /usr/local/src
-    /bin/rm -f mod_rpaf-0.8.4.zip
-    wget --no-check-certificate $REPO_CDN_URL/apache/mod_rpaf-0.8.4.zip
-    unzip -o mod_rpaf-0.8.4.zip
-    /bin/rm -f mod_rpaf-0.8.4.zip
-    cd mod_rpaf-0.8.4
-    chmod +x apxs.sh
-    ./apxs.sh -i -c -n mod_rpaf.so mod_rpaf.c
-    /bin/rm -rf /usr/local/src/mod_rpaf-0.8.4/
-
-    if [ -f /usr/local/apache/modules/mod_rpaf.so ]; then
-
-        # Get system IPs
-        SYSTEM_IPS=$(ip addr show | grep -o "inet [0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | grep -o "[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*" | sed ':a;N;$!ba;s/\n/ /g');
-        if [[ ! $(echo $SYSTEM_IPS | grep "127.0.0.1") ]]; then
-            SYSTEM_IPS="127.0.0.1 $SYSTEM_IPS"
-        fi
-
-        if [ ! -f /usr/local/apache/conf/includes/rpaf.conf ]; then
-            touch /usr/local/apache/conf/includes/rpaf.conf
-        fi
-
-        cat > "/usr/local/apache/conf/includes/rpaf.conf" <<EOF
-# mod_rpaf (https://github.com/gnif/mod_rpaf)
-LoadModule              rpaf_module modules/mod_rpaf.so
-RPAF_Enable             On
-RPAF_ForbidIfNotProxy   Off
-RPAF_Header             X-Forwarded-For
-RPAF_ProxyIPs           $SYSTEM_IPS
-RPAF_SetHostName        On
-RPAF_SetHTTPS           On
-RPAF_SetPort            On
-EOF
-
-        /bin/cp -f /usr/local/apache/conf/httpd.conf /usr/local/apache/conf/httpd.conf.bak
-        sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
-        sed -i 's:Include "/usr/local/apache/conf/includes/errordocument.conf":Include "/usr/local/apache/conf/includes/errordocument.conf"\nInclude "/usr/local/apache/conf/includes/rpaf.conf":' /usr/local/apache/conf/httpd.conf
-        sed -i "s:LogFormat \"%h %a %l:LogFormat \"%a %l:" /usr/local/apache/conf/httpd.conf
-        sed -i "s:LogFormat \"%h %l:LogFormat \"%a %l:" /usr/local/apache/conf/httpd.conf
-        echo ""
-        echo ""
-
-    fi
-
-}
-
-function remove_mod_rpaf {
-
-    if [ -f /usr/local/apache/conf/includes/rpaf.conf ]; then
-        echo "=== Removing mod_rpaf (v0.8.4) for Apache ==="
-        rm -f /usr/local/apache/conf/includes/rpaf.conf
-        sed -i 's:Include "/usr/local/apache/conf/includes/rpaf.conf"::' /usr/local/apache/conf/httpd.conf
-        sed -i "s:LogFormat \"%h %a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
-        sed -i "s:LogFormat \"%a %l:LogFormat \"%h %l:" /usr/local/apache/conf/httpd.conf
-        echo ""
-        echo ""
-    fi
 
 }
 
@@ -262,9 +236,15 @@ function install_nginx {
             else
                 sed -i "s/enabled=1/enabled=1\nexclude=nginx\*/" /etc/yum.repos.d/epel.repo
             fi
-            yum -y remove nginx
-            yum clean all
-            yum -y update
+            if [ "$RELEASE" -gt "7" ]; then
+                dnf -y remove nginx
+                dnf clean all
+                dnf -y update
+            else
+                yum -y remove nginx
+                yum clean all
+                yum -y update
+            fi
         fi
     fi
 
@@ -276,9 +256,15 @@ function install_nginx {
             else
                 sed -i "s/enabled=1/enabled=1\nexclude=nginx\*/" /etc/yum.repos.d/amzn-main.repo
             fi
-            yum -y remove nginx
-            yum clean all
-            yum -y update
+            if [ "$RELEASE" -gt "7" ]; then
+                dnf -y remove nginx
+                dnf clean all
+                dnf -y update
+            else
+                yum -y remove nginx
+                yum clean all
+                yum -y update
+            fi
         fi
     fi
 
@@ -289,7 +275,11 @@ function install_nginx {
     # Allow switching from mainline to stable release
     if [[ ! $1 ]]; then
         if grep -iq "mainline" /etc/yum.repos.d/nginx.repo; then
-            yum -y remove nginx
+            if [ "$RELEASE" -gt "7" ]; then
+                dnf -y remove nginx
+            else
+                yum -y remove nginx
+            fi
         fi
     fi
 
@@ -302,28 +292,38 @@ function install_nginx {
         RELEASE_VERSION=7
     fi
 
-    if [[ $1 == 'mainline' ]]; then
+    if [ "$1" = mainline ]; then
         echo "=== Install Nginx (mainline) from nginx.org ==="
         cat > "/etc/yum.repos.d/nginx.repo" <<EOFM
 [nginx]
-name=nginx repo
+name=nginx mainline repo
 baseurl=http://nginx.org/packages/mainline/centos/$RELEASE_VERSION/\$basearch/
-gpgcheck=0
+gpgcheck=1
 enabled=1
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
+
 EOFM
     else
         echo "=== Install Nginx (stable) from nginx.org ==="
         cat > "/etc/yum.repos.d/nginx.repo" <<EOFS
 [nginx]
-name=nginx repo
+name=nginx stable repo
 baseurl=http://nginx.org/packages/centos/$RELEASE_VERSION/\$basearch/
-gpgcheck=0
+gpgcheck=1
 enabled=1
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
+
 EOFS
     fi
 
     # Install Nginx
-    yum -y install nginx
+    if [ "$RELEASE" -gt "7" ]; then
+        dnf -y install nginx
+    else
+        yum -y install nginx
+    fi
 
     # Copy Nginx config files
     if [ ! -d /etc/nginx/conf.d ]; then
@@ -331,50 +331,50 @@ EOFS
     fi
 
     if [ -f /etc/nginx/custom_rules ]; then
-        /bin/cp -f $APP_PATH/nginx/custom_rules /etc/nginx/custom_rules.dist
+        cp -f $APP_PATH/nginx/custom_rules /etc/nginx/custom_rules.dist
     else
-        /bin/cp -f $APP_PATH/nginx/custom_rules /etc/nginx/
+        cp -f $APP_PATH/nginx/custom_rules /etc/nginx/
     fi
 
     if [ -f /etc/nginx/proxy_params_common ]; then
-        /bin/cp -f /etc/nginx/proxy_params_common /etc/nginx/proxy_params_common.bak
+        cp -f /etc/nginx/proxy_params_common /etc/nginx/proxy_params_common.bak
     fi
-    /bin/cp -f $APP_PATH/nginx/proxy_params_common /etc/nginx/
+    cp -f $APP_PATH/nginx/proxy_params_common /etc/nginx/
 
     if [ -f /etc/nginx/proxy_params_dynamic ]; then
-        /bin/cp -f /etc/nginx/proxy_params_dynamic /etc/nginx/proxy_params_dynamic.bak
+        cp -f /etc/nginx/proxy_params_dynamic /etc/nginx/proxy_params_dynamic.bak
     fi
-    /bin/cp -f $APP_PATH/nginx/proxy_params_dynamic /etc/nginx/
+    cp -f $APP_PATH/nginx/proxy_params_dynamic /etc/nginx/
 
     if [ -f /etc/nginx/proxy_params_static ]; then
-        /bin/cp -f /etc/nginx/proxy_params_static /etc/nginx/proxy_params_static.bak
+        cp -f /etc/nginx/proxy_params_static /etc/nginx/proxy_params_static.bak
     fi
-    /bin/cp -f $APP_PATH/nginx/proxy_params_static /etc/nginx/
+    cp -f $APP_PATH/nginx/proxy_params_static /etc/nginx/
 
     if [ -f /etc/nginx/mime.types ]; then
-        /bin/cp -f /etc/nginx/mime.types /etc/nginx/mime.types.bak
+        cp -f /etc/nginx/mime.types /etc/nginx/mime.types.bak
     fi
-    /bin/cp -f $APP_PATH/nginx/mime.types /etc/nginx/
+    cp -f $APP_PATH/nginx/mime.types /etc/nginx/
 
     if [ -f /etc/nginx/nginx.conf ]; then
-        /bin/cp -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+        cp -f /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
     fi
-    /bin/cp -f $APP_PATH/nginx/nginx.conf /etc/nginx/
+    cp -f $APP_PATH/nginx/nginx.conf /etc/nginx/
 
     if [ -f /etc/nginx/conf.d/default.conf ]; then
-        /bin/cp -f /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bak
+        cp -f /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bak
     fi
-    /bin/rm -f /etc/nginx/conf.d/*.conf
-    /bin/cp -f $APP_PATH/nginx/conf.d/default.conf /etc/nginx/conf.d/
+    rm -f /etc/nginx/conf.d/*.conf
+    cp -f $APP_PATH/nginx/conf.d/default.conf /etc/nginx/conf.d/
 
-    /bin/cp -f $APP_PATH/nginx/common_http.conf /etc/nginx/
-    /bin/cp -f $APP_PATH/nginx/common_https.conf /etc/nginx/
+    cp -f $APP_PATH/nginx/common_http.conf /etc/nginx/
+    cp -f $APP_PATH/nginx/common_https.conf /etc/nginx/
 
     if [ ! -d /etc/nginx/utilities ]; then
         mkdir -p /etc/nginx/utilities
     fi
-    /bin/cp -f $APP_PATH/nginx/utilities/https_vhosts.php /etc/nginx/utilities/
-    /bin/cp -f $APP_PATH/nginx/utilities/https_vhosts.sh /etc/nginx/utilities/
+    cp -f $APP_PATH/nginx/utilities/https_vhosts.php /etc/nginx/utilities/
+    cp -f $APP_PATH/nginx/utilities/https_vhosts.sh /etc/nginx/utilities/
     chmod +x /etc/nginx/utilities/*
 
     if [ ! -d /etc/ssl/engintron ]; then
@@ -419,12 +419,17 @@ function remove_nginx {
         systemctl disable nginx
     fi
 
-    service nginx stop
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl stop nginx
+        dnf -y remove nginx
+    else
+        service nginx stop
+        yum -y remove nginx
+    fi
 
-    yum -y remove nginx
-    /bin/rm -rf /etc/nginx/*
-    /bin/rm -f /etc/yum.repos.d/nginx.repo
-    /bin/rm -rf /etc/ssl/engintron/*
+    rm -rf /etc/nginx/*
+    rm -f /etc/yum.repos.d/nginx.repo
+    rm -rf /etc/ssl/engintron/*
 
     # Enable Nginx from the EPEL repo
     if [ -f /etc/yum.repos.d/epel.repo ]; then
@@ -447,10 +452,10 @@ function install_engintron_ui {
 
     # Cleanup older installations from the obsolete addon_engintron.cgi file
     if [ -f $CPANEL_PLG_PATH/addon_engintron.cgi ]; then
-        /bin/rm -f $CPANEL_PLG_PATH/addon_engintron.cgi
+        rm -f $CPANEL_PLG_PATH/addon_engintron.cgi
     fi
 
-    /bin/cp -f $APP_PATH/app/engintron.php $CPANEL_PLG_PATH/
+    ln -sf /opt/engintron/app/engintron.php $CPANEL_PLG_PATH/
     chmod +x $CPANEL_PLG_PATH/engintron.php
 
     echo ""
@@ -466,7 +471,7 @@ function install_engintron_ui {
 function remove_engintron_ui {
 
     echo "=== Removing Engintron WHM plugin files... ==="
-    /bin/rm -f $CPANEL_PLG_PATH/engintron.php
+    rm -f $CPANEL_PLG_PATH/engintron.php
 
     echo ""
     echo "=== Unregister Engintron as a cPanel app ==="
@@ -494,7 +499,7 @@ env.label 8080
 EOF
         fi
 
-        ln -s /usr/local/cpanel/3rdparty/share/munin/plugins/nginx_* /etc/munin/plugins/
+        ln -sf /usr/local/cpanel/3rdparty/share/munin/plugins/nginx_* /etc/munin/plugins/
 
         service munin-node restart
 
@@ -518,7 +523,7 @@ function remove_munin_patch {
             echo "Munin was not found, nothing to do here"
         fi
 
-        /bin/rm -f /etc/munin/plugins/nginx_*
+        rm -f /etc/munin/plugins/nginx_*
 
         service munin-node restart
 
@@ -623,7 +628,7 @@ function chkserv_nginx_off {
         sed -i 's:service\[httpd\]=8080,:service[httpd]=80,:' /etc/chkserv.d/httpd
         sed -i 's:^nginx\:1::' /etc/chkserv.d/chkservd.conf
         if [ -f /etc/chkserv.d/nginx ]; then
-            /bin/rm -f /etc/chkserv.d/nginx
+            rm -f /etc/chkserv.d/nginx
         fi
         /scripts/restartsrv apache_php_fpm
         /scripts/restartsrv_chkservd
@@ -638,26 +643,8 @@ function chkserv_nginx_off {
 
 ### Define actions ###
 case $1 in
-install)
-
+install|update)
     clear
-
-    if [ ! -f /engintron.sh ]; then
-        echo ""
-        echo ""
-        echo "***********************************************"
-        echo ""
-        echo " ENGINTRON NOTICE:"
-        echo " You must place & execute engintron.sh"
-        echo " from the root directory (/) of your server!"
-        echo ""
-        echo " --- Exiting ---"
-        echo ""
-        echo "***********************************************"
-        echo ""
-        echo ""
-        exit 0
-    fi
 
     echo "**************************************"
     echo "*        Installing Engintron        *"
@@ -666,14 +653,21 @@ install)
     echo ""
     echo ""
 
-    chmod +x /engintron.sh
+    # Cleanup Engintron v1.x installation location
+    if [ -f /engintron.sh ]; then
+        rm -f /engintron.sh
+    fi
+    if [ -d /usr/local/src/engintron ]; then
+        rm -rf /usr/local/src/engintron
+    fi
 
-    if [[ $2 == 'local' ]]; then
+    if [ "$2" = local ]; then
+        # ~ Local (dev) installation from $APP_PATH ~
         echo -e "\033[36m=== Performing local installation from $APP_PATH... ===\033[0m"
-        cd /
     else
-        # Set Engintron src file path
-        if [[ ! -d $APP_PATH ]]; then
+        # ~ Remote (production) installation ~
+        # Set Engintron installation path
+        if [ ! -d "$APP_PATH" ]; then
             mkdir -p $APP_PATH
         fi
 
@@ -681,10 +675,9 @@ install)
         cd $APP_PATH
         wget --no-check-certificate -O engintron.zip https://github.com/engintron/engintron/archive/master.zip
         unzip engintron.zip
-        /bin/cp -rf $APP_PATH/engintron-master/* $APP_PATH/
-        /bin/rm -rvf $APP_PATH/engintron-master/*
-        /bin/rm -f $APP_PATH/engintron.zip
-        cd /
+        cp -rf $APP_PATH/engintron-master/* $APP_PATH/
+        rm -rf $APP_PATH/engintron-master/*
+        rm -f $APP_PATH/engintron.zip
     fi
 
     echo ""
@@ -692,13 +685,7 @@ install)
 
     install_basics
     install_nginx $2
-
-    if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
-        install_mod_rpaf
-    else
-        install_mod_remoteip
-    fi
-
+    install_mod_remoteip
     apache_change_port
     install_munin_patch
     install_engintron_ui
@@ -717,13 +704,22 @@ install)
     fuser -k 8080/tcp
     fuser -k 443/tcp
     fuser -k 8443/tcp
-    service nginx start
+
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl start nginx
+    else
+        service nginx start
+    fi
 
     csf_pignore_add
     cron_for_https_vhosts_add
     chkserv_nginx_on
 
-    service nginx restart
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl restart nginx
+    else
+        service nginx restart
+    fi
 
     if [ ! -f $APP_PATH/state.conf ]; then
         touch $APP_PATH/state.conf
@@ -733,10 +729,6 @@ install)
     if [ -f $APP_PATH/engintron.sh ]; then
         chmod +x $APP_PATH/engintron.sh
         $APP_PATH/engintron.sh purgecache
-
-        # Update the /engintron.sh file when updating Engiintron with "$ /engintron.sh install"
-        /bin/cp -f $APP_PATH/engintron.sh /
-        chmod +x /engintron.sh
     fi
 
     /scripts/restartsrv apache_php_fpm
@@ -744,8 +736,29 @@ install)
 
     sleep 5
 
-    service httpd restart
-    service nginx restart
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl restart httpd
+        systemctl restart nginx
+    else
+        service httpd restart
+        service nginx restart
+    fi
+
+    # Enable "engintron" shortcut
+    if [ ! -f "/usr/local/sbin/engintron" ]; then
+        ln -s $APP_PATH/engintron.sh /usr/local/sbin/engintron
+    fi
+
+    # Make installers executable
+    if [ -d $APP_PATH/installers ]; then
+        find $APP_PATH/installers/ -iname "*.sh" | xargs chmod +x
+    fi
+
+    # Make utilities executable
+    if [ -d $APP_PATH/utilities ]; then
+        find $APP_PATH/utilities/ -iname "*.sh" | xargs chmod +x
+        find $APP_PATH/utilities/ -iname "*.pl" | xargs chmod +x
+    fi
 
     echo ""
     echo "**************************************"
@@ -754,20 +767,14 @@ install)
     echo ""
     echo ""
     ;;
-remove)
-
+remove|uninstall)
     clear
 
     echo "**************************************"
     echo "*         Removing Engintron         *"
     echo "**************************************"
 
-    if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
-        remove_mod_rpaf
-    else
-        remove_mod_remoteip
-    fi
-
+    remove_mod_remoteip
     apache_revert_port
     remove_nginx
     remove_munin_patch
@@ -778,12 +785,17 @@ remove)
 
     echo ""
     echo "=== Removing Engintron files... ==="
-    /bin/rm -rvf $APP_PATH
+    rm -rvf /opt/engintron
 
     echo ""
     echo "=== Restarting Apache... ==="
     /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
+
+    # Remove "engintron" shortcut
+    if [ -f "/usr/local/sbin/engintron" ]; then
+        rm -f /usr/local/sbin/engintron
+    fi
 
     echo ""
     echo "**************************************"
@@ -805,7 +817,12 @@ enable)
     echo "on" > $APP_PATH/state.conf
 
     install_munin_patch
-    service nginx stop
+
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl stop nginx
+    else
+        service nginx stop
+    fi
 
     sed -i 's:PROXY_TO_PORT 443;:PROXY_TO_PORT 8443;:' /etc/nginx/common_https.conf
 
@@ -826,11 +843,22 @@ enable)
     sed -i 's:'NGINX_HTTPS_PORT', '8443':'NGINX_HTTPS_PORT', '443':' /etc/nginx/utilities/https_vhosts.php
 
     apache_change_port
-    service nginx start
+
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl start nginx
+    else
+        service nginx start
+    fi
 
     /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
-    service nginx restart
+
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl restart nginx
+    else
+        service nginx restart
+    fi
+
     chkserv_nginx_on
 
     echo ""
@@ -853,7 +881,12 @@ disable)
     echo "off" > $APP_PATH/state.conf
 
     remove_munin_patch
-    service nginx stop
+
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl stop nginx
+    else
+        service nginx stop
+    fi
 
     sed -i 's:PROXY_TO_PORT 8443;:PROXY_TO_PORT 443;:' /etc/nginx/common_https.conf
 
@@ -874,11 +907,22 @@ disable)
     sed -i 's:'NGINX_HTTPS_PORT', '443':'NGINX_HTTPS_PORT', '8443':' /etc/nginx/utilities/https_vhosts.php
 
     apache_revert_port
-    service nginx start
+
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl start nginx
+    else
+        service nginx start
+    fi
 
     /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
-    service nginx restart
+
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl restart nginx
+    else
+        service nginx restart
+    fi
+
     chkserv_nginx_off
 
     echo ""
@@ -888,18 +932,6 @@ disable)
     echo ""
     echo ""
     ;;
-reload)
-    echo "======================="
-    echo "=== Reloading Nginx ==="
-    echo "======================="
-    echo ""
-    if [ "$(pstree | grep 'nginx')" ]; then
-        echo "Reloading Nginx..."
-        service nginx reload
-        echo ""
-    fi
-    echo ""
-    ;;
 resall)
     echo "========================================="
     echo "=== Restarting All Important Services ==="
@@ -907,26 +939,45 @@ resall)
     echo ""
 
     #if [ -f "/usr/local/cpanel/cpanel" ]; then
+    #   echo "Restarting cPanel..."
     #   service cpanel restart
     #   echo ""
     #fi
+
     if [ "$(pstree | grep 'crond')" ]; then
-        service crond restart
+        echo "Restarting Cron..."
+        if [ "$RELEASE" -gt "7" ]; then
+            systemctl restart cron
+        else
+            service cron restart
+        fi
         echo ""
     fi
     if [[ -f /etc/csf/csf.conf && "$(cat /etc/csf/csf.conf | grep 'TESTING = \"0\"')" ]]; then
+        echo "Restarting CSF..."
         csf -r
         echo ""
     fi
     if [ "$(pstree | grep 'lfd')" ]; then
-        service lfd restart
+        echo "Restarting LFD..."
+        if [ "$RELEASE" -gt "7" ]; then
+            systemctl restart lfd
+        else
+            service lfd restart
+        fi
         echo ""
     fi
     if [ "$(pstree | grep 'munin-node')" ]; then
-        service munin-node restart
+        echo "Restarting Munin..."
+        if [ "$RELEASE" -gt "7" ]; then
+            systemctl restart munin-node
+        else
+            service munin-node restart
+        fi
         echo ""
     fi
     if [ "$(pstree | grep 'mysql')" ]; then
+        echo "Restarting the database..."
         /scripts/restartsrv_mysql
         echo ""
     fi
@@ -938,12 +989,16 @@ resall)
     fi
     if [ "$(pstree | grep 'nginx')" ]; then
         echo "Restarting Nginx..."
-        service nginx restart
+        if [ "$RELEASE" -gt "7" ]; then
+            systemctl restart nginx
+        else
+            service nginx restart
+        fi
         echo ""
     fi
     echo ""
     ;;
-res)
+res|restart)
     echo "====================================="
     echo "=== Restarting All Basic Services ==="
     echo "====================================="
@@ -955,99 +1010,36 @@ res)
         echo ""
     fi
     if [ "$(pstree | grep 'nginx')" ]; then
-        if [ "$2" == "force" ]; then
+        if [ "$2" = force ]; then
             echo "Kill all Nginx processes..."
             killall -9 nginx
             killall -9 nginx
             killall -9 nginx
         fi
         echo "Restarting Nginx..."
-        service nginx restart
-        echo ""
-    fi
-    echo ""
-    ;;
-purgecache)
-    NOW=$(date +'%Y.%m.%d at %H:%M:%S')
-    echo "==============================================================="
-    echo "=== Purge Nginx cache/temp files and restart Apache & Nginx ==="
-    echo "==============================================================="
-    echo ""
-    echo "--- Process started at $NOW ---"
-    echo ""
-    if [ "$(pstree | grep 'httpd')" ]; then
-        echo "Restarting Apache..."
-        /scripts/restartsrv apache_php_fpm
-        /scripts/restartsrv_httpd
-        echo ""
-    fi
-    if [ "$(pstree | grep 'nginx')" ]; then
-        echo "Purging Nginx cache/temp files..."
-        find /var/cache/nginx/engintron_dynamic/ -type f | xargs rm -rvf
-        find /var/cache/nginx/engintron_static/ -type f | xargs rm -rvf
-        find /var/cache/nginx/engintron_temp/ -type f | xargs rm -rvf
-        echo ""
-        echo "Restarting Nginx..."
-        service nginx restart
-        echo ""
-    fi
-    echo ""
-    ;;
-purgelogs)
-    echo "================================================================"
-    echo "=== Clean Nginx access/error logs and restart Apache & Nginx ==="
-    echo "================================================================"
-    echo ""
-    if [ -f /var/log/nginx/access.log ]; then
-        echo "" > /var/log/nginx/access.log
-    fi
-    if [ -f /var/log/nginx/error.log ]; then
-        echo "" > /var/log/nginx/error.log
-    fi
-    if [ "$(pstree | grep 'httpd')" ]; then
-        echo "Restarting Apache..."
-        /scripts/restartsrv apache_php_fpm
-        /scripts/restartsrv_httpd
-        echo ""
-    fi
-    if [ "$(pstree | grep 'nginx')" ]; then
-        echo "Restarting Nginx..."
-        service nginx restart
-        echo ""
-    fi
-    echo ""
-    ;;
-fixaccessperms)
-    echo "===================================================="
-    echo "=== Fix user file & directory access permissions ==="
-    echo "===================================================="
-    echo ""
-    echo "Changing directory permissions to 755..."
-    find /home/*/public_html/ -type d -exec chmod 755 {} \;
-    echo ""
-    echo "Changing file permissions to 644..."
-    find /home/*/public_html/ -type f -exec chmod 644 {} \;
-    echo ""
-    echo "Operation completed."
-    echo ""
-    echo ""
-    ;;
-fixownerperms)
-    echo "==================================================="
-    echo "=== Fix user file & directory owner permissions ==="
-    echo "==================================================="
-    echo ""
-    cd /home
-    for user in $( ls -d * )
-    do
-        if [ -d /home/$user/public_html ]; then
-            echo "=== Fixing permissions for user $user ==="
-            chown -R $user:$user /home/$user/public_html
-            chown $user:nobody /home/$user/public_html
+        if [ "$RELEASE" -gt "7" ]; then
+            systemctl restart nginx
+        else
+            service nginx restart
         fi
-    done
-    echo "Operation completed."
+        echo ""
+    fi
     echo ""
+    ;;
+reload)
+    echo "======================="
+    echo "=== Reloading Nginx ==="
+    echo "======================="
+    echo ""
+    if [ "$(pstree | grep 'nginx')" ]; then
+        echo "Reloading Nginx..."
+        if [ "$RELEASE" -gt "7" ]; then
+            systemctl reload nginx
+        else
+            service nginx reload
+        fi
+        echo ""
+    fi
     echo ""
     ;;
 restoreipfwd)
@@ -1055,41 +1047,69 @@ restoreipfwd)
     echo "=== Restore IP Forwarding in Apache ==="
     echo "======================================="
     echo ""
-    if [[ $GET_HTTPD_VERSION =~ "Apache/2.2." ]]; then
-        install_mod_rpaf
-    else
-        install_mod_remoteip
-    fi
+    install_mod_remoteip
     /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
-    service nginx reload
+    if [ "$RELEASE" -gt "7" ]; then
+        systemctl reload nginx
+    else
+        service nginx reload
+    fi
     echo "Operation completed."
     echo ""
     echo ""
     ;;
-cleanup)
-    echo "========================================================================="
-    echo "=== Cleanup Mac or Windows specific metadata & Apache error_log files ==="
-    echo "========================================================================="
+upd)
+    echo "================================"
+    echo "=== Updating Server Software ==="
+    echo "================================"
     echo ""
-    find /home/*/public_html/ -iname 'error_log' | xargs rm -rvf
-    find /home/*/public_html/ -iname '.DS_Store' | xargs rm -rvf
-    find /home/*/public_html/ -iname 'thumbs.db' | xargs rm -rvf
-    find /home/*/public_html/ -iname '__MACOSX' | xargs rm -rvf
-    find /home/*/public_html/ -iname '._*' | xargs rm -rvf
+    if [ "$DISTRO" = "el" ]; then
+        if [ "$RELEASE" -gt "7" ]; then
+            echo "~ For EL8 (or newer) ~"
+            echo ""
+            echo "Flush all caches..."
+            dnf clean all
+            echo ""
+            echo "Update packages..."
+            dnf -y update
+        else
+            echo "~ For EL6 or EL7 ~"
+            echo ""
+            echo "Flush all caches..."
+            yum clean all
+            echo ""
+            echo "Update packages..."
+            yum -y update
+        fi
+    else
+        echo ""
+        echo "Flush all caches..."
+        apt-get clean all
+        echo ""
+        echo "Update packages..."
+        apt-get update
+        apt-get -y dist-upgrade
+        apt-get -y autoremove
+    fi
     echo ""
     echo "Operation completed."
-    echo ""
-    echo ""
     ;;
 info)
     echo "=================="
     echo "=== OS Version ==="
     echo "=================="
     echo ""
-    cat /etc/redhat-release
-    echo ""
-    echo "cPanel version: $GET_CPANEL_VERSION"
+    if [ -f "/etc/redhat-release" ]; then
+        cat /etc/redhat-release
+        if [ -f "/usr/local/cpanel/cpanel" ]; then
+            CPANEL_VERSION=$(/usr/local/cpanel/cpanel -V)
+            echo ""
+            echo "cPanel version: $CPANEL_VERSION"
+        fi
+    else
+        lsb_release -drc
+    fi
     echo ""
     echo ""
 
@@ -1122,9 +1142,147 @@ info)
     echo "======================="
     echo ""
     who
+    ;;
+tp)
+    echo "=== Tuning Primer ==="
     echo ""
+    bash $APP_PATH/utilities/tuning-primer.sh
+    echo ""
+    echo "Operation completed."
+    ;;
+mt)
+    echo "=== MySQL Tuner ==="
+    echo ""
+    if [ -f /root/.my.cnf ]; then
+        source /root/.my.cnf
+        perl $APP_PATH/utilities/mysqltuner/mysqltuner.pl --user $user --pass $password
+    else
+        echo "Missing /root/.my.cnf credentials."
+        echo "Can't connect to the server's database!"
+    fi
+    echo ""
+    echo "Operation completed."
+    ;;
+purgecache)
+    NOW=$(date +'%Y.%m.%d at %H:%M:%S')
+    echo "==============================================================="
+    echo "=== Purge Nginx cache/temp files and restart Apache & Nginx ==="
+    echo "==============================================================="
+    echo ""
+    echo "--- Process started at $NOW ---"
+    echo ""
+    if [ "$(pstree | grep 'httpd')" ]; then
+        echo "Restarting Apache..."
+        /scripts/restartsrv apache_php_fpm
+        /scripts/restartsrv_httpd
+        echo ""
+    fi
+    if [ "$(pstree | grep 'nginx')" ]; then
+        echo "Count Nginx cache/temp files..."
+        du -shc /var/cache/nginx/engintron_*/
+        sleep 1
+        echo ""
+        echo "Purging Nginx cache/temp files..."
+        find /var/cache/nginx/engintron_dynamic/ -type f | xargs rm -rf
+        find /var/cache/nginx/engintron_static/ -type f | xargs rm -rf
+        find /var/cache/nginx/engintron_temp/ -type f | xargs rm -rf
+        echo ""
+        echo "Restarting Nginx..."
+        if [ "$RELEASE" -gt "7" ]; then
+            systemctl restart nginx
+        else
+            service nginx restart
+        fi
+        echo ""
+    fi
     echo ""
     ;;
+purgelogs)
+    echo "================================================================"
+    echo "=== Clean Nginx access/error logs and restart Apache & Nginx ==="
+    echo "================================================================"
+    echo ""
+    if [ -f /var/log/nginx/access.log ]; then
+        echo "" > /var/log/nginx/access.log
+    fi
+    if [ -f /var/log/nginx/error.log ]; then
+        echo "" > /var/log/nginx/error.log
+    fi
+    if [ "$(pstree | grep 'httpd')" ]; then
+        echo "Restarting Apache..."
+        /scripts/restartsrv apache_php_fpm
+        /scripts/restartsrv_httpd
+        echo ""
+    fi
+    if [ "$(pstree | grep 'nginx')" ]; then
+        echo "Restarting Nginx..."
+        if [ "$RELEASE" -gt "7" ]; then
+            systemctl restart nginx
+        else
+            service nginx restart
+        fi
+        echo ""
+    fi
+    echo ""
+    ;;
+ip)
+    echo "=== Get server's IP ==="
+    echo ""
+    echo "~ From the system..."
+    ip a | grep global | grep "inet."
+    echo ""
+    echo ""
+    echo "~ Externally from ifconfig.co..."
+    echo "IPv4: $(curl -s -4 ifconfig.co)"
+    echo "IPv6: $(curl -s -6 ifconfig.co)"
+    echo "Default: $(curl -s ifconfig.co)"
+    echo ""
+    echo ""
+    echo "~ Externally from ifconfig.io..."
+    echo "IPv4: $(curl -s -4 ifconfig.io)"
+    echo "IPv6: $(curl -s -6 ifconfig.io)"
+    echo "Default: $(curl -s ifconfig.io)"
+    echo ""
+    echo ""
+    echo "Operation completed."
+    ;;
+80)
+    echo "=== Connections on port 80 sorted by connection count & IP ==="
+    echo ""
+    netstat -anp | grep :80 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n
+    echo ""
+    echo ""
+    echo "=== Concurrent connections on port 80 ==="
+    echo ""
+    netstat -an | grep :80 | wc -l
+    echo ""
+    echo "Operation completed."
+    ;;
+443)
+    echo "=== Connections on port 443 sorted by connection count & IP ==="
+    echo ""
+    netstat -anp | grep :443 | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -n
+    echo ""
+    echo ""
+    echo "=== Concurrent connections on port 443 ==="
+    echo ""
+    netstat -an | grep :443 | wc -l
+    echo ""
+    echo "Operation completed."
+    ;;
+80-443)
+    echo "=== Concurrent connections on port 80 ==="
+    echo ""
+    netstat -an | grep :80 | wc -l
+    echo ""
+    echo ""
+    echo "=== Concurrent connections on port 443 ==="
+    echo ""
+    netstat -an | grep :443 | wc -l
+    echo ""
+    echo "Operation completed."
+    ;;
+
 80)
     echo "=== Connections on port 80 (HTTP traffic) sorted by connection count & IP ==="
     echo ""
@@ -1149,6 +1307,61 @@ info)
     echo ""
     echo ""
     ;;
+fixownerperms)
+    echo "==================================================="
+    echo "=== Fix user file & directory owner permissions ==="
+    echo "==================================================="
+    echo ""
+    cd /home
+    for user in $( ls -d * )
+    do
+        if [ -d /home/$user/public_html ]; then
+            echo "=== Fixing permissions for user $user ==="
+            chown -R $user:$user /home/$user/public_html
+            chown $user:nobody /home/$user/public_html
+        fi
+    done
+    echo "Operation completed."
+    echo ""
+    echo ""
+    ;;
+fixaccessperms)
+    echo "===================================================="
+    echo "=== Fix user file & directory access permissions ==="
+    echo "===================================================="
+    echo ""
+    echo "Changing directory permissions to 755..."
+    find /home/*/public_html/ -type d -exec chmod 755 {} \;
+    echo ""
+    echo "Changing file permissions to 644..."
+    find /home/*/public_html/ -type f -exec chmod 644 {} \;
+    echo ""
+    echo "Operation completed."
+    echo ""
+    echo ""
+    ;;
+cleanup)
+    echo "========================================================================="
+    echo "=== Cleanup Mac or Windows specific metadata & Apache error_log files ==="
+    echo "========================================================================="
+    echo ""
+    find /home/*/public_html/ -iname 'error_log' | xargs rm -rvf
+    find /home/*/public_html/ -iname '.DS_Store' | xargs rm -rvf
+    find /home/*/public_html/ -iname 'thumbs.db' | xargs rm -rvf
+    find /home/*/public_html/ -iname '__MACOSX' | xargs rm -rvf
+    find /home/*/public_html/ -iname '._*' | xargs rm -rvf
+    echo ""
+    echo "Operation completed."
+    echo ""
+    echo ""
+    ;;
+w|weather)
+    if [ "$2" != "" ]; then
+        curl wttr.in/$2
+    else
+        curl wttr.in
+    fi
+    ;;
 -h|--help|*)
     echo "    _______   _____________   ____________  ____  _   __"
     echo "   / ____/ | / / ____/  _/ | / /_  __/ __ \/ __ \/ | / /"
@@ -1159,36 +1372,66 @@ info)
     echo "                 https://engintron.com                  "
     cat <<EOF
 
-Engintron (v$APP_VERSION) is the easiest way to integrate Nginx on your cPanel/WHM server.
+Engintron is the easiest way to integrate Nginx on your cPanel/WHM server.
 
-Usage: /engintron.sh [command] [flag]
+Current version: $APP_VERSION
+Released: $APP_RELEASE_DATE
 
-Main commands:
-    install          Install, re-install or update Engintron (enables Nginx by default).
-                     Add optional flag "mainline" to install Nginx mainline release.
-    remove           Remove Engintron completely.
-    enable           Set Nginx to ports 80/443 & Apache to ports 8080/8443
-    disable          Set Nginx to ports 8080/8443 & switch Apache to ports 80/443
-    purgecache       Purge Nginx's "cache" & "temp" folders,
-                     then restart both Apache & Nginx
-    purgelogs        Purge Nginx's access & error log files
+Usage: engintron [command] [flag]
 
-Utility commands:
-    res              Restart web servers only (Apache & Nginx)
-    res force        Restart Apache & force restart Nginx (kills all previous Nginx processes)
-    resall           Restart Cron, CSF & LFD (if installed), Munin (if installed),
-                     MySQL, Apache, Nginx
-    80               Show active connections on port 80 sorted by connection count & IP,
-                     including total concurrent connections count
-    443              Show active connections on port 443 sorted by connection count & IP,
-                     including total concurrent connections count
-    fixaccessperms   Change file & directory access permissions to 644 & 755 respectively
-                     in all user /public_html directories
-    fixownerperms    Fix owner permissions in all user /public_html directories
-    restoreipfwd     Restore Nginx IP forwarding in Apache
-    cleanup          Cleanup Mac or Windows specific metadata & Apache error_log files
-                     in all user /public_html directories
-    info             Show basic system info
+~ Deployment Commands:
+    install         Install, re-install or update Engintron (enables Nginx by default).
+                    Add optional flag "mainline" to install Nginx mainline release.
+    remove          Remove Engintron completely.
+    enable          Set Nginx to ports 80/443 & Apache to ports 8080/8443
+    disable         Set Nginx to ports 8080/8443 & switch Apache to ports 80/443
+    restoreipfwd    Restore Nginx IP forwarding in Apache
+
+~ Service Commands:
+    res             Restart web servers only (Apache & Nginx)
+    res force       Restart Apache & force restart Nginx (kills all previous Nginx processes)
+    resall          Restart Cron, CSF & LFD (if installed), Munin (if installed),
+                    MySQL/MariaDB, Apache & Nginx
+    upd             Update server software
+    info            Show basic system information
+
+~ Database Utilities:
+    tp              Run Tuning Primer diagnostics for MySQL or MariaDB
+    mt              Run MySQL Tuner diagnostics for MySQL or MariaDB
+
+~ Purge Caches:
+    purgecache      Purge Nginx's "cache" & "temp" folders,
+                    then restart both Apache & Nginx
+    purgelogs       Purge Nginx's access & error log files
+
+~ Network Utilities:
+    ip              Display server's main IP
+    80              Show active connections on port 80 sorted by connection count & IP,
+                    including total concurrent connections count
+    443             Show active connections on port 443 sorted by connection count & IP,
+                    including total concurrent connections count
+    80-443          Show totals for concurrent connections on ports 80 & 443
+
+~ Filesystem Utilities:
+    fixownerperms   Fix owner permissions in all user /public_html directories.
+                    Use with caution! If you have add-on domains or subdomains with any /public_html folder
+                    you are advised NOT to use this option as it will break website service for these
+                    add-on domains or subdomains!
+    fixaccessperms  Change file & directory access permissions to 644 & 755 respectively
+                    in all user /public_html directories.
+                    Use with caution! If you have add-on domains or subdomains with any /public_html folder
+                    you are advised NOT to use this option as it will break website service for these
+                    add-on domains or subdomains!
+    cleanup         Cleanup Mac or Windows specific metadata & Apache error_log files
+                    in all user /public_html directories
+
+~ Fun Utilities:
+    w (or weather)  Show the current weather forecast - add 3-letter airport code for
+                    exact weather forecast (e.g. muc, ath etc.)
+
+~ Help:
+    -h OR --help    Show this help page
+
 
 ~~ Enjoy Engintron! ~~
 
