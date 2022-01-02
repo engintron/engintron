@@ -114,7 +114,7 @@ The Changelog section has been moved in the Engintron Docs: https://engintron.co
 ### Compatibility & Requirements
 Engintron is tested only on platforms that are actively supported by cPanel itself.
 
-As such, as of January 2022, Engintron is fully compatible with CentOS 6 with CloudLinux (the only actively supported Enterprise Linux variant by cPanel as CentOS 6 is officially EOL since 2020), CentOS 7 and all EL 8 variants such as Almalinux, Rocky Linux & CentOS 8 (for which support by Red Hat stopped at the end of 2021).
+As such, as of January 2022, Engintron is fully compatible with CentOS 6 with CloudLinux (the only actively supported Enterprise Linux variant by cPanel as CentOS 6 is officially EOL since 2020), CentOS 7 and all EL 8 variants such as AlmaLinux, Rocky Linux & CentOS 8 (for which support by Red Hat stopped at the end of 2021).
 
 Engintron should also work on other EL 8 variants (e.g. Oracle Linux, Amazon Linux etc.) that can run cPanel (albeit "unofficially")...
 
