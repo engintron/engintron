@@ -330,11 +330,11 @@ switch ($op) {
 
     case "engintron_update":
     case "engintron_update_stable":
-        $ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh; bash engintron.sh install"), "<br><span>");
+        $ret = strip_tags(shell_exec("bash /opt/engintron/engintron.sh install"), "<br><span>");
         break;
 
     case "engintron_update_mainline":
-        $ret = strip_tags(shell_exec("cd /; rm -f /engintron.sh; wget --no-check-certificate https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh; bash engintron.sh install mainline"), "<br><span>");
+        $ret = strip_tags(shell_exec("bash /opt/engintron/engintron.sh install mainline"), "<br><span>");
         break;
 
     case "engintron_res":
