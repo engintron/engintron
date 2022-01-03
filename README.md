@@ -64,7 +64,7 @@ The process will take a couple of minutes to complete and after that, Engintron 
 
 In there, you'll find basic options to control Nginx, Apache and MySQL, all in one convenient place. Additionally, you can edit all of Nginx's configuration files (as well as some from Apache & MySQL) to get even more from Engintron (e.g. configure Engintron for use with CloudFlare). If however all you want is to accelerate both static & dynamic content delivery, then Engintron is already setup for you and you don't need to do anything more.
 
-Inside the Engintron app dashboard you'll also find some handy utilities to monitor things like your Nginx access & error logs, check processes on your server, run database diagnostics or list active connections on ports 80 & 443 (for HTTP & HTTPS traffic respectively).
+Inside the Engintron app dashboard you'll also find some handy small utilities that make managing your server more productive.
 
 _For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://engintron.com/docs](https://engintron.com/docs)_
 
