@@ -12,7 +12,7 @@
 # Constants
 APP_PATH="/opt/engintron"
 APP_VERSION="2.0"
-APP_RELEASE_DATE="January 2nd, 2022"
+APP_RELEASE_DATE="January 3rd, 2022"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 
@@ -947,9 +947,9 @@ resall)
     if [ "$(pstree | grep 'crond')" ]; then
         echo "Restarting Cron..."
         if [ "$RELEASE" -gt "7" ]; then
-            systemctl restart cron
+            systemctl restart crond
         else
-            service cron restart
+            service crond restart
         fi
         echo ""
     fi

@@ -1,4 +1,4 @@
-### root@cpanelsrv [~]#   *Engintron v2.0 (Build 20220102) updated on January 2nd, 2022*
+### root@cpanelsrv [~]#   *Engintron v2.0 (Build 20220103) updated on January 3rd, 2022*
 
 **Have a look at the [CHANGELOG](https://engintron.com/docs/#/pages/Changelog) for more information on this latest release**
 
