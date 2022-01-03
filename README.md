@@ -18,7 +18,7 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 * [Rate and/or review Engintron in the cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
 * [Donate & Support the development of Engintron](https://engintron.com/?donate)
 
-![Engintron v2 WHM App](https://user-images.githubusercontent.com/1301787/147955820-b62b1aff-bfca-4b6d-a3fe-e0900b39d711.jpg)
+![Engintron v2 WHM App (kudos to Anthony Boyd Graphics for the IBM Desktop mockup)](https://user-images.githubusercontent.com/1301787/147956182-e2e11894-32e9-4b45-92b4-b85e47e52a7e.jpg)
 
 
 ***
