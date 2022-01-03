@@ -18,6 +18,7 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 * [Rate and/or review Engintron in the cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
 * [Donate & Support the development of Engintron](https://engintron.com/?donate)
 
+
 ![Engintron v2 WHM App (kudos to Anthony Boyd Graphics for the IBM Desktop mockup)](https://user-images.githubusercontent.com/1301787/147956182-e2e11894-32e9-4b45-92b4-b85e47e52a7e.jpg)
 
 
@@ -66,6 +67,9 @@ In there, you'll find basic options to control Nginx, Apache and MySQL, all in o
 Inside the Engintron app dashboard you'll also find some handy utilities to monitor things like your Nginx access & error logs, check processes on your server, run database diagnostics or list active connections on ports 80 & 443 (for HTTP & HTTPS traffic respectively).
 
 _For more information regarding setup, configuration or uninstallation, as well as other cPanel optimization tips, please visit the project's Wiki pages at: [https://engintron.com/docs](https://engintron.com/docs)_
+
+
+![Engintron_v2_20220103_2048x1072](https://user-images.githubusercontent.com/1301787/147961377-766f2c64-0042-424c-bd51-7b130a537d65.jpg)
 
 
 ### Why is Engintron a better solution compared to other Nginx (or performance related) plugins for cPanel
