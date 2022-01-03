@@ -402,7 +402,7 @@ if (ENGINTRON_STATE!="missing") {
 
 $head_includes = '
     <!-- Engintron [start] -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Code+Pro:400,700" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Code+Pro:400,700&display=swap" />
     <style type="text/css">
         #sidebar {position:relative;background:#eaeaea;border-right:1px solid #d0d0d0;} /* Fix cPanel sidebar layer stacking */
         #sidebar .commandContainer {background:#eaeaea;}
@@ -418,7 +418,7 @@ $head_includes = '
             #ngContainer .ngViewDefault {font-size:11px;}
             #ngContainer hr {line-height:0;height:0;border:none;border-bottom:1px solid #d0d0d0;padding:0;margin:8px 0;}
             h1#ngTitle {margin:0 0 15px;padding:0;text-align:center;}
-            h1#ngTitle a {background:url(\'https://engintron.com/app/images/v1.1/engintron_logo_upd1.svg?u=1\') no-repeat 50% 50%;background-size:auto 80px;padding:0;margin:0 auto;width:100%;max-width:340px;height:90px;display:block;position:relative;text-decoration:none;}
+            h1#ngTitle a {background:url(\'https://engintron.com/app/images/v1.1/engintron_logo.svg\') no-repeat 50% 50%;background-size:auto 80px;padding:0;margin:0 auto;width:100%;max-width:340px;height:90px;display:block;position:relative;text-decoration:none;}
             h1#ngTitle a span {position:absolute;display:block;bottom:5px;left:0;right:0;text-align:right;font-size:14px;color:#333;}
             h2 {border-bottom:2px solid #eaeaea;padding:5px 0;margin:0 0 10px 0;text-transform:uppercase;font-family:\'Montserrat\',sans-serif;font-weight:700;font-size:24px;color:#008d23;}
             #ngContainer #ngMenuTrigger {display:none;}
