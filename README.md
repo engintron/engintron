@@ -1,4 +1,4 @@
-### root@cpanelsrv [~]#   *Engintron v2.0 (Build 20220103) updated on January 3rd, 2022*
+### root@cpanelsrv [~]#   *Engintron v2.0 (Build 20220112) updated on January 12th, 2022*
 
 **Have a look at the [CHANGELOG](https://engintron.com/docs/#/pages/Changelog) for more information on this latest release**
 
@@ -14,7 +14,7 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 * [FAQ](https://engintron.com/docs/#/pages/faq)
 * [Get support & report bugs (Issues)](https://github.com/engintron/engintron/issues)
 * [Join the Engintron Newsletter / Mailing List](https://tinyletter.com/engintron)
-* Engintron on [Facebook](https://www.facebook.com/engintron/) & [Twitter](https://twitter.com/engintron_sh)
+* Engintron on [Twitter](https://twitter.com/engintron) & [Facebook](https://www.facebook.com/engintron)
 * [Rate and/or review Engintron in the cPanel Applications Directory](https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel)
 * [Donate & Support the development of Engintron](https://engintron.com/?donate)
 
