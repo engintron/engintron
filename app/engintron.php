@@ -4,7 +4,7 @@
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
- * @copyright  Copyright (c) 2018 - 2022 Kodeka OÜ. All rights reserved.
+ * @copyright  Copyright (c) 2014 - 2022 Kodeka OÜ. All rights reserved.
  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
@@ -722,7 +722,7 @@ echo str_replace($output_find, $output_replace, $output);
     </div>
 
     <div id="ngFooter">
-        <p><a rel="noopener" target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> (<?php echo PLG_BUILD; ?>) | Copyright &copy; 2018-<?php echo date('Y'); ?> <a rel="noopener" target="_blank" href="https://kodeka.io/">Kodeka OÜ.</a> Released under the <a rel="noopener" target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
+        <p><a rel="noopener" target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> (<?php echo PLG_BUILD; ?>) | Copyright &copy; 2014 - <?php echo date('Y'); ?> <a rel="noopener" target="_blank" href="https://kodeka.io/">Kodeka OÜ.</a> Released under the <a rel="noopener" target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
     </div>
     <?php if ($message): ?>
     <div id="ngMessage"><div class="ngMsgState"></div><?php echo $message; ?></div>
