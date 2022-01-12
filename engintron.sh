@@ -1414,12 +1414,12 @@ Usage: engintron [command] [flag]
 
 ~ Filesystem Utilities:
     fixownerperms   Fix owner permissions in all user /public_html directories.
-                    Use with caution! If you have add-on domains or subdomains with any /public_html folder
+                    Use with caution! If you have add-on domains or subdomains within any /public_html folder
                     you are advised NOT to use this option as it will break website service for these
                     add-on domains or subdomains!
     fixaccessperms  Change file & directory access permissions to 644 & 755 respectively
                     in all user /public_html directories.
-                    Use with caution! If you have add-on domains or subdomains with any /public_html folder
+                    Use with caution! If you have add-on domains or subdomains within any /public_html folder
                     you are advised NOT to use this option as it will break website service for these
                     add-on domains or subdomains!
     cleanup         Cleanup Mac or Windows specific metadata & Apache error_log files
