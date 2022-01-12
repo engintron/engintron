@@ -103,7 +103,7 @@ If you use Engintron, please take a moment to post a review and/or rating in the
 
 ---
 
-## Commercial support & server optimization services
+## COMMERCIAL SUPPORT & SERVER OPTIMIZATION SERVICES
 Engintron will greatly improve your cPanel server's performance, but it will only get you halfway through to what your hardware can actually support, especially when all crucial server components like Apache, MySQL/MariaDB or PHP use "stock" configurations (or worse, badly optimized configurations), unsuitable for your server's hardware specifications.
 
 And although we do provide optimization guides in the Engintron documentation site (see "BEYOND ENGINTRON - OPTIMIZATION GUIDES" here [https://engintron.com/docs](https://engintron.com/docs)), it takes experience to fine tune any configuration to match a server's specifications.
