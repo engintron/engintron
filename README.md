@@ -127,3 +127,5 @@ So, if you wish to go the "extra mile" and optimize your cPanel server both thro
 ---
 
 **Copyright &copy; 2014 - 2022 [Kodeka OÜ](https://kodeka.io)**
+
+![Engintron Repo Analytics](https://mc.yandex.ru/watch/87127022)
