@@ -41,7 +41,7 @@ define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
 define('CPANEL_VERSION', (int) CPANEL_RELEASE);
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec('nginx -v 2>&1'))));
 define('OS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
-define('PLG_BUILD', 'Build 20220112');
+define('PLG_BUILD', 'Build 20220117');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_NAME', 'Engintron for cPanel/WHM');
 define('PLG_VERSION', '2.0');
