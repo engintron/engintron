@@ -53,7 +53,7 @@ function install_basics {
         fi
         yum -y install epel-release
         yum -y update
-        yum -y install apr-util bash-completion bc bmon bzip2 curl dmidecode ethtool git htop httpd-tools httpie ifstat iftop iotop iptraf iptraf-ng jpegoptim libwebp make multitail mutt nano ncdu net-tools nload nmon openssl-devel optipng pcre pcre-devel psmisc redhat-lsb redhat-lsb-core rename rsync screen screenfetch siege smartmontools sudo tree unzip wget yum-utils zip zlib-devel
+        yum -y install apr-util bash-completion bc bmon bzip2 curl dmidecode ethtool git htop httpie ifstat iftop iotop iptraf iptraf-ng jpegoptim libwebp make multitail mutt nano ncdu net-tools nload nmon openssl-devel optipng pcre pcre-devel psmisc redhat-lsb redhat-lsb-core rename rsync screen screenfetch siege smartmontools sudo tree unzip wget yum-utils zip zlib-devel
         yum -y install memcached memcached-devel libmemcached libmemcached-devel
         yum -y install ea4-experimental
     fi
