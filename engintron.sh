@@ -39,7 +39,7 @@ function install_basics {
         dnf -y update
         dnf -y install epel-release
         dnf -y update
-        dnf -y install bash-completion bc bmon bzip2 curl dmidecode ethtool git htop httpie ifstat iftop iotop iptraf iptraf-ng jpegoptim libwebp make multitail mutt nano ncdu net-tools nload nmon openssl-devel optipng pcre pcre-devel psmisc redhat-lsb redhat-lsb-core rsync siege smartmontools sudo tree unzip wget yum-utils zip zlib-devel
+        dnf -y install bash-completion bc bmon bzip2 curl dmidecode ethtool git htop httpie ifstat iftop iotop iptraf iptraf-ng jpegoptim libwebp make multitail mutt nano ncdu net-tools nload nmon openssl-devel optipng pcre pcre-devel psmisc redhat-lsb redhat-lsb-core rsync screen siege smartmontools sudo tree unzip wget yum-utils zip zlib-devel
         dnf -y install memcached libmemcached
         dnf -y install ea4-experimental
     else
@@ -53,7 +53,7 @@ function install_basics {
         fi
         yum -y install epel-release
         yum -y update
-        yum -y install apr-util bash-completion bc bmon bzip2 curl dmidecode ethtool git htop httpd-tools httpie ifstat iftop iotop iptraf iptraf-ng jpegoptim libwebp make multitail mutt nano ncdu net-tools nload nmon openssl-devel optipng pcre pcre-devel psmisc redhat-lsb redhat-lsb-core rename rsync screenfetch siege smartmontools sudo tree unzip wget yum-utils zip zlib-devel
+        yum -y install apr-util bash-completion bc bmon bzip2 curl dmidecode ethtool git htop httpd-tools httpie ifstat iftop iotop iptraf iptraf-ng jpegoptim libwebp make multitail mutt nano ncdu net-tools nload nmon openssl-devel optipng pcre pcre-devel psmisc redhat-lsb redhat-lsb-core rename rsync screen screenfetch siege smartmontools sudo tree unzip wget yum-utils zip zlib-devel
         yum -y install memcached memcached-devel libmemcached libmemcached-devel
         yum -y install ea4-experimental
     fi
