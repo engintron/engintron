@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    2.0
+ * @version    2.1
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
@@ -41,10 +41,10 @@ define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
 define('CPANEL_VERSION', (int) CPANEL_RELEASE);
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec('nginx -v 2>&1'))));
 define('OS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
-define('PLG_BUILD', 'Build 20220117');
+define('PLG_BUILD', 'Build 20220916');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_NAME', 'Engintron for cPanel/WHM');
-define('PLG_VERSION', '2.0');
+define('PLG_VERSION', '2.1');
 
 if (file_exists("/opt/engintron/state.conf")) {
     define('ENGINTRON_STATE', trim(file_get_contents("/opt/engintron/state.conf")));
@@ -125,9 +125,11 @@ switch ($op) {
                             case "nginx":
                                 $message .= nl2br(shell_exec("service nginx reload; echo 'Done.';"));
                                 break;
+                            /*
                             case "apache":
-                                $message .= nl2br(shell_exec("/scripts/restartsrv_httpd"));
+                                $message .= strip_tags(nl2br(shell_exec("/scripts/restartsrv_httpd")));
                                 break;
+                            */
                             case "mysql":
                                 $message .= nl2br(shell_exec("rm -rvf /var/lib/mysql/ib_logfile*; touch /var/lib/mysql/mysql.sock; touch /var/lib/mysql/mysql.pid; chown -R mysql:mysql /var/lib/mysql; /scripts/restartsrv_mysql"));
                                 break;
@@ -199,13 +201,11 @@ switch ($op) {
         break;
 
     case "nginx_purgelogs":
-        $ret = shell_exec("bash /opt/engintron/engintron.sh purgelogs");
-        $ret .= shell_exec("service nginx restart");
+        $ret = strip_tags(shell_exec("bash /opt/engintron/engintron.sh purgelogs"));
         break;
 
     case "nginx_purgecache":
-        $ret = shell_exec("bash /opt/engintron/engintron.sh purgecache");
-        $ret .= shell_exec("service nginx restart");
+        $ret = strip_tags(shell_exec("bash /opt/engintron/engintron.sh purgecache"));
         break;
 
     case "httpd_status":
@@ -219,7 +219,7 @@ switch ($op) {
 
     case "httpd_restart":
         $ret = "<b>Restarting Apache...</b><br />";
-        $ret .= shell_exec("/scripts/restartsrv_httpd");
+        $ret .= strip_tags(shell_exec("/scripts/restartsrv_httpd"));
         break;
 
     case "httpd_reload":
@@ -266,7 +266,7 @@ switch ($op) {
 
     case "httpd_restoreipfwd":
         $ret = "<b>Restore Nginx IP forwarding in Apache...</b><br />";
-        $ret .= shell_exec("bash /opt/engintron/engintron.sh restoreipfwd");
+        $ret .= strip_tags(shell_exec("bash /opt/engintron/engintron.sh restoreipfwd"));
         break;
 
     case "mysql_restart":
@@ -320,9 +320,9 @@ switch ($op) {
 
     case "engintron_toggle":
         if (ENGINTRON_STATE=="on") {
-            $ret = shell_exec("bash /opt/engintron/engintron.sh disable");
+            $ret = strip_tags(shell_exec("bash /opt/engintron/engintron.sh disable"));
         } elseif (ENGINTRON_STATE=="off") {
-            $ret = shell_exec("bash /opt/engintron/engintron.sh enable");
+            $ret = strip_tags(shell_exec("bash /opt/engintron/engintron.sh enable"));
         } else {
             $ret = "Couldn't get state of Engintron - please try again.";
         }
@@ -338,15 +338,15 @@ switch ($op) {
         break;
 
     case "engintron_res":
-        $ret = shell_exec("bash /opt/engintron/engintron.sh res 2>&1");
+        $ret = strip_tags(shell_exec("bash /opt/engintron/engintron.sh res 2>&1"));
         break;
 
     case "engintron_res_force":
-        $ret = shell_exec("bash /opt/engintron/engintron.sh res force 2>&1");
+        $ret = strip_tags(shell_exec("bash /opt/engintron/engintron.sh res force 2>&1"));
         break;
 
     case "engintron_resall":
-        $ret = shell_exec("bash /opt/engintron/engintron.sh resall 2>&1");
+        $ret = strip_tags(shell_exec("bash /opt/engintron/engintron.sh resall 2>&1"));
         break;
 
     case "utils_info":
@@ -370,7 +370,7 @@ switch ($op) {
         $ret .= "<b>RAM:</b> ";
         $ret .= round(trim(shell_exec("grep MemTotal /proc/meminfo | awk '{print $2}'")/(1024*1024)), 2)." GB<br /><br />";
         $ret .= "<b>Memory Usage:</b><br />";
-        $ret .= shell_exec("free -m")."<br />";
+        $ret .= shell_exec("free -mh")."<br />";
         $ret .= "<b>Disk Usage:</b><br />";
         $ret .= trim(shell_exec("df -hT"))."<br /><br />";
         $ret .= "<b>Nginx Cache/Temp Disk Usage:</b><br />";
