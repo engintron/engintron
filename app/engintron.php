@@ -866,8 +866,7 @@ echo str_replace($output_find, $output_replace, $output);
 
     </script>
     <script src="https://engintron.com/app/js/services.js?t=<?php echo date('Ymd'); ?>"></script>
-    <script>(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject'] = r;i[r] = i[r] || function() {(i[r].q = i[r].q || []).push(arguments)},i[r].l = 1 * new Date();a = s.createElement(o),m = s.getElementsByTagName(o)[0];a.async = 1;a.src = g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','UA-16375363-18','auto');ga('send','pageview','/engintron_whm_app');</script>
-    <script type="text/javascript" >(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js","ym");ym(87045362,"init",{clickmap:false,trackLinks:true,accurateTrackBounce:false});</script><noscript><img src="https://mc.yandex.ru/watch/87045362" style="position:absolute;left:-9999px;" alt="" /></noscript>
+    <script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js","ym");ym(87045362,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,trackHash:true });</script><noscript><div><img src="https://mc.yandex.ru/watch/87045362" style="position:absolute;left:-9999px;" alt="" /></div></noscript>
     <!-- Engintron [finish] -->
 
 <?php
