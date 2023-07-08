@@ -87,6 +87,7 @@ $allowed_files = array(
     '/etc/nginx/custom_rules',
     '/etc/nginx/nginx.conf',
     '/etc/nginx/proxy_params_common',
+	'/etc/nginx/proxy_params_common_ws',
     '/etc/nginx/proxy_params_dynamic',
     '/etc/nginx/proxy_params_static'
 );

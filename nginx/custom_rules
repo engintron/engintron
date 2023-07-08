@@ -108,6 +108,7 @@
 # if ($host ~ "mynodeapp.com") {
 #     set $PROXY_SCHEME "http";
 #     set $PROXY_TO_PORT 3000;
+#     set $WEBSOCKET_UPGRADE 1;
 # }
 #
 # If you want the app to proxy a certain subdomain, make the rule stricter (replacing ~ with =):
@@ -115,4 +116,5 @@
 # if ($host = "app.mynodeapp.com") {
 #     set $PROXY_SCHEME "http";
 #     set $PROXY_TO_PORT 3000;
+#     set $WEBSOCKET_UPGRADE 1;
 # }

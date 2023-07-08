@@ -1,0 +1,38 @@
+# /**
+#  * Forked by: Stergios Zgouletas / WEB EXPERT SERVICES LTD : WebSocket Support
+#  * @version    2.1
+#  * @package    Engintron for cPanel/WHM
+#  * @author     Fotis Evangelou (https://kodeka.io)
+#  * @url        https://engintron.com
+#  * @copyright  Copyright (c) 2014 - 2022 Kodeka OÜ. All rights reserved.
+#  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
+#  */
+
+# General Proxy Settings
+proxy_pass                    $PROXY_SCHEME://$PROXY_DOMAIN_OR_IP:$PROXY_TO_PORT;
+proxy_http_version            1.1;                # Always upgrade to HTTP/1.1
+proxy_set_header              Accept-Encoding ""; # Optimize encoding
+proxy_set_header 			  Upgrade $http_upgrade;
+proxy_set_header			  Connection "upgrade"; # Enable keepalives
+proxy_set_header              Host $host;
+proxy_set_header              Proxy "";
+proxy_set_header              Referer $http_referer;
+proxy_set_header              X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header              X-Forwarded-Host $PROXY_FORWARDED_HOST;
+proxy_set_header              X-Forwarded-Port $server_port;
+proxy_set_header              X-Forwarded-Proto $scheme;
+proxy_set_header              X-Forwarded-Server $host;
+proxy_set_header              X-Real-IP $remote_addr;
+proxy_set_header              CF-Connecting-IP $http_cf_connecting_ip;
+proxy_set_header              CF-Visitor $http_cf_visitor;
+
+# Buffers
+proxy_buffers                 256 16k;
+proxy_buffer_size             128k;
+proxy_busy_buffers_size       256k;
+proxy_temp_file_write_size    256k;
+
+# Timeouts
+proxy_connect_timeout         300s;
+proxy_read_timeout            600s;
+proxy_send_timeout            600s;
