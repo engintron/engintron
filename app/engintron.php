@@ -575,6 +575,7 @@ echo str_replace($output_find, $output_replace, $output);
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/custom_rules&s=nginx">Edit your custom_rules for Nginx</a><?php if (file_exists('/etc/nginx/custom_rules.dist')): ?><span>(<a class="ngViewDefault" href="engintron.php?op=view&f=/etc/nginx/custom_rules.dist">view default</a>)</span><?php endif; ?></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/conf.d/default.conf&s=nginx">Edit default.conf</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_common&s=nginx">Edit proxy_params_common</a></li>
+							<li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_common_ws&s=nginx">Edit proxy_params_common_ws</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_dynamic&s=nginx">Edit proxy_params_dynamic</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/proxy_params_static&s=nginx">Edit proxy_params_static</a></li>
                             <li><a href="engintron.php?op=edit&f=/etc/nginx/common_http.conf&s=nginx">Edit common_http.conf</a></li>

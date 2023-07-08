@@ -93,7 +93,6 @@
 # }
 
 
-
 # === HOST NODE (OR OTHER NON-PHP) APSS ON CPANEL ===
 # One of the nice-to-have things with Engintron is that it makes it a breeze to proxy requests to any port in your server, supporting apps that would never otherwise work with standard cPanel domains. Such an example is a Node.js app running on port 3000 or ElasticSearch, a popular search engine written in Java (works on port 9200), which usually comes with frontends that also work on non-standard web ports (e.g. Cerebro uses port 9000).
 #
@@ -116,5 +115,11 @@
 # if ($host = "app.mynodeapp.com") {
 #     set $PROXY_SCHEME "http";
 #     set $PROXY_TO_PORT 3000;
+#     set $WEBSOCKET_UPGRADE 1;
+# }
+#
+# Auto enable WEBSOCKETS for subdomains with name ws.mynodeapp.com or wss.mynodeapp.com or appws.mynodeapp.com
+# if ($SITE_URI ~* "^(ws|wss|appws)\.") {
+#     set $PROXY_SCHEME "http";
 #     set $WEBSOCKET_UPGRADE 1;
 # }
