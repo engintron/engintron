@@ -674,22 +674,15 @@ install|update)
 
         # Get the files
         cd $APP_PATH
-        wget --no-check-certificate -O engintron.zip https://github.com/engintron/engintron/archive/master.zip
-        unzip engintron.zip
-        cp -rf $APP_PATH/engintron-master/* $APP_PATH/
-		#patch
         wget --no-check-certificate -O engintron_fork.zip https://github.com/zstergios/engintron/archive/refs/heads/support-websockets.zip
         unzip engintron_fork.zip
-        cp -rfu $APP_PATH/engintron-support-websockets/* $APP_PATH/
-		#remove files		
-        rm -rf $APP_PATH/engintron-master/*
-		rm -rf $APP_PATH/engintron-support-websockets/*
-        rm -f $APP_PATH/engintron.zip
-		rm -f $APP_PATH/engintron_fork.zip
+        cp -rf $APP_PATH/engintron-support-websockets/* $APP_PATH/
+	#remove files		
+	rm -f $APP_PATH/engintron_fork.zip
 
-		if [ -f /engintron.sh ]; then
-			rm -f /engintron.sh
-		fi
+	if [ -f /engintron.sh ]; then
+		rm -f /engintron.sh
+	fi
     fi
 
     echo ""
