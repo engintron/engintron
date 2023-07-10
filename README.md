@@ -46,13 +46,13 @@ You'll need root SSH access to your cPanel server. Also check the current requir
 If everything is ok, log in as root and type the following command:
 
 ```
-curl -sSL https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh | bash -s -- install
+curl -sSL https://raw.githubusercontent.com/zstergios/engintron/support-websockets/engitron_fork.sh | bash -s -- install
 ```
 
 If cURL is not available on your system, you can use wget like so:
 
 ```
-wget --no-check-certificate -O - https://raw.githubusercontent.com/engintron/engintron/master/engintron.sh | bash -s -- install
+wget --no-check-certificate -O - https://raw.githubusercontent.com/zstergios/engintron/support-websockets/engitron_fork.sh | bash -s -- install
 ```
 
 The process will take a couple of minutes to complete and after that, Engintron will be installed on your cPanel server. Engintron has a nice & simple user interface which is activated inside WHM, under the Plugins section. After installation, refresh WHM in your browser and you should see Engintron in the Plugins section (it's the absolute last section in WHM's sidebar).
