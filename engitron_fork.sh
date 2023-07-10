@@ -687,9 +687,9 @@ install|update)
         rm -f $APP_PATH/engintron.zip
 		rm -f $APP_PATH/engintron_fork.zip
 
-	if [ -f /engintron.sh ]; then
-	    rm -f /engintron.sh
-	 fi
+		if [ -f /engintron.sh ]; then
+			rm -f /engintron.sh
+		fi
     fi
 
     echo ""
