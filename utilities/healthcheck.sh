@@ -45,7 +45,7 @@ HOSTNAME=$(hostname -f)
 NOW=$(date +'%Y.%m.%d at %H:%M:%S')
 RESPONSE=$(curl -s -o /dev/null -m $TIME_TO_WAIT_IN_SECONDS -w "Responded with status code %{http_code} after %{time_total} seconds" $URL)
 
-if [[ $RESPONSE == "Responded with status code 200"* ]]; then
+if [[ $RESPONSE == "Responded with status code 200"* ]] || [[ $RESPONSE == "Responded with status code 30"* ]]; then
     echo $RESPONSE
     echo "Site requested at URL $URL is online"
 else
