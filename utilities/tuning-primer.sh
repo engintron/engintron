@@ -117,11 +117,13 @@ function write_mycnf() {
   # $4: password
   local socketcomment=""
   [ -z "$2" ] && socketcomment="#"
+  local cleanpassword="${4//\\/\\\\}"
+  cleanpassword="${cleanpassword//\"/\\\"}"
   cat > "${1}" <<EOF
 [client]
 ${socketcomment}socket=$2
 user=$3
-password=$4
+password="${cleanpassword}"
 EOF
 }
 
@@ -227,24 +229,27 @@ final_login_attempt () {
 function second_login_failed()
 {
   cecho "Could not auto detect login info!"
-  cecho "Found potential sockets: $found_socks"
-  cecho "Using: $socket" red
-  read -p "Would you like to provide a different socket?: [y/N] " REPLY
+  cecho "Found potential sockets: $(xargs <<< "$found_socks")"
+  if [ -z "$socket" ]; then
+    cecho "  Will use client's default socket (this is normally correct)." bold
+  else
+    cecho "  Choosing: $socket" red
+  fi
+  read -rp "Would you like to override my socket choice?: [y/N] " REPLY
     case $REPLY in
       yes | y | Y | YES)
-      read -p "Socket: " socket
+      read -rp "Socket: " socket
       ;;
     esac
-  read -p "Do you have your login handy ? [y/N] : " REPLY
+  read -rp "Do you have your login handy ? [y/N] : " REPLY
   case $REPLY in
     yes | y | Y | YES)
     answer1='yes'
-    read -p "User: " user
+    read -rp "User: " user
     read -rsp "Password: " pass
 
-    local MYSQL_COMMAND_PARAMS="-S $socket -u$user"
-    export MYSQL_COMMAND="mysql $MYSQL_COMMAND_PARAMS"
-    export MYSQLADMIN_COMMAND="mysqladmin $MYSQL_COMMAND_PARAMS"
+    export MYSQL_COMMAND="mysql"
+    export MYSQLADMIN_COMMAND="mysqladmin"
 
     ;;
     *)
@@ -487,7 +492,7 @@ post_uptime_warning () {
 
         mysql_status \'Uptime\' uptime
         mysql_status \'Threads_connected\' threads
-        queries_per_sec=$(($questions/$uptime))
+        queries_per_sec="$(($questions/$uptime)).$(printf '%02d' $((100*$questions/$uptime%100)))"
         human_readable_time $uptime uptimeHR
 
         cecho "Uptime = $uptimeHR"
@@ -516,8 +521,9 @@ post_uptime_warning () {
         cecho "UNSUPPORTED MYSQL VERSION" boldred
         exit 1
         fi
-        cecho "Visit http://www.mysql.com/products/enterprise/advisors.html" boldblue
-        cecho "for info about MySQL's Enterprise Monitoring and Advisory Service" boldblue
+        echo ""
+        cecho "Visit https://github.com/BMDan/tuning-primer.sh for the latest version of" boldblue
+        cecho "this script, or to suggest improvements." boldblue
 }
 
 check_slow_queries () {
@@ -584,7 +590,7 @@ check_binary_log () {
                 if [ -z "$max_binlog_size" ] ; then
                         cecho "The max_binlog_size is not set. The binary log will rotate when it reaches 1GB." red
                 fi
-                if [ "$expire_logs_days" -eq 0 ] ; then
+                if [ "${expire_logs_days//.}" -eq 0 ] ; then  # Turns 0.000 -> 0000.
                         cecho "The expire_logs_days is not set." boldred
                         cechon "The mysqld will retain the entire binary log until " red
                         cecho "RESET MASTER or PURGE MASTER LOGS commands are run manually" red
@@ -592,7 +598,7 @@ check_binary_log () {
                         cecho "See http://dev.mysql.com/doc/refman/$major_version/en/purge-master-logs.html" yellow
                 fi
                 if [ "$sync_binlog" = 0 ] ; then
-                        cecho "Binlog sync is not enabled, you could loose binlog records during a server crash" red
+                        cecho "Binlog sync is not enabled, you could lose binlog records during a server crash" red
                 fi
         else
                 cechon "The binary update log is "
@@ -699,8 +705,8 @@ check_key_buffer_size () {
         fi
 
         if [ $key_reads -eq 0 ] ; then
-                cecho "No key reads?!" boldred
-                cecho "Seriously look into using some indexes" red
+                cecho "No key reads.  If you aren't using MyISAM, this is normal.  If you are" yellow
+                cecho "using MyISAM, this is very, very bad." yellow
                 key_cache_miss_rate=0
                 key_buffer_free=$(echo "$key_blocks_unused * $key_cache_block_size / $key_buffer_size * 100" | bc -l )
                 key_buffer_freeRND=$(echo "scale=0; $key_buffer_free / 1" | bc -l)
@@ -758,9 +764,6 @@ check_key_buffer_size () {
 }
 
 check_query_cache () {
-
-## -- Query Cache -- ##
-
         cecho "QUERY CACHE" boldblue
 
         mysql_variable \'version\' mysql_version
@@ -773,18 +776,18 @@ check_query_cache () {
         mysql_status \'Qcache_lowmem_prunes\' qcache_lowmem_prunes
 
         if [ -z $query_cache_size ] ; then
-                cecho "Query cache is disabled or not supported." red
-                #cecho "You are using MySQL $mysql_version, no query cache is supported." red
-                #cecho "I recommend an upgrade to MySQL 4.1 or better" red
+                cecho "Your server does not support the query cache.  That's probably a good thing." green
         elif [ $query_cache_size -eq 0 ] ; then
-                cecho "Query cache is supported but not enabled" red
-                cecho "Perhaps you should set the query_cache_size" red
+                cecho "Query cache is supported, but not enabled." yellow
+                cecho "Determine if enabling cache is advisable given your load characteristics," yellow
+                cecho "daemon version, and SMP (multiprocessor) status." black
         else
                 qcache_used_memory=$(($query_cache_size-$qcache_free_memory))
                 qcache_mem_fill_ratio=$(echo "scale=2; $qcache_used_memory * 100 / $query_cache_size" | bc -l)
                 qcache_mem_fill_ratioHR=$(echo "scale=0; $qcache_mem_fill_ratio / 1" | bc -l)
 
-                cecho "Query cache is enabled" green
+                cecho "You have query cache enabled.  With many versions of the server, you may see" yellow
+                cecho "query cache lock contention, especially if you have more than one core." yellow
                 human_readable $query_cache_size query_cache_sizeHR
                 cecho "Current query_cache_size = $query_cache_sizeHR $unit"
                 human_readable $qcache_used_memory qcache_used_memoryHR
@@ -793,7 +796,7 @@ check_query_cache () {
                 cecho "Current query_cache_limit = $query_cache_limitHR $unit"
                 cecho "Current Query cache Memory fill ratio = $qcache_mem_fill_ratio %"
                 if [ -z $query_cache_min_res_unit ] ; then
-                        cecho "No query_cache_min_res_unit is defined.  Using MySQL < 4.1 cache fragmentation can be inpredictable" %yellow
+                        cecho "No query_cache_min_res_unit is defined.  Using MySQL < 4.1 cache fragmentation can be inpredictable" yellow
                 else
                         human_readable $query_cache_min_res_unit query_cache_min_res_unitHR
                         cecho "Current query_cache_min_res_unit = $query_cache_min_res_unitHR $unit"
@@ -820,7 +823,6 @@ check_query_cache () {
                 fi
                 cecho "MySQL won't cache query results that are larger than query_cache_limit in size" yellow
         fi
-
 }
 
 check_sort_operations () {
@@ -972,7 +974,7 @@ check_tmp_tables () {
         if [ $tmp_disk_tables -ge 25 ] ; then
                 cecho "Perhaps you should increase your tmp_table_size and/or max_heap_table_size" boldred
                 cecho "to reduce the number of disk-based temporary tables" boldred
-                cecho "Note! BLOB and TEXT columns are not allow in memory tables." yellow
+                cecho "Note! BLOB and TEXT columns are not allowed in memory tables." yellow
                 cecho "If you are using these columns raising these values might not impact your " yellow
                 cecho  "ratio of on disk temp tables." yellow
         else
@@ -1126,7 +1128,7 @@ check_table_locking () {
         if [ $immediate_locks_miss_rate -lt 5000 ] ; then
                 cecho "You may benefit from selective use of InnoDB."
                 if [ "$low_priority_updates" = 'OFF' ] ; then
-                cecho "If you have long running SELECT's against MyISAM tables and perform"
+                cecho "If you have long-running SELECT's against MyISAM tables and perform"
                 cecho "frequent updates consider setting 'low_priority_updates=1'"
                 fi
                 if [ "$mysql_version_num" -gt 050000 ] && [ "$mysql_version_num" -lt 050500 ]; then
@@ -1450,8 +1452,13 @@ get_system_info () {
     elif [ "$OS" = 'Linux' ] ; then
         ## Includes SWAP
         ## export physical_memory=$(free -b | grep -v buffers |  awk '{ s += $2 } END { printf("%.0f\n", s ) }')
-        ps_socket=$(netstat -ln | awk '/mysql(.*)?\.sock/ { print $9 }' | head -1)
-        found_socks=$(netstat -ln | awk '/mysql(.*)?\.sock/ { print $9 }')
+        if command -v netstat 2>/dev/null >/dev/null; then
+          ps_socket=$(netstat -ln | awk '/mysql(.*)?\.sock/ { print $9 }' | head -1)
+          found_socks=$(netstat -ln | awk '/mysql(.*)?\.sock/ { print $9 }')
+        else
+          ps_socket=$(ss -ln 2>/dev/null | awk '/mysql(.*)?\.sock/ { print $5; exit }')
+          ps_socket=$(ss -ln 2>/dev/null | awk '/mysql(.*)?\.sock/ { print $5 }')
+        fi
         export physical_memory=$(awk '/^MemTotal/ { printf("%.0f", $2*1024 ) }' < /proc/meminfo)
         export duflags='-b'
     elif [ "$OS" = 'SunOS' ] ; then
@@ -1523,8 +1530,8 @@ prompt () {
         tempmycnf="$(mktemp)"
         write_mycnf "$tempmycnf" "$socket" "$user" "$pass"
 
-        export MYSQL_COMMAND="mysql --defaults-extra-file=$tempmycnf -S $socket -u$user"
-        export MYSQLADMIN_COMMAND="mysqladmin --defaults-extra-file=$tempmycnf -S $socket -u$user"
+        export MYSQL_COMMAND="mysql --defaults-extra-file=$tempmycnf -u$user"
+        export MYSQLADMIN_COMMAND="mysqladmin --defaults-extra-file=$tempmycnf -u$user"
 
         check_for_socket || \
         check_mysql_login
