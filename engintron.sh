@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.1
+#  * @version    2.2
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2014 - 2022 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2014 - 2023 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
 # Constants
 APP_PATH="/opt/engintron"
-APP_VERSION="2.1"
-APP_BUILD_ID="20220916"
-APP_RELEASE_DATE="September 16th, 2022"
+APP_VERSION="2.2"
+APP_BUILD_ID="20231114"
+APP_RELEASE_DATE="November 14th, 2023"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 
