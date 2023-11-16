@@ -731,7 +731,6 @@ echo str_replace($output_find, $output_replace, $output);
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.js"></script>
     <script>
-
         // Fix cPanel UI issues
         document.addEventListener('DOMContentLoaded', function() {
             var sidebarMenu = document.querySelectorAll('ul#mainCommand li.category');
@@ -740,7 +739,9 @@ echo str_replace($output_find, $output_replace, $output);
                     el.className = 'category collapsed';
                     if (el.id == 'Plugins') {
                         el.className = 'category expanded';
-                        el.querySelector('#PluginsContent li[searchtext*="Engintron"]').className = 'highlighted activePage';
+                        if (el.querySelector('#PluginsContent li[searchtext*="Engintron"]')) {
+                            el.querySelector('#PluginsContent li[searchtext*="Engintron"]').className = 'highlighted activePage';
+                        }
                     }
                 });
             }
@@ -774,6 +775,7 @@ echo str_replace($output_find, $output_replace, $output);
             document.getElementById(el).submit();
             return false;
         }
+
         function ngUpdate(el) {
             var updContainer = document.getElementById(el);
             if (updContainer) {
@@ -789,11 +791,12 @@ echo str_replace($output_find, $output_replace, $output);
                 };
             }
         }
+
         function ngUtils() {
             // Highlight menu
             var i = 0,
                 menuItems = document.getElementById('ngOperations').getElementsByTagName('a');
-            for(; i < menuItems.length; ++i) {
+            for (; i < menuItems.length; ++i) {
                 if (window.location.href === menuItems[i].href) {
                     if (menuItems[i].parentNode.nodeName.toLowerCase() == 'form') {
                         menuItems[i].parentNode.parentNode.className = 'active';
@@ -863,7 +866,6 @@ echo str_replace($output_find, $output_replace, $output);
                 };
             });
         }
-
     </script>
     <script src="https://engintron.com/app/js/services.js?t=<?php echo date('Ymd'); ?>"></script>
     <script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,"script","https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js","ym");ym(87045362,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true,trackHash:true });</script><noscript><div><img src="https://mc.yandex.ru/watch/87045362" style="position:absolute;left:-9999px;" alt="" /></div></noscript>
