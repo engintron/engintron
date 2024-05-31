@@ -26,6 +26,16 @@ define('NGINX_DEFAULT_HTTPS_VHOST', '/etc/nginx/conf.d/default_https.conf');
 //ini_set('display_errors', 0);
 //error_reporting(0);
 
+if (file_exists('/etc/redhat-release') && is_readable('/etc/redhat-release')) {
+    $release = shell_exec('rpm -q --qf %{version} `rpm -q --whatprovides redhat-release` | cut -c 1');
+    define('DISTRO', 'el');
+    define('RELEASE', $release);
+} else {
+    $release = shell_exec('lsb_release -r -s');
+    define('DISTRO', 'ubuntu');
+    define('RELEASE', $release);
+}
+
 function generate_https_vhosts()
 {
     $hostnamePemFile = '';
@@ -34,6 +44,14 @@ function generate_https_vhosts()
     }
     if (file_exists('/var/cpanel/ssl/cpanel/mycpanel.pem') && is_readable('/var/cpanel/ssl/cpanel/mycpanel.pem')) {
         $hostnamePemFile = '/var/cpanel/ssl/cpanel/mycpanel.pem';
+    }
+
+    // Handle http2 placement
+    $http2_on_listen = ' http2';
+    $http2_standalone = '';
+    if ((DISTRO == 'el' && RELEASE >= 8) || DISTRO == 'ubuntu') {
+        $http2_on_listen = '';
+        $http2_standalone = 'http2 on;';
     }
 
     // Initialize the output for default_https.conf
@@ -49,8 +67,9 @@ function generate_https_vhosts()
 
 # Default definition block for HTTPS (Generated on '.@date('Y.m.d H:i:s').') #
 server {
-    #listen '.NGINX_HTTPS_PORT.' ssl http2 default_server;
-    listen [::]:'.NGINX_HTTPS_PORT.' ssl http2 default_server ipv6only=off;
+    #listen '.NGINX_HTTPS_PORT.' ssl'.$http2_on_listen.' default_server;
+    listen [::]:'.NGINX_HTTPS_PORT.' ssl'.$http2_on_listen.' default_server ipv6only=off;
+    '.$http2_standalone.'
     server_name localhost;
 
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
@@ -92,7 +111,7 @@ server {
         $vhosts = $matches[1];
         if (count($vhosts)) {
             foreach ($vhosts as $vhost) {
-                if ($hostnamePemFile && strpos($vhost, $hostnamePemFile)!== false) {
+                if ($hostnamePemFile && strpos($vhost, $hostnamePemFile) !== false) {
                     continue;
                 } // Skip the main hostname entry
                 preg_match("#ServerName (.+?)\n#s", $vhost, $name);
@@ -136,8 +155,9 @@ server {
                 $output .= '
 # Definition block for domain(s): '.$vhostDomainsAsComment.' #
 server {
-    #listen '.NGINX_HTTPS_PORT.' ssl http2;
-    listen [::]:'.NGINX_HTTPS_PORT.' ssl http2;
+    #listen '.NGINX_HTTPS_PORT.' ssl'.$http2_on_listen.';
+    listen [::]:'.NGINX_HTTPS_PORT.' ssl'.$http2_on_listen.';
+    '.$http2_standalone.'
     server_name '.$vhostDomainsForNginx.';
     # deny all; # DO NOT REMOVE OR CHANGE THIS LINE - Used when Engintron is disabled to block Nginx from becoming an open proxy
     ssl_certificate '.$fullChainCertName.';
@@ -159,3 +179,4 @@ if (!file_exists(NGINX_DEFAULT_HTTPS_VHOST) || (file_exists(HTTPD_CONF) && is_re
 } else {
     exit(0);
 }
+
