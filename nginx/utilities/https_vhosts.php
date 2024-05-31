@@ -2,7 +2,7 @@
 <?php
 
 /**
- * @version    2.2
+ * @version    2.3
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
@@ -57,7 +57,7 @@ function generate_https_vhosts()
     // Initialize the output for default_https.conf
     $output = '
 # /**
-#  * @version    2.2
+#  * @version    2.3
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -179,4 +179,3 @@ if (!file_exists(NGINX_DEFAULT_HTTPS_VHOST) || (file_exists(HTTPD_CONF) && is_re
 } else {
     exit(0);
 }
-
