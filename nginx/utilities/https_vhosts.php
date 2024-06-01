@@ -49,7 +49,7 @@ function generate_https_vhosts()
     // Handle http2 placement
     $http2_on_listen = ' http2';
     $http2_standalone = '';
-    if ((DISTRO == 'el' && RELEASE >= 8) || DISTRO == 'ubuntu') {
+    if ((DISTRO == 'el' && RELEASE >= 7) || DISTRO == 'ubuntu') {
         $http2_on_listen = '';
         $http2_standalone = 'http2 on;';
     }
