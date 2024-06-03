@@ -121,4 +121,4 @@ So, if you wish to go the "extra mile" and optimize your cPanel server both thro
 
 ---
 
-**Copyright &copy; 2014 - 2023 [Kodeka OÜ](https://kodeka.io)**
+**Copyright &copy; 2014 - 2024 [Kodeka OÜ](https://kodeka.io)**

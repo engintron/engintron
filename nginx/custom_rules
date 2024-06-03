@@ -116,3 +116,27 @@
 #     set $PROXY_SCHEME "http";
 #     set $PROXY_TO_PORT 3000;
 # }
+
+
+
+# === COMMON PROTECTION FROM USELESS/BAD BOTS ===
+# Comment out the following line to enable common bot protection
+# include common_simple_protection.conf;
+
+# OPTIONAL / CUSTOM BOT PROTECTION
+# Block premium, AI or other bots, e.g. "amazonbot" or OpenAI's ChatGPT bots like "gptbot" or "chatgpt-user".
+# if ($http_user_agent ~* (bot_x_here|bot_y_here)) {
+#     return 444;
+# }
+
+
+
+# === IP BLOCKING ===
+# ~ Determine IPs with most connections...
+# Check access log file:
+# $ cat /var/log/nginx/access.log | cut -f1 -d ' ' | sort | uniq -c | sort -g
+#
+# ~ Tool to use for IP range to CIDR: https://www.ipaddressguide.com/cidr
+#
+# Add IPs to block following this format:
+# deny 1.2.3.4;
