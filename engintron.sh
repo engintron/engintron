@@ -11,9 +11,9 @@
 
 # Constants
 APP_PATH="/opt/engintron"
-APP_VERSION="2.3"
-APP_BUILD_ID="20240531"
-APP_RELEASE_DATE="May 31st, 2024"
+APP_VERSION="2.4"
+APP_BUILD_ID="20240603"
+APP_RELEASE_DATE="June 3rd, 2024"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 
