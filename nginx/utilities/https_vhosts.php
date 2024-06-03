@@ -29,12 +29,20 @@ define('NGINX_DEFAULT_HTTPS_VHOST', '/etc/nginx/conf.d/default_https.conf');
 if (file_exists('/etc/redhat-release') && is_readable('/etc/redhat-release')) {
     $release = shell_exec('rpm -q --qf %{version} `rpm -q --whatprovides redhat-release` | cut -c 1');
     define('DISTRO', 'el');
-    define('RELEASE', $release);
 } else {
     $release = shell_exec('lsb_release -r -s');
     define('DISTRO', 'ubuntu');
-    define('RELEASE', $release);
 }
+define('RELEASE', $release);
+
+// Check the Nginx version and/or if it's installed
+$nginx_check = shell_exec('nginx -v 2>&1');
+$nginx_version = null;
+
+if (preg_match('/nginx\/(\d+\.\d+\.\d+)/', $nginx_check, $matches)) {
+    $nginx_version = $matches[1];
+}
+define('NGINX_VERSION', $nginx_version);
 
 function generate_https_vhosts()
 {
@@ -49,7 +57,10 @@ function generate_https_vhosts()
     // Handle http2 placement
     $http2_on_listen = ' http2';
     $http2_standalone = '';
-    if ((DISTRO == 'el' && RELEASE >= 7) || DISTRO == 'ubuntu') {
+    if (
+            ((DISTRO === 'el' && RELEASE >= 7) || DISTRO === 'ubuntu') &&
+            version_compare(NGINX_VERSION, '1.25.1', '>=')
+    ) {
         $http2_on_listen = '';
         $http2_standalone = 'http2 on;';
     }
@@ -176,6 +187,6 @@ server {
 if (!file_exists(NGINX_DEFAULT_HTTPS_VHOST) || (file_exists(HTTPD_CONF) && is_readable(HTTPD_CONF) && (filemtime(HTTPD_CONF) + HTTPD_CONF_LAST_CHANGED) > time())) {
     generate_https_vhosts();
     exit(1);
-} else {
-    exit(0);
 }
+
+exit(0);
