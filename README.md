@@ -102,9 +102,6 @@ You can follow Engintron on [Twitter](https://twitter.com/engintron) or [Faceboo
 ### Newsletter / Mailing List
 It's easy to miss an Engintron update on social media. If you want to know for sure when the latest version of Engintron is released, sign up here https://tinyletter.com/engintron to get notified directly to your inbox. We will never spam you.
 
-### cPanel Applications Directory
-If you use Engintron, please take a moment to post a review and/or rating in the cPanel Applications Directory at: https://applications.cpanel.com/listings/view/Engintron-Nginx-on-cPanel
-
 ---
 
 ## COMMERCIAL SUPPORT & SERVER OPTIMIZATION SERVICES
