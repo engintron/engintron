@@ -303,6 +303,7 @@ gpgcheck=1
 enabled=1
 gpgkey=https://nginx.org/keys/nginx_signing.key
 module_hotfixes=true
+priority=1
 
 EOFM
     else
@@ -315,6 +316,7 @@ gpgcheck=1
 enabled=1
 gpgkey=https://nginx.org/keys/nginx_signing.key
 module_hotfixes=true
+priority=1
 
 EOFS
     fi
