@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# mysqltuner.pl - Version 2.3.2
+# mysqltuner.pl - Version 2.6.2
 # High Performance MySQL Tuning Script
 # Copyright (C) 2015-2023 Jean-Marie Renouard - jmrenouard@gmail.com
 # Copyright (C) 2006-2023 Major Hayden - major@mhtx.net
@@ -56,8 +56,10 @@ use Cwd 'abs_path';
 # for which()
 #use Env;
 
+my $is_win=$^O eq 'MSWin32';
+
 # Set up a few variables for use in the script
-my $tunerversion = "2.3.2";
+my $tunerversion = "2.6.2";
 my ( @adjvars, @generalrec );
 
 # Set defaults
@@ -68,11 +70,13 @@ my %opt = (
     "noinfo"              => 0,
     "debug"               => 0,
     "nocolor"             => ( !-t STDOUT ),
-    "color"               => 0,
+    "color"               => ( -t STDOUT ),
     "forcemem"            => 0,
     "forceswap"           => 0,
     "host"                => 0,
     "socket"              => 0,
+    "pipe"                => 0,
+    "pipe_name"           => 0,
     "port"                => 0,
     "user"                => 0,
     "pass"                => 0,
@@ -109,13 +113,16 @@ my %opt = (
     "prettyjson"          => 0,
     "reportfile"          => 0,
     "verbose"             => 0,
+    "experimental"        => 0,
+    "nondedicated"        => 0,
     "defaults-file"       => '',
     "defaults-extra-file" => '',
     "protocol"            => '',
     "dumpdir"             => '',
     "feature"             => '',
     "dbgpattern"          => '',
-    "defaultarch"         => 64
+    "defaultarch"         => 64,
+    "noprettyicon"        => 0
 );
 
 # Gather the options from the command line
@@ -125,6 +132,7 @@ GetOptions(
     'debug',                 'nocolor',
     'forcemem=i',            'forceswap=i',
     'host=s',                'socket=s',
+    'pipe',                  'pipe_name=s',
     'port=i',                'user=s',
     'pass=s',                'skipsize',
     'checkversion',          'mysqladmin=s',
@@ -151,7 +159,8 @@ GetOptions(
     'server-log=s',          'protocol=s',
     'defaults-extra-file=s', 'dumpdir=s',
     'feature=s',             'dbgpattern=s',
-    'defaultarch=i'
+    'defaultarch=i',         'experimental',
+    'nondedicated',          'noprettyicon'
   )
   or pod2usage(
     -exitval  => 1,
@@ -209,10 +218,15 @@ $basic_password_files = "/usr/share/mysqltuner/basic_passwords.txt"
 
 $opt{dbgpattern} = '.*' if ( $opt{dbgpattern} eq '' );
 
+# Activate debug variables
+#if ( $opt{debug} ne '' ) { $opt{debug} = 2; }
+# Activate experimental calculations and analysis
+#if ( $opt{experimental} ne '' ) { $opt{experimental} = 1; }
+
 # check if we need to enable verbose mode
 if ( $opt{feature} ne '' ) { $opt{verbose} = 1; }
 if ( $opt{verbose} ) {
-    $opt{checkversion} = 1;    # Check for updates to MySQLTuner
+    $opt{checkversion} = 0;    # Check for updates to MySQLTuner
     $opt{dbstat}       = 1;    # Print database information
     $opt{tbstat}       = 1;    # Print database information
     $opt{idxstat}      = 1;    # Print index information
@@ -224,6 +238,7 @@ if ( $opt{verbose} ) {
 
     $opt{cvefile} = 'vulnerabilities.csv';    #CVE File for vulnerability checks
 }
+$opt{noprettyicon}=0 if $opt{noprettyicon}!=1;
 $opt{nocolor} = 1 if defined( $opt{outputfile} );
 $opt{tbstat}  = 0 if ( $opt{notbstat} == 1 );    # Don't print table information
 $opt{colstat} = 0 if ( $opt{nocolstat} == 1 );  # Don't print column information
@@ -238,8 +253,9 @@ $opt{structstat} = 0
   if ( not defined( $opt{structstat} ) or $opt{nostructstat} == 1 )
   ;    # Don't print table struct information
 $opt{myisamstat} = 1
-  if ( not defined( $opt{myisamstat} ));
-$opt{myisamstat} = 0 if ($opt{nomyisamstat} == 1 );    # Don't print MyISAM table information
+  if ( not defined( $opt{myisamstat} ) );
+$opt{myisamstat} = 0
+  if ( $opt{nomyisamstat} == 1 );    # Don't print MyISAM table information
 
 # for RPM distributions
 $opt{cvefile} = "/usr/share/mysqltuner/vulnerabilities.csv"
@@ -266,6 +282,8 @@ $opt{nocolor} = 0 if ( $opt{color} == 1 );
 # Setting up the colors for the print styles
 my $me = `whoami`;
 $me =~ s/\n//g;
+
+if ($is_win) { $opt{nocolor} = 1; }
 my $good = ( $opt{nocolor} == 0 ) ? "[\e[0;32mOK\e[0m]"  : "[OK]";
 my $bad  = ( $opt{nocolor} == 0 ) ? "[\e[0;31m!!\e[0m]"  : "[!!]";
 my $info = ( $opt{nocolor} == 0 ) ? "[\e[0;34m--\e[0m]"  : "[--]";
@@ -273,6 +291,14 @@ my $deb  = ( $opt{nocolor} == 0 ) ? "[\e[0;31mDG\e[0m]"  : "[DG]";
 my $cmd  = ( $opt{nocolor} == 0 ) ? "\e[1;32m[CMD]($me)" : "[CMD]($me)";
 my $end  = ( $opt{nocolor} == 0 ) ? "\e[0m"              : "";
 
+if ( (not $is_win) and ($opt{noprettyicon} == 0) ) {
+  $good = ( $opt{nocolor} == 0 ) ? "\e[0;32m✔\e[0m " : "✔ ";
+  $bad  = ( $opt{nocolor} == 0 ) ? "\e[0;31m✘\e[0m " : "✘ ";
+  $info = ( $opt{nocolor} == 0 ) ? "\e[0;34mℹ\e[0m " : "ℹ ";
+  $deb  = ( $opt{nocolor} == 0 ) ? "\e[0;31m⚙\e[0m " : "⚙ ";
+  $cmd  = ( $opt{nocolor} == 0 ) ? "\e[1;32m⌨️($me)" : "⌨️($me)";
+  $end  = ( $opt{nocolor} == 0 ) ? "\e[0m  " : "  ";
+}
 # Maximum lines of log output to read from end
 my $maxlines = 30000;
 
@@ -285,7 +311,7 @@ my @dblist;
 # Super structure containing all information
 my %result;
 $result{'MySQLTuner'}{'version'}  = $tunerversion;
-$result{'MySQLTuner'}{'datetime'} = `date '+%d-%m-%Y %H:%M:%S'`;
+$result{'MySQLTuner'}{'datetime'} = scalar localtime;
 $result{'MySQLTuner'}{'options'}  = \%opt;
 
 # Functions that handle the print styles
@@ -381,6 +407,11 @@ sub cpu_cores {
 
     if ( $^O eq 'freebsd' ) {
         my $cntCPU = `sysctl -n kern.smp.cores`;
+        chomp $cntCPU;
+        return $cntCPU + 0;
+    }
+    if ($is_win) {
+	my $cntCPU=`wmic cpu get NumberOfCores| perl -ne "s/[^0-9]//g; print if /[0-9]+/;"`;
         chomp $cntCPU;
         return $cntCPU + 0;
     }
@@ -507,7 +538,7 @@ sub memerror {
 }
 
 sub os_setup {
-    my $os = `uname`;
+    my $os = $is_win ? 'windows' : `uname`;
     $duflags    = ( $os =~ /Linux/ )        ? '-b' : '';
     $xargsflags = ( $os =~ /Darwin|SunOS/ ) ? ''   : '-r';
     if ( $opt{'forcemem'} > 0 ) {
@@ -574,10 +605,10 @@ sub os_setup {
         }
         elsif ( $os =~ /windows/i ) {
             $physical_memory =
-`wmic ComputerSystem get TotalPhysicalMemory | perl -ne "chomp; print if /[0-9]+/;"`
+`wmic ComputerSystem get TotalPhysicalMemory | perl -ne "s/[^0-9]//g; print if /[0-9]+/;"`
               or memerror;
             $swap_memory =
-`wmic OS get FreeVirtualMemory | perl -ne "chomp; print if /[0-9]+/;"`
+`wmic OS get FreeVirtualMemory | perl -ne "s/[^0-9]//g; print if /[0-9]+/;"`
               or memerror;
         }
     }
@@ -627,9 +658,16 @@ sub validate_tuner_version {
         debugprint "$httpcli is available.";
 
         debugprint
-"$httpcli -m 3 -silent '$url' 2>/dev/null | grep 'my \$tunerversion'| cut -d\\\" -f2";
-        $update =
-`$httpcli -m 3 -silent '$url' 2>/dev/null | grep 'my \$tunerversion'| cut -d\\\" -f2`;
+"$httpcli -m 3 -silent '$url' 2>$devnull | grep 'my \$tunerversion'| cut -d\\\" -f2";
+	if ($is_win) {
+	    $update = map { my @f=split /"/; $f[1] }  grep { /my \$tunerversion/ } 
+`$httpcli -m 3 -silent '$url' 2>$devnull`;
+
+	}
+	else {
+	    $update =
+`$httpcli -m 3 -silent '$url' 2>$devnull | grep 'my \$tunerversion'| cut -d\\\" -f2`;
+	}
         chomp($update);
         debugprint "VERSION: $update";
 
@@ -642,8 +680,14 @@ sub validate_tuner_version {
 
         debugprint
 "$httpcli -e timestamping=off -t 1 -T 3 -O - '$url' 2>$devnull| grep 'my \$tunerversion'| cut -d\\\" -f2";
-        $update =
+	if ($is_win) {
+	    $update = map { my @f=split /"/; $f[1] }  grep { /my \$tunerversion/ } 
+`$httpcli -e timestamping=off -t 1 -T 3 -O - '$url' 2>$devnull`;
+	} 
+	else {
+	    $update =
 `$httpcli -e timestamping=off -t 1 -T 3 -O - '$url' 2>$devnull| grep 'my \$tunerversion'| cut -d\\\" -f2`;
+	}
         chomp($update);
         compare_tuner_version($update);
         return;
@@ -747,11 +791,10 @@ sub compare_tuner_version {
 # Checks to see if a MySQL login is possible
 my ( $mysqllogin, $doremote, $remotestring, $mysqlcmd, $mysqladmincmd );
 
-my $osname = $^O;
-if ( $osname eq 'MSWin32' ) {
+if ( $is_win ) {
     eval { require Win32; } or last;
-    $osname = Win32::GetOSName();
-    infoprint "* Windows OS ($osname) is not fully supported.\n";
+    my $osname = Win32::GetOSName();
+    infoprint "* Windows OS ($osname) is not fully tested.\n";
 
     #exit 1;
 }
@@ -763,9 +806,9 @@ sub mysql_setup {
         $mysqladmincmd = $opt{mysqladmin};
     }
     else {
-        $mysqladmincmd = which( "mysqladmin", $ENV{'PATH'} );
-        if ( !-e $mysqladmincmd ) {
-            $mysqladmincmd = which( "mariadb-admin", $ENV{'PATH'} );
+        $mysqladmincmd = which( "mariadb-admin", $ENV{'PATH'} );
+	if ( !-e $mysqladmincmd ) {
+	    $mysqladmincmd = which( "mysqladmin", $ENV{'PATH'} );
         }
     }
     chomp($mysqladmincmd);
@@ -784,10 +827,10 @@ sub mysql_setup {
         $mysqlcmd = $opt{mysqlcmd};
     }
     else {
-        $mysqlcmd = which( "mysql", $ENV{'PATH'} );
+        $mysqlcmd = which( "mariadb", $ENV{'PATH'} );
         if ( !-e $mysqlcmd ) {
-            $mysqlcmd = which( "mariadb", $ENV{'PATH'} );
-        }
+		$mysqlcmd = which( "mysql", $ENV{'PATH'} );
+	}
     }
     chomp($mysqlcmd);
     if ( !-e $mysqlcmd && $opt{mysqlcmd} ) {
@@ -815,8 +858,19 @@ sub mysql_setup {
     if ( $opt{socket} ne 0 ) {
         if ( $opt{port} ne 0 ) {
             $remotestring = " -S $opt{socket} -P $opt{port}";
-        } else {
+        }
+        else {
             $remotestring = " -S $opt{socket}";
+        }
+    }
+
+    # Are we being asked to connect via a named pipe?
+    if ( $opt{pipe} ne 0 ) {
+        if ( $opt{pipe_name} ne 0 ) {
+            $remotestring = " -W -S $opt{pipe_name}";
+        }
+        else {
+            $remotestring = " -W";
         }
     }
 
@@ -1029,7 +1083,7 @@ sub mysql_setup {
             $mysqllogin = " $remotestring ";
 
        # Did this go well because of a .my.cnf file or is there no password set?
-            my $userpath = `printenv HOME`;
+	    my $userpath = $is_win ? ($ENV{MARIADB_HOME} || $ENV{MYSQL_HOME} || $ENV{USERPROFILE}) : `printenv HOME`;
             if ( length($userpath) > 0 ) {
                 chomp($userpath);
             }
@@ -1073,7 +1127,11 @@ sub mysql_setup {
             $mysqllogin = "-u $name";
 
             if ( length($password) > 0 ) {
-                $mysqllogin .= " -p'$password'";
+		if ($is_win) {
+		    $mysqllogin .= " -p\"$password\"";
+		} else {
+		    $mysqllogin .= " -p'$password'";
+		}
             }
             $mysqllogin .= $remotestring;
             my $loginstatus = `$mysqladmincmd ping $mysqllogin 2>&1`;
@@ -1083,7 +1141,7 @@ sub mysql_setup {
                 if ( !length($password) ) {
 
        # Did this go well because of a .my.cnf file or is there no password set?
-                    my $userpath = `printenv HOME`;
+                    my $userpath = $is_win ? ($ENV{MARIADB_HOME} || $ENV{MYSQL_HOME} || $ENV{USERPROFILE}) : `printenv HOME`;
                     chomp($userpath);
                     unless ( -e "$userpath/.my.cnf" ) {
                         print STDERR "";
@@ -1108,7 +1166,7 @@ sub mysql_setup {
 sub select_array {
     my $req = shift;
     debugprint "PERFORM: $req ";
-    my @result = `$mysqlcmd $mysqllogin -Bse "\\w$req" 2>>/dev/null`;
+    my @result = `$mysqlcmd $mysqllogin -Bse "\\w$req" 2>>$devnull`;
     if ( $? != 0 ) {
         badprint "Failed to execute: $req";
         badprint "FAIL Execute SQL / return code: $?";
@@ -1127,7 +1185,7 @@ sub select_array {
 sub select_array_with_headers {
     my $req = shift;
     debugprint "PERFORM: $req ";
-    my @result = `$mysqlcmd $mysqllogin -Bre "\\w$req" 2>>/dev/null`;
+    my @result = `$mysqlcmd $mysqllogin -Bre "\\w$req" 2>>$devnull`;
     if ( $? != 0 ) {
         badprint "Failed to execute: $req";
         badprint "FAIL Execute SQL / return code: $?";
@@ -1172,7 +1230,7 @@ sub human_size {
 sub select_one {
     my $req = shift;
     debugprint "PERFORM: $req ";
-    my $result = `$mysqlcmd $mysqllogin -Bse "\\w$req" 2>>/dev/null`;
+    my $result = `$mysqlcmd $mysqllogin -Bse "\\w$req" 2>>$devnull`;
     if ( $? != 0 ) {
         badprint "Failed to execute: $req";
         badprint "FAIL Execute SQL / return code: $?";
@@ -1193,7 +1251,7 @@ sub select_one_g {
 
     my $req = shift;
     debugprint "PERFORM: $req ";
-    my @result = `$mysqlcmd $mysqllogin -re "\\w$req\\G" 2>>/dev/null`;
+    my @result = `$mysqlcmd $mysqllogin -re "\\w$req\\G" 2>>$devnull`;
     if ( $? != 0 ) {
         badprint "Failed to execute: $req";
         badprint "FAIL Execute SQL / return code: $?";
@@ -1415,7 +1473,7 @@ sub get_all_vars {
 
     my @mysqlslaves;
     if ( mysql_version_eq(8) or mysql_version_ge( 10, 5 ) ) {
-        @mysqlslaves = select_array "SHOW SLAVE STATUS";
+        @mysqlslaves = select_array "SHOW SLAVE STATUS\\G";
     }
     else {
         @mysqlslaves = select_array("SHOW SLAVE HOSTS\\G");
@@ -1578,10 +1636,9 @@ sub log_file_recommendations {
     while ( my $logLi = <$fh> ) {
         chomp $logLi;
         $numLi++;
-        debugprint "$numLi: $logLi"
-          if $logLi =~ /warning|error/i and $logLi !~ /Logging to/;
-        $nbErrLog++ if $logLi =~ /error/i and $logLi !~ /Logging to/;
-        $nbWarnLog++ if $logLi =~ /warning/i;
+        debugprint "$numLi: $logLi" if $logLi =~ /\[(warning|error)\]/i;
+        $nbErrLog++  if $logLi =~ /\[error\]/i;
+        $nbWarnLog++ if $logLi =~ /\[warning\]/i;
         push @lastShutdowns, $logLi
           if $logLi =~ /Shutdown complete/ and $logLi !~ /Innodb/i;
         push @lastStarts, $logLi if $logLi =~ /ready for connections/;
@@ -1681,9 +1738,12 @@ sub cve_recommendations {
 
 sub get_opened_ports {
     my @opened_ports = `netstat -ltn`;
+    if ($is_win) {
+	@opened_ports = grep {/LISTEN/} `netstat -n`;
+    }
     @opened_ports = map {
         my $v = $_;
-        $v =~ s/.*:(\d+)\s.*$/$1/;
+        $v =~ s/^.*:(\d+)\s.*$/$1/;
         $v =~ s/\D//g;
         $v;
     } @opened_ports;
@@ -1703,6 +1763,7 @@ sub is_open_port {
 }
 
 sub get_process_memory {
+    return 0 if $is_win; #Windows cmd cannot provide this
     my $pid = shift;
     my @mem = `ps -p $pid -o rss`;
     return 0 if scalar @mem != 2;
@@ -1711,6 +1772,7 @@ sub get_process_memory {
 
 sub get_other_process_memory {
     return 0 if ( $opt{tbstat} == 0 );
+    return 0 if $is_win; #Windows cmd cannot provide this
     my @procs = `ps eaxo pid,command`;
     @procs = map {
         my $v = $_;
@@ -1812,6 +1874,34 @@ sub get_fs_info {
     }
 }
 
+sub get_fs_info_win {
+    my @sinfo = `wmic logicaldisk get Name,Size,FreeSpace`;
+
+    foreach my $info (@sinfo) {
+	if ($info =~ /^\s*(\d+)\s+(.*?)\s+(\d+)\s*$/) {
+	    my ($free,$name,$size)=($1,$2,$3);
+	    my $used=$size-$free;
+	    my $free_pct=int(($free / $size) * 100);
+	    my $used_pct=int(($used / $size) * 100);
+	    if ($used_pct > 85) {
+                badprint "Disk $name is using $used_pct % total space ("
+                  . human_size( $used ) . " / "
+                  . human_size( $size ) . ")";
+                push( @generalrec, "Add some space to DIsk $name." );
+	    }
+	    else {
+		infoprint "Disk $name is using $used_pct % total space ("
+                  . human_size( $used ) . " / "
+                  . human_size( $size ) . ")";
+	    }
+            $result{'Filesystem'}{'Space Pct'}{$name}   = $used_pct;
+            $result{'Filesystem'}{'Used Space'}{$name}  = $used;
+            $result{'Filesystem'}{'Free Space'}{$name}  = $free;
+            $result{'Filesystem'}{'Total Space'}{$name} = $size;
+	}
+    }
+}
+
 sub merge_hash {
     my $h1     = shift;
     my $h2     = shift;
@@ -1836,6 +1926,11 @@ sub is_virtual_machine {
         chomp $isVm;
         print "FARK DEBUG isVm=[$isVm]";
         return ( $isVm eq 'none' ? 0 : 1 );
+    }
+    
+    if ($is_win) {
+	my $isVM=`systeminfo`;
+	return ( $isVM =~ /System Model:\s*(Virtual Machine|VMware)/i ? 1 : 0 )
     }
     return 0;
 }
@@ -1876,8 +1971,8 @@ sub get_kernel_info {
     );
     infoprint "Information about kernel tuning:";
     foreach my $param (@params) {
-        infocmd_tab("sysctl $param 2>/dev/null");
-        $result{'OS'}{'Config'}{$param} = `sysctl -n $param 2>/dev/null`;
+        infocmd_tab("sysctl $param 2>$devnull");
+        $result{'OS'}{'Config'}{$param} = `sysctl -n $param 2>$devnull`;
     }
     if ( `sysctl -n vm.swappiness` > 10 ) {
         badprint
@@ -1892,7 +1987,7 @@ sub get_kernel_info {
 
     # only if /proc/sys/sunrpc exists
     my $tcp_slot_entries =
-      `sysctl -n sunrpc.tcp_slot_table_entries 2>/dev/null`;
+      `sysctl -n sunrpc.tcp_slot_table_entries 2>$devnull`;
     if ( -f "/proc/sys/sunrpc"
         and ( $tcp_slot_entries eq '' or $tcp_slot_entries < 100 ) )
     {
@@ -1946,7 +2041,11 @@ sub get_system_info {
     }
 
     $result{'Network'}{'Connected'} = 'NO';
-    `ping -c 1 ipecho.net &>/dev/null`;
+    if ($is_win) {
+	`ping -s 1 ipecho.net &>$devnull`;
+    } else {
+	`ping -c 1 ipecho.net &>$devnull`;
+    }
     my $isConnected = $?;
     if ( $? == 0 ) {
         infoprint "Internet              : Connected";
@@ -1957,12 +2056,12 @@ sub get_system_info {
     }
     $result{'OS'}{'NbCore'} = cpu_cores;
     infoprint "Number of Core CPU : " . cpu_cores;
-    $result{'OS'}{'Type'} = `uname -o`;
+    $result{'OS'}{'Type'} = $is_win ? 'Windows' : `uname -o`;
     infoprint "Operating System Type : " . infocmd_one "uname -o";
-    $result{'OS'}{'Kernel'} = `uname -r`;
+    $result{'OS'}{'Kernel'} = $is_win ? `ver` : `uname -r`;
     infoprint "Kernel Release        : " . infocmd_one "uname -r";
     $result{'OS'}{'Hostname'}         = `hostname`;
-    $result{'Network'}{'Internal Ip'} = `hostname -I`;
+    $result{'Network'}{'Internal Ip'} = $is_win ? `ipconfig |perl -ne "if (/IPv. Address/) {print s/^.*?([\\d\\.]*)\\s*$/$1/r; exit; }` : `hostname -I`;
     infoprint "Hostname              : " . infocmd_one "hostname";
     infoprint "Network Cards         : ";
     infocmd_tab "ifconfig| grep -A1 mtu";
@@ -2007,7 +2106,7 @@ sub system_recommendations {
     }
     return if ( $opt{sysstat} == 0 );
     subheaderprint "System Linux Recommendations";
-    my $os = `uname`;
+    my $os = $is_win ? 'windows' : `uname`;
     unless ( $os =~ /Linux/i ) {
         infoprint "Skipped due to non Linux server";
         return;
@@ -2042,17 +2141,28 @@ sub system_recommendations {
     infoprint "User process except mysqld used "
       . hr_bytes_rnd($omem) . " RAM.";
     if ( ( 0.15 * $physical_memory ) < $omem ) {
-        badprint
+        if ( $opt{nondedicated} ) {
+            infoprint "No warning with --nondedicated option";
+            infoprint
 "Other user process except mysqld used more than 15% of total physical memory "
-          . percentage( $omem, $physical_memory ) . "% ("
-          . hr_bytes_rnd($omem) . " / "
-          . hr_bytes_rnd($physical_memory) . ")";
-        push( @generalrec,
+              . percentage( $omem, $physical_memory ) . "% ("
+              . hr_bytes_rnd($omem) . " / "
+              . hr_bytes_rnd($physical_memory) . ")";
+        }
+        else {
+
+            badprint
+"Other user process except mysqld used more than 15% of total physical memory "
+              . percentage( $omem, $physical_memory ) . "% ("
+              . hr_bytes_rnd($omem) . " / "
+              . hr_bytes_rnd($physical_memory) . ")";
+            push( @generalrec,
 "Consider stopping or dedicate server for additional process other than mysqld."
-        );
-        push( @adjvars,
+            );
+            push( @adjvars,
 "DON'T APPLY SETTINGS BECAUSE THERE ARE TOO MANY PROCESSES RUNNING ON THIS SERVER. OOM KILL CAN OCCUR!"
-        );
+            );
+        }
     }
     else {
         infoprint
@@ -2097,15 +2207,20 @@ sub system_recommendations {
     }
 
     subheaderprint "Filesystem Linux Recommendations";
-    get_fs_info;
-    subheaderprint "Kernel Information Recommendations";
-    get_kernel_info;
+    if ($is_win) {
+	get_fs_info_win;
+    } else { 
+	get_fs_info;
+	subheaderprint "Kernel Information Recommendations";
+	get_kernel_info;
+    }
 }
 
 sub security_recommendations {
     subheaderprint "Security Recommendations";
 
-    if ( mysql_version_eq(8) ) {
+    infoprint "$myvar{'version_comment'} - $myvar{'version'}";
+    if ( mysql_version_ge(8.0) ) {
         infoprint "Skipped due to unsupported feature for MySQL 8.0+";
         return;
     }
@@ -2122,9 +2237,9 @@ sub security_recommendations {
     # But need to be checked
     if ( $myvar{'version'} =~ /5\.7|10\.[2-5]\..*MariaDB*/ ) {
         my $password_column_exists =
-`$mysqlcmd $mysqllogin -Bse "SELECT 1 FROM information_schema.columns WHERE TABLE_SCHEMA = 'mysql' AND TABLE_NAME = 'user' AND COLUMN_NAME = 'password'" 2>>/dev/null`;
+`$mysqlcmd $mysqllogin -Bse "SELECT 1 FROM information_schema.columns WHERE TABLE_SCHEMA = 'mysql' AND TABLE_NAME = 'user' AND COLUMN_NAME = 'password'" 2>>$devnull`;
         my $authstring_column_exists =
-`$mysqlcmd $mysqllogin -Bse "SELECT 1 FROM information_schema.columns WHERE TABLE_SCHEMA = 'mysql' AND TABLE_NAME = 'user' AND COLUMN_NAME = 'authentication_string'" 2>>/dev/null`;
+`$mysqlcmd $mysqllogin -Bse "SELECT 1 FROM information_schema.columns WHERE TABLE_SCHEMA = 'mysql' AND TABLE_NAME = 'user' AND COLUMN_NAME = 'authentication_string'" 2>>$devnull`;
         if ( $password_column_exists && $authstring_column_exists ) {
             $PASS_COLUMN_NAME =
 "IF(plugin='mysql_native_password', authentication_string, password)";
@@ -2413,17 +2528,14 @@ sub validate_mysql_version {
 
     prettyprint " ";
 
-    if (   mysql_version_eq(8)
-        or mysql_version_eq( 5,  7 )
-        or mysql_version_eq( 10, 3 )
-        or mysql_version_eq( 10, 4 )
+    if (   mysql_version_eq(9,1)
+        or mysql_version_eq(8, 4)
+				or mysql_version_eq(8, 0)
         or mysql_version_eq( 10, 5 )
         or mysql_version_eq( 10, 6 )
-        or mysql_version_eq( 10, 7 )
-        or mysql_version_eq( 10, 8 )
-        or mysql_version_eq( 10, 9 )
-        or mysql_version_eq( 10, 10 )
-        or mysql_version_eq( 10, 11 ) )
+        or mysql_version_eq( 10, 11 )
+        or mysql_version_eq( 11, 4 )
+        or mysql_version_eq( 11, 6 ) )
     {
         goodprint "Currently running supported MySQL version "
           . $myvar{'version'} . "";
@@ -2480,6 +2592,8 @@ sub mysql_version_le {
     $mic ||= 0;
     my ( $mysqlvermajor, $mysqlverminor, $mysqlvermicro ) =
       $myvar{'version'} =~ /^(\d+)(?:\.(\d+)|)(?:\.(\d+)|)/;
+    #infoprint "MySQL version: $mysqlvermajor.$mysqlverminor.$mysqlvermicro";
+
     return
          int($mysqlvermajor) < int($maj)
       || ( int($mysqlvermajor) == int($maj) && int($mysqlverminor) < int($min) )
@@ -2498,7 +2612,13 @@ sub check_architecture {
         $arch = $opt{defaultarch};
         return;
     }
-    if ( `uname` =~ /SunOS/ && `isainfo -b` =~ /64/ ) {
+    if ( $is_win) {
+	if (`wmic os get osarchitecture` =~ /64/) {
+	    goodprint "Operating on 64-bit architecture";
+	    $arch = 64;
+	}
+    } 
+    elsif ( `uname` =~ /SunOS/ && `isainfo -b` =~ /64/ ) {
         $arch = 64;
         goodprint "Operating on 64-bit architecture";
     }
@@ -2526,7 +2646,7 @@ sub check_architecture {
     }
     elsif ( `uname` =~ /Darwin/ && `uname -m` =~ /x86_64/ ) {
 
-# Darwin gibas.local 12.3.2 Darwin Kernel Version 12.3.0: Sun Jan 6 22:37:10 PST 2013; root:xnu-2050.22.13~1/RELEASE_X86_64 x86_64
+# Darwin gibas.local 12.6.0 Darwin Kernel Version 12.3.0: Sun Jan 6 22:37:10 PST 2013; root:xnu-2050.22.13~1/RELEASE_X86_64 x86_64
         $arch = 64;
         goodprint "Operating on 64-bit architecture";
     }
@@ -2674,9 +2794,14 @@ sub check_storage_engines {
                 # MySQL 3.23/4.0 keeps Data_Length in the 5th (0-based) column
                 @ixs = ( 1, 5, 8 );
             }
+	    my $cmd="SHOW TABLE STATUS FROM \\\`$db\\\`";
+	    if ($is_win) {
+		$cmd="SHOW TABLE STATUS FROM \`$db\`";
+	    }
             push( @tblist,
                 map { [ (split)[@ixs] ] }
-                  select_array "SHOW TABLE STATUS FROM \\\`$db\\\`" );
+                  select_array $cmd
+	    );
         }
 
      # Parse through the table list to generate storage engine counts/statistics
@@ -2786,10 +2911,14 @@ sub check_storage_engines {
             # MySQL 3.23/4.0 keeps Data_Length in the 5th (0-based) column
             @ia = ( 0, 9 );
         }
+	my $cmd="SHOW TABLE STATUS FROM \\\`$db\\\`";
+	if ($is_win) {
+	    $cmd="SHOW TABLE STATUS FROM \`$db\`";
+	}
         push(
             @{ $tblist{$db} },
             map { [ (split)[@ia] ] }
-              select_array "SHOW TABLE STATUS FROM \\\`$db\\\`"
+              select_array $cmd
         );
     }
 
@@ -2830,7 +2959,9 @@ sub calculations {
         badprint "Your server has not answered any queries: cannot continue...";
         exit 2;
     }
-
+    #infoprint "====>>>> MySQL version: $myvar{'version'}";
+    $myvar{'version'} =~ s/(.+)-.*?$/$1/;
+    #infoprint "====>>>> MySQL version updated: $myvar{'version'}";
     # Per-thread memory
     $mycalc{'per_thread_buffers'} = 0;
     $mycalc{'per_thread_buffers'} += $myvar{'read_buffer_size'}
@@ -2999,15 +3130,26 @@ sub calculations {
     }
 
     if ( $doremote eq 0 and !mysql_version_ge(5) ) {
-        my $size = 0;
-        $size += (split)[0]
-          for
-`find "$myvar{'datadir'}" -name "*.MYI" -print0 2>&1 | xargs $xargsflags -0 du -L $duflags 2>&1`;
-        $mycalc{'total_myisam_indexes'} = $size;
-        $size = 0 + (split)[0]
-          for
-`find "$myvar{'datadir'}" -name "*.MAI" -print0 2>&1 | xargs $xargsflags -0 du -L $duflags 2>&1`;
-        $mycalc{'total_aria_indexes'} = $size;
+	if ($is_win) {
+	    my $size=0;
+	    my @allfiles=`dir /-c /s $myvar{'datadir'}`;
+	    foreach (map { /^\s*\d+\/\S+\s+\S+\s+(A|P)M\s+(\d+)\s/i; $2 } grep { /\.MYI$/i } @allfiles) { $size+=$_; }
+	    $mycalc{'total_myisam_indexes'} = $size;
+	    $size=0;
+	    foreach (map { /^\s*\d+\/\S+\s+\S+\s+(A|P)M\s+(\d+)\s/i; $2 } grep { /\.MAI$/i } @allfiles) { $size+=$_; }
+	    $mycalc{'total_aria_indexes'} = $size;
+	} 
+	else {
+	    my $size = 0;
+	    $size += (split)[0]
+	      for
+    `find "$myvar{'datadir'}" -name "*.MYI" -print0 2>&1 | xargs $xargsflags -0 du -L $duflags 2>&1`;
+	    $mycalc{'total_myisam_indexes'} = $size;
+	    $size = 0 + (split)[0]
+	      for
+    `find "$myvar{'datadir'}" -name "*.MAI" -print0 2>&1 | xargs $xargsflags -0 du -L $duflags 2>&1`;
+	    $mycalc{'total_aria_indexes'} = $size;
+	}
     }
     elsif ( mysql_version_ge(5) ) {
         $mycalc{'total_myisam_indexes'} = select_one
@@ -3161,10 +3303,16 @@ sub calculations {
     $myvar{"innodb_buffer_pool_instances"} = 1
       unless defined( $myvar{'innodb_buffer_pool_instances'} );
     if ( $myvar{'have_innodb'} eq "YES" ) {
-        $mycalc{'innodb_log_size_pct'} =
-          ( $myvar{'innodb_log_file_size'} *
-              $myvar{'innodb_log_files_in_group'} * 100 /
-              $myvar{'innodb_buffer_pool_size'} );
+        if ( defined $myvar{'innodb_redo_log_capacity'} ) {
+          $mycalc{'innodb_log_size_pct'} =
+            ( $myvar{'innodb_redo_log_capacity'} /
+                $myvar{'innodb_buffer_pool_size'} ) * 100;
+        } else {
+          $mycalc{'innodb_log_size_pct'} =
+            ( $myvar{'innodb_log_file_size'} *
+                $myvar{'innodb_log_files_in_group'} * 100 /
+                $myvar{'innodb_buffer_pool_size'} );
+        }
     }
     if ( !defined $myvar{'innodb_buffer_pool_size'} ) {
         $mycalc{'innodb_log_size_pct'}    = 0;
@@ -3179,11 +3327,11 @@ sub calculations {
       = ( 1, 1 )
       unless defined $mystat{'Innodb_buffer_pool_reads'};
     $mycalc{'pct_read_efficiency'} = percentage(
+        $mystat{'Innodb_buffer_pool_read_requests'},
         (
-            $mystat{'Innodb_buffer_pool_read_requests'} -
+            $mystat{'Innodb_buffer_pool_read_requests'} +
               $mystat{'Innodb_buffer_pool_reads'}
-        ),
-        $mystat{'Innodb_buffer_pool_read_requests'}
+        )
     ) if defined $mystat{'Innodb_buffer_pool_read_requests'};
     debugprint "pct_read_efficiency: " . $mycalc{'pct_read_efficiency'} . "";
     debugprint "Innodb_buffer_pool_reads: "
@@ -3210,6 +3358,14 @@ sub calculations {
         ),
         $mystat{'Innodb_buffer_pool_pages_total'}
     ) if defined $mystat{'Innodb_buffer_pool_pages_total'};
+
+    my $lreq =
+        "select  ROUND( 100* sum(allocated)/ "
+      . $myvar{'innodb_buffer_pool_size'}
+      . ',1) FROM sys.x\$innodb_buffer_stats_by_table;';
+    debugprint("lreq: $lreq");
+    $mycalc{'innodb_buffer_alloc_pct'} = select_one($lreq)
+      if ( $opt{experimental} );
 
     # Binlog Cache
     if ( $myvar{'log_bin'} ne 'OFF' ) {
@@ -3353,10 +3509,18 @@ sub mysql_stats {
     if ( $physical_memory <
         ( $mycalc{'max_peak_memory'} + get_other_process_memory() ) )
     {
-        badprint
-          "Overall possible memory usage with other process exceeded memory";
-        push( @generalrec,
-            "Dedicate this server to your database for highest performance." );
+        if ( $opt{nondedicated} ) {
+            infoprint "No warning with --nondedicated option";
+            infoprint
+"Overall possible memory usage with other process exceeded memory";
+        }
+        else {
+            badprint
+"Overall possible memory usage with other process exceeded memory";
+            push( @generalrec,
+                "Dedicate this server to your database for highest performance."
+            );
+        }
     }
     else {
         goodprint
@@ -3459,7 +3623,7 @@ sub mysql_stats {
         push( @generalrec,
             "Upgrade MySQL to version 4+ to utilize query caching" );
     }
-    elsif ( mysql_version_eq(8) ) {
+    elsif ( mysql_version_ge(8) and mysql_version_le(9,9) ) {
         infoprint "Query cache has been removed since MySQL 8.0";
 
         #return;
@@ -3876,14 +4040,15 @@ sub mysql_myisam {
         my $sql_mig = "";
         for my $myisam_table (
             select_array(
-"SELECT CONCAT(TABLE_SCHEMA, '.', TABLE_NAME) FROM information_schema.TABLES WHERE ENGINE='MyISAM' and TABLE_SCHEMA NOT IN ('mysql','information_schema','performance_schema')"
+"SELECT CONCAT('|',TABLE_SCHEMA, '|.|', TABLE_NAME,'|') FROM information_schema.TABLES WHERE ENGINE='MyISAM' and TABLE_SCHEMA NOT IN ('mysql','information_schema','performance_schema')"
             )
           )
         {
+	    my $myisam_table_escape = $myisam_table =~ s/\|/\`/gr;
             $sql_mig =
-"${sql_mig}-- InnoDB migration for $myisam_table\nALTER TABLE $myisam_table ENGINE=InnoDB;\n\n";
+"${sql_mig}-- InnoDB migration for $myisam_table_escape\nALTER TABLE $myisam_table_escape ENGINE=InnoDB;\n\n";
             infoprint
-"* InnoDB migration request for $myisam_table Table: ALTER TABLE $myisam_table ENGINE=InnoDB;";
+"* InnoDB migration request for $myisam_table_escape Table: ALTER TABLE $myisam_table_escape ENGINE=InnoDB;";
         }
         dump_into_file( "migrate_myisam_to_innodb.sql", $sql_mig );
     }
@@ -6282,11 +6447,11 @@ sub mysql_innodb {
               . hr_bytes( $myvar{'innodb_log_buffer_size'} );
         }
         if ( defined $mystat{'Innodb_buffer_pool_pages_free'} ) {
-            infoprint " +-- InnoDB Log Buffer Free: "
+            infoprint " +-- InnoDB Buffer Free: "
               . hr_bytes( $mystat{'Innodb_buffer_pool_pages_free'} ) . "";
         }
         if ( defined $mystat{'Innodb_buffer_pool_pages_total'} ) {
-            infoprint " +-- InnoDB Log Buffer Used: "
+            infoprint " +-- InnoDB Buffer Used: "
               . hr_bytes( $mystat{'Innodb_buffer_pool_pages_total'} ) . "";
         }
     }
@@ -6354,6 +6519,30 @@ sub mysql_innodb {
                 "innodb_buffer_pool_size (>= "
               . hr_bytes( $enginestats{'InnoDB'} )
               . ") if possible." );
+    }
+
+  # select  round( 100* sum(allocated)/( select VARIABLE_VALUE
+  #                                  FROM information_schema.global_variables
+  #                              where VARIABLE_NAME='innodb_buffer_pool_size' )
+  # ,2) as "PCT ALLOC/BUFFER POOL"
+  #from sys.x$innodb_buffer_stats_by_table;
+
+    if ( $opt{experimental} ) {
+        debugprint( 'innodb_buffer_alloc_pct: "'
+              . $mycalc{innodb_buffer_alloc_pct}
+              . '"' );
+        if ( defined $mycalc{innodb_buffer_alloc_pct}
+            and $mycalc{innodb_buffer_alloc_pct} ne '' )
+        {
+            if ( $mycalc{innodb_buffer_alloc_pct} < 80 ) {
+                badprint "Ratio Buffer Pool allocated / Buffer Pool Size: "
+                  . $mycalc{'innodb_buffer_alloc_pct'} . '%';
+            }
+            else {
+                goodprint "Ratio Buffer Pool allocated / Buffer Pool Size: "
+                  . $mycalc{'innodb_buffer_alloc_pct'} . '%';
+            }
+        }
     }
     if (   $mycalc{'innodb_log_size_pct'} < 20
         or $mycalc{'innodb_log_size_pct'} > 30 )
@@ -6475,37 +6664,40 @@ sub mysql_innodb {
     }
 
     # InnoDB Used Buffer Pool Size vs CHUNK size
-    if ( !defined( $myvar{'innodb_buffer_pool_chunk_size'} ) ) {
-        infoprint
-          "InnoDB Buffer Pool Chunk Size not used or defined in your version";
-    }
-    else {
-        infoprint "Number of InnoDB Buffer Pool Chunk: "
-          . int( $myvar{'innodb_buffer_pool_size'} ) /
-          int( $myvar{'innodb_buffer_pool_chunk_size'} ) . " for "
-          . $myvar{'innodb_buffer_pool_instances'}
-          . " Buffer Pool Instance(s)";
+   if ( !defined($myvar{'innodb_buffer_pool_chunk_size'}) || 
+     $myvar{'innodb_buffer_pool_chunk_size'} == 0 || 
+     !defined($myvar{'innodb_buffer_pool_size'}) || 
+     $myvar{'innodb_buffer_pool_size'} == 0 || 
+     !defined($myvar{'innodb_buffer_pool_instances'}) || 
+     $myvar{'innodb_buffer_pool_instances'} == 0 ) {
 
-        if (
-            int( $myvar{'innodb_buffer_pool_size'} ) % (
-                int( $myvar{'innodb_buffer_pool_chunk_size'} ) *
-                  int( $myvar{'innodb_buffer_pool_instances'} )
-            ) eq 0
-          )
-        {
-            goodprint
-"Innodb_buffer_pool_size aligned with Innodb_buffer_pool_chunk_size & Innodb_buffer_pool_instances";
-        }
-        else {
-            badprint
-"Innodb_buffer_pool_size aligned with Innodb_buffer_pool_chunk_size & Innodb_buffer_pool_instances";
+    badprint "Cannot calculate InnoDB Buffer Pool Chunk breakdown due to missing or zero values:";
+    
+    infoprint " - innodb_buffer_pool_size: " . 
+        (defined $myvar{'innodb_buffer_pool_size'} ? $myvar{'innodb_buffer_pool_size'} : "undefined");
+    infoprint " - innodb_buffer_pool_chunk_size: " . 
+        (defined $myvar{'innodb_buffer_pool_chunk_size'} ? $myvar{'innodb_buffer_pool_chunk_size'} : "undefined");
+    infoprint " - innodb_buffer_pool_instances: " . 
+        (defined $myvar{'innodb_buffer_pool_instances'} ? $myvar{'innodb_buffer_pool_instances'} : "undefined");
 
-#push( @adjvars, "Adjust innodb_buffer_pool_instances, innodb_buffer_pool_chunk_size with innodb_buffer_pool_size" );
-            push( @adjvars,
-"innodb_buffer_pool_size must always be equal to or a multiple of innodb_buffer_pool_chunk_size * innodb_buffer_pool_instances"
-            );
-        }
+} else {
+    my $num_chunks = int($myvar{'innodb_buffer_pool_size'} / $myvar{'innodb_buffer_pool_chunk_size'});
+    infoprint "Number of InnoDB Buffer Pool Chunk: $num_chunks for " 
+        . $myvar{'innodb_buffer_pool_instances'} . " Buffer Pool Instance(s)";
+
+    my $expected_size = int($myvar{'innodb_buffer_pool_chunk_size'}) * 
+                        int($myvar{'innodb_buffer_pool_instances'});
+
+    if (int($myvar{'innodb_buffer_pool_size'}) % $expected_size == 0) {
+        goodprint "Innodb_buffer_pool_size aligned with Innodb_buffer_pool_chunk_size & Innodb_buffer_pool_instances";
+    } else {
+        badprint "Innodb_buffer_pool_size not aligned with Innodb_buffer_pool_chunk_size & Innodb_buffer_pool_instances";
+
+        push(@adjvars, 
+            "innodb_buffer_pool_size must always be equal to or a multiple of innodb_buffer_pool_chunk_size * innodb_buffer_pool_instances"
+        );
     }
+}
 
     # InnoDB Read efficiency
     if ( defined $mycalc{'pct_read_efficiency'}
@@ -6513,19 +6705,19 @@ sub mysql_innodb {
     {
         badprint "InnoDB Read buffer efficiency: "
           . $mycalc{'pct_read_efficiency'} . "% ("
-          . ( $mystat{'Innodb_buffer_pool_read_requests'} -
-              $mystat{'Innodb_buffer_pool_reads'} )
-          . " hits / "
           . $mystat{'Innodb_buffer_pool_read_requests'}
+          . " hits / "
+          . ( $mystat{'Innodb_buffer_pool_reads'} +
+              $mystat{'Innodb_buffer_pool_read_requests'} )
           . " total)";
     }
     else {
         goodprint "InnoDB Read buffer efficiency: "
           . $mycalc{'pct_read_efficiency'} . "% ("
-          . ( $mystat{'Innodb_buffer_pool_read_requests'} -
-              $mystat{'Innodb_buffer_pool_reads'} )
-          . " hits / "
           . $mystat{'Innodb_buffer_pool_read_requests'}
+          . " hits / "
+          . ( $mystat{'Innodb_buffer_pool_reads'} +
+              $mystat{'Innodb_buffer_pool_read_requests'} )
           . " total)";
     }
 
@@ -6540,6 +6732,10 @@ sub mysql_innodb {
           . " hits / "
           . $mystat{'Innodb_log_write_requests'}
           . " total)";
+        push( @adjvars,
+                "innodb_log_buffer_size (> "
+              . hr_bytes_rnd( $myvar{'innodb_log_buffer_size'} )
+              . ")" );
     }
     else {
         goodprint "InnoDB Write Log efficiency: "
@@ -6689,20 +6885,21 @@ sub mysql_databases {
       percentage( $totaldbinfo[2], $totaldbinfo[3] ) . "%";
     $result{'Databases'}{'All databases'}{'Total Size'} = $totaldbinfo[3];
     print "\n" unless ( $opt{'silent'} or $opt{'json'} );
-		my $nbViews=0;
-		my $nbTables=0;
+    my $nbViews  = 0;
+    my $nbTables = 0;
+
     foreach (@dblist) {
         my @dbinfo = split /\s/,
           select_one(
 "SELECT TABLE_SCHEMA, SUM(TABLE_ROWS), SUM(DATA_LENGTH), SUM(INDEX_LENGTH), SUM(DATA_LENGTH+INDEX_LENGTH), COUNT(DISTINCT ENGINE), COUNT(TABLE_NAME), COUNT(DISTINCT(TABLE_COLLATION)), COUNT(DISTINCT(ENGINE)) FROM information_schema.TABLES WHERE TABLE_SCHEMA='$_' GROUP BY TABLE_SCHEMA ORDER BY TABLE_SCHEMA"
           );
         next unless defined $dbinfo[0];
-        
-				infoprint "Database: " . $dbinfo[0] . "";
-      $nbTables=select_one(
+
+        infoprint "Database: " . $dbinfo[0] . "";
+        $nbTables = select_one(
 "SELECT count(*) from information_schema.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_SCHEMA='$_'"
-          );
-				infoprint " +-- TABLE : $nbTables";
+        );
+        infoprint " +-- TABLE : $nbTables";
         infoprint " +-- VIEW  : "
           . select_one(
 "SELECT count(*) from information_schema.TABLES WHERE TABLE_TYPE ='VIEW' AND TABLE_SCHEMA='$_'"
@@ -6758,10 +6955,10 @@ sub mysql_databases {
               ) . " TABLE(s)";
         }
 
-				if ( $nbTables == 0 ) {
-					badprint " No table in $dbinfo[0] database";
-					next;
-				}
+        if ( $nbTables == 0 ) {
+            badprint " No table in $dbinfo[0] database";
+            next;
+        }
         badprint "Index size is larger than data size for $dbinfo[0] \n"
           if ( $dbinfo[2] ne 'NULL' )
           and ( $dbinfo[3] ne 'NULL' )
@@ -6772,7 +6969,7 @@ sub mysql_databases {
               . " storage engines. Be careful. \n";
             push @generalrec,
 "Select one storage engine (InnoDB is a good choice) for all tables in $dbinfo[0] database ($dbinfo[5] engines detected)";
-        }				
+        }
         $result{'Databases'}{ $dbinfo[0] }{'Rows'}       = $dbinfo[1];
         $result{'Databases'}{ $dbinfo[0] }{'Tables'}     = $dbinfo[6];
         $result{'Databases'}{ $dbinfo[0] }{'Collations'} = $dbinfo[7];
@@ -7076,12 +7273,13 @@ ENDSQL
             infoprint " +-- COMMENT     : " . $info[5] if defined $info[5];
             $found++;
         }
-        my $nbTables=select_one(
+        my $nbTables = select_one(
 "SELECT count(*) from information_schema.TABLES WHERE TABLE_TYPE ='BASE TABLE' AND TABLE_SCHEMA='$dbname'"
-          );
-				badprint "No index found for $dbname database" if $found == 0 and $nbTables>1;
+        );
+        badprint "No index found for $dbname database"
+          if $found == 0 and $nbTables > 1;
         push @generalrec, "Add indexes on tables from $dbname database"
-          if $found == 0 and $nbTables>1;
+          if $found == 0 and $nbTables > 1;
     }
     return
       unless ( defined( $myvar{'performance_schema'} )
@@ -7168,6 +7366,8 @@ sub headerprint {
       . "\t * Major Hayden <major\@mhtx.net>\n"
       . " >>  Bug reports, feature requests, and downloads at http://mysqltuner.pl/\n"
       . " >>  Run with '--help' for additional options and output filtering";
+    debugprint( "Debug: " . $opt{debug} );
+    debugprint( "Experimental: " . $opt{experimental} );
 }
 
 sub string2file {
@@ -7178,12 +7378,12 @@ sub string2file {
 "Unable to open $filename in write mode. Please check permissions for this file or directory";
     print $fh $content if defined($content);
     close $fh;
-    debugprint $content if ( $opt{'debug'} );
+    debugprint $content;
 }
 
 sub file2array {
     my $filename = shift;
-    debugprint "* reading $filename" if ( $opt{'debug'} );
+    debugprint "* reading $filename";
     my $fh;
     open( $fh, q(<), "$filename" )
       or die "Couldn't open $filename for reading: $!\n";
@@ -7285,9 +7485,16 @@ sub which {
     my $prog_name   = shift;
     my $path_string = shift;
     my @path_array  = split /:/, $ENV{'PATH'};
+    if ($is_win) { @path_array = split /;/, $ENV{'PATH'}=~s/\\/\//gr; }
 
     for my $path (@path_array) {
-        return "$path/$prog_name" if ( -x "$path/$prog_name" );
+	if ($is_win) {
+	    return "$path/$prog_name.exe" if ( -x "$path/$prog_name.exe" );
+	    return "$path/$prog_name.com" if ( -x "$path/$prog_name.com" );
+	    return "$path/$prog_name.bat" if ( -x "$path/$prog_name.bat" );
+	} else {
+	    return "$path/$prog_name" if ( -x "$path/$prog_name" );
+	}
     }
 
     return 0;
@@ -7369,7 +7576,7 @@ __END__
 
 =head1 NAME
 
- MySQLTuner 2.3.2 - MySQL High Performance Tuning Script
+ MySQLTuner 2.6.2 - MySQL High Performance Tuning Script
 
 =head1 IMPORTANT USAGE GUIDELINES
 
@@ -7382,6 +7589,8 @@ You must provide the remote server's total memory when connecting to other serve
 
  --host <hostname>           Connect to a remote host to perform tests (default: localhost)
  --socket <socket>           Use a different socket for a local connection
+ --pipe                      Connect to a local Windows database using named pipes
+ --pipe_name <na>            Use a different pipe name for a local connection
  --port <port>               Port to use for connection (default: 3306)
  --protocol tcp              Force TCP connection instead of socket
  --user <username>           Username to use for authentication
@@ -7413,16 +7622,21 @@ You must provide the remote server's total memory when connecting to other serve
  --template   <path>         Path to a template file
  --dumpdir <path>            Path to a directory where to dump information files
  --feature <feature>         Run a specific feature (see FEATURES section)
+ --dumpdir <path>            information_schema tables and sys views are dumped in CSV in this path
+
 =head1 OUTPUT OPTIONS
 
  --silent                    Don't output anything on screen
  --verbose                   Print out all options (default: no verbose, dbstat, idxstat, sysstat, tbstat, pfstat)
  --color                     Print output in color
  --nocolor                   Don't print output in color
+ --noprettyicon              Print output with legacy tag [OK], [!!], [--], [CMD], ...
  --nogood                    Remove OK responses
  --nobad                     Remove negative/suggestion responses
  --noinfo                    Remove informational responses
  --debug                     Print debug information
+ --experimental              Print experimental analysis (may fail)
+ --nondedicated              Consider server is not dedicated to Db server usage only
  --noprocess                 Consider no other process is running
  --dbstat                    Print database information
  --nodbstat                  Don't print database information

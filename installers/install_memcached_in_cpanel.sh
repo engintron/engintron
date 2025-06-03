@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.6
+#  * @version    2.7
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2014 - 2024 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2014 - 2025 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
@@ -65,12 +65,12 @@ echo ""
 sleep 1
 
 if [ "$RELEASE" -gt "7" ]; then
-    # Install related PHP modules for PHP versions 7.2 to 8.1
-    echo "~ Installing related PHP modules for PHP versions 7.2 to 8.2..."
+    # Install related PHP modules for PHP versions 7.2 to 8.3
+    echo "~ Installing related PHP modules for PHP versions 7.2 to 8.3..."
     dnf -y install ea-php72-php-memcached ea-php73-php-memcached ea-php74-php-memcached
-    dnf -y install ea-php80-php-memcached ea-php81-php-memcached ea-php82-php-memcached
+    dnf -y install ea-php80-php-memcached ea-php81-php-memcached ea-php82-php-memcached ea-php83-php-memcached
 else
-    # Install related PHP modules for PHP versions 5.6 to 8.1
+    # Install related PHP modules for PHP versions 5.6 to 8.2
     echo "~ Installing related PHP modules for PHP versions 5.6 to 8.2..."
     yum -y install ea-php56-php-memcached
     yum -y install ea-php70-php-memcached ea-php71-php-memcached ea-php72-php-memcached ea-php73-php-memcached ea-php74-php-memcached

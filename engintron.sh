@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.5
+#  * @version    2.7
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2014 - 2023 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2014 - 2025 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
 # Constants
 APP_PATH="/opt/engintron"
-APP_VERSION="2.5"
-APP_BUILD_ID="20240929"
-APP_RELEASE_DATE="September 29th, 2024"
+APP_VERSION="2.7"
+APP_BUILD_ID="20250603"
+APP_RELEASE_DATE="June 3rd, 2025"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 
@@ -1161,8 +1161,9 @@ mt)
     echo "=== MySQL Tuner ==="
     echo ""
     if [ -f /root/.my.cnf ]; then
-        source /root/.my.cnf
-        perl $APP_PATH/utilities/mysqltuner/mysqltuner.pl --user $user --pass $password
+        #source /root/.my.cnf
+        #perl $APP_PATH/utilities/mysqltuner/mysqltuner.pl --user $user --pass $password
+        perl $APP_PATH/utilities/mysqltuner/mysqltuner.pl --defaults-file=/root/.my.cnf
     else
         echo "Missing /root/.my.cnf credentials."
         echo "Can't connect to the server's database!"
