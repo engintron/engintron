@@ -32,7 +32,12 @@ echo " **********************"
 
 echo ""
 
-if [ "$RELEASE" -ge "8" ]; then
+if [ "$RELEASE" -ge "9" ]; then
+    dnf -y install https://rpms.remirepo.net/enterprise/remi-release-9.rpm
+    dnf clean all
+    dnf -y update
+    dnf -y install redis --enablerepo=remi --disableplugin=priorities  
+elif [ "$RELEASE" = "8" ]; then
     dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
     dnf clean all
     dnf -y update
@@ -42,11 +47,14 @@ elif [ "$RELEASE" = "7" ]; then
     yum clean all
     yum -y update
     yum -y install redis --enablerepo=remi --disableplugin=priorities
-else
+elif [ "$RELEASE" = "6" ]; then
     yum -y install https://rpms.remirepo.net/enterprise/remi-release-6.rpm
     yum clean all
     yum -y update
     yum -y install redis --enablerepo=remi --disableplugin=priorities
+else
+    echo "Unsupported version - exiting..."
+    exit 1
 fi
 
 echo ""

@@ -64,17 +64,26 @@ echo ""
 
 sleep 1
 
-if [ "$RELEASE" -gt "7" ]; then
-    # Install related PHP modules for PHP versions 7.2 to 8.3
+if [ "$RELEASE" -ge "9" ]; then
+    echo "~ Installing related PHP modules for PHP versions 8.0 to 8.4..."
+    dnf -y install ea-php80-php-memcached ea-php81-php-memcached ea-php82-php-memcached ea-php83-php-memcached ea-php84-php-memcached
+elif [ "$RELEASE" = "8" ]; then
     echo "~ Installing related PHP modules for PHP versions 7.2 to 8.3..."
     dnf -y install ea-php72-php-memcached ea-php73-php-memcached ea-php74-php-memcached
     dnf -y install ea-php80-php-memcached ea-php81-php-memcached ea-php82-php-memcached ea-php83-php-memcached
-else
-    # Install related PHP modules for PHP versions 5.6 to 8.2
+elif [ "$RELEASE" = "7" ]; then
+    echo "~ Installing related PHP modules for PHP versions 5.6 to 8.3..."
+    yum -y install ea-php56-php-memcached
+    yum -y install ea-php70-php-memcached ea-php71-php-memcached ea-php72-php-memcached ea-php73-php-memcached ea-php74-php-memcached
+    yum -y install ea-php80-php-memcached ea-php81-php-memcached ea-php82-php-memcached ea-php83-php-memcached
+elif [ "$RELEASE" = "6" ]; then
     echo "~ Installing related PHP modules for PHP versions 5.6 to 8.2..."
     yum -y install ea-php56-php-memcached
     yum -y install ea-php70-php-memcached ea-php71-php-memcached ea-php72-php-memcached ea-php73-php-memcached ea-php74-php-memcached
     yum -y install ea-php80-php-memcached ea-php81-php-memcached ea-php82-php-memcached
+else
+    echo "Unsupported version - exiting..."
+    exit 1
 fi
 
 echo ""
@@ -105,3 +114,4 @@ php -i | grep -i memcache
 echo " ****************************************************"
 echo " *         Memcached installation complete          *"
 echo " ****************************************************"
+
