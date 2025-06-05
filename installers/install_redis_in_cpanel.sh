@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.7
+#  * @version    2.8
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -36,7 +36,7 @@ if [ "$RELEASE" -ge "9" ]; then
     dnf -y install https://rpms.remirepo.net/enterprise/remi-release-9.rpm
     dnf clean all
     dnf -y update
-    dnf -y install redis --enablerepo=remi --disableplugin=priorities  
+    dnf -y install redis --enablerepo=remi --disableplugin=priorities
 elif [ "$RELEASE" = "8" ]; then
     dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
     dnf clean all

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.7
+#  * @version    2.8
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -114,4 +114,3 @@ php -i | grep -i memcache
 echo " ****************************************************"
 echo " *         Memcached installation complete          *"
 echo " ****************************************************"
-
