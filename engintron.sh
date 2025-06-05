@@ -301,6 +301,7 @@ name=nginx mainline repo
 baseurl=http://nginx.org/packages/mainline/centos/$RELEASE_VERSION/\$basearch/
 gpgcheck=1
 enabled=1
+priority=1
 gpgkey=https://nginx.org/keys/nginx_signing.key
 module_hotfixes=true
 
@@ -313,6 +314,7 @@ name=nginx stable repo
 baseurl=http://nginx.org/packages/centos/$RELEASE_VERSION/\$basearch/
 gpgcheck=1
 enabled=1
+priority=1
 gpgkey=https://nginx.org/keys/nginx_signing.key
 module_hotfixes=true
 
