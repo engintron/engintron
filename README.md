@@ -8,7 +8,7 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 
 **Please have a look at the [CHANGELOG](https://engintron.com/docs/#/pages/Changelog) for additional information.**
 
-Quick Links: [Engintron.com](https://engintron.com) | [Documentation](https://engintron.com/docs/) | [Support & Feedback](https://github.com/engintron/engintron/issues) | [Newsletter](https://tinyletter.com/engintron) | Follow on [Twitter](https://twitter.com/engintron) or [Facebook](https://www.facebook.com/engintron)
+Quick Links: [Engintron.com](https://engintron.com) | [Documentation](https://engintron.com/docs/) | [Support & Feedback](https://github.com/engintron/engintron/issues) | Follow on [X / Twitter](https://x.com/engintron) or [Facebook](https://www.facebook.com/engintron)
 
 ---
 
@@ -77,9 +77,9 @@ _For more information regarding setup & configuration, release changelog, FAQ as
 ## GENERAL RESOURCES
 
 ### Compatibility & Requirements
-Engintron is tested only on platforms that are actively supported by cPanel itself.
+Engintron is tested only on platforms that are actively supported by cPanel or CloudLinux.
 
-As such, as of January 2022, Engintron is fully compatible with CentOS 6 with CloudLinux (the only actively supported Enterprise Linux variant by cPanel as CentOS 6 is officially EOL since 2020), CentOS 7 and all cPanel-certified EL 8 variants (officially only AlmaLinux 8 is supported). Should cPanel add official support for other EL 8 variants (e.g. Rocky Linux, Oracle Linux or EuroLinux), Engintron will just work.
+As such, as of January 2022, Engintron is fully compatible with CentOS 6 with CloudLinux (EOL since 2020), CentOS 7 (EOL since 2024 - with or without CloudLinux) and all cPanel-certified EL 8 & EL 9 variants (e.g. AlmaLinux, Rocky Linux etc.).
 
 cPanel also added support for Ubuntu in 2022. Engintron will be updated to work on Ubuntu in the coming version 3.
 
@@ -97,27 +97,14 @@ Engintron is released under the [GNU/GPL license](https://www.gnu.org/copyleft/g
 ## ENGINTRON ELSEWHERE
 
 ### Social
-You can follow Engintron on [Twitter](https://twitter.com/engintron) or [Facebook](https://www.facebook.com/engintron).
-
-### Newsletter / Mailing List
-It's easy to miss an Engintron update on social media. If you want to know for sure when the latest version of Engintron is released, sign up here https://tinyletter.com/engintron to get notified directly to your inbox. We will never spam you.
+You can follow Engintron on [X / Twitter](https://x.com/engintron) or [Facebook](https://www.facebook.com/engintron).
 
 ---
 
-## COMMERCIAL SUPPORT & SERVER OPTIMIZATION SERVICES
+## BEYOND ENGINTRON - OPTIMIZING YOUR SERVER
 Engintron will greatly improve your cPanel server's performance, but it will only get you halfway through to what your hardware can actually support, especially when all crucial server components like Apache, MySQL/MariaDB or PHP use "stock" configurations (or worse, badly optimized configurations), unsuitable for your server's hardware specifications.
 
-And although we do provide optimization guides in the Engintron documentation site (see "BEYOND ENGINTRON - OPTIMIZATION GUIDES" here [https://engintron.com/docs/](https://engintron.com/docs/)), it takes experience to fine tune any configuration to match a server's specifications.
-
-The performance optimization package we offer involves tuning the most essential services:
-* Apache, MySQL/MariaDB and PHP
-* the system's network throughput and disk I/O
-* installing a new optimized EasyApache 4 profile with support for PHP versions 5.6, 7.x and 8.x & switching the server to PHP-FPM exclusively while setting up caching options like APCu, Opcache & Memcached (with support for PHP code)
-* properly configuring the server's firewall for basic DoS protection
-
-At the end you get a full report of what has been optimized.
-
-So, if you wish to go the "extra mile" and optimize your cPanel server both through Engintron as well as through the services that directly affect the server's performance, feel free to use the contact options from within Engintron's WHM app to get in touch with us. Or you can simply email us at: engintron [at] gmail [dot] com
+As such, we also provide further system optimization guides in the Engintron documentation site (see "BEYOND ENGINTRON - OPTIMIZATION GUIDES" here [https://engintron.com/docs/](https://engintron.com/docs/)).
 
 ---
 
