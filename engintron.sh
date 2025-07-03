@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.7
+#  * @version    2.9
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -11,9 +11,8 @@
 
 # Constants
 APP_PATH="/opt/engintron"
-APP_VERSION="2.7"
-APP_BUILD_ID="20250603"
-APP_RELEASE_DATE="June 3rd, 2025"
+APP_VERSION="2.9"
+APP_RELEASE_DATE="July 3rd, 2025"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 
@@ -137,7 +136,10 @@ function remove_mod_remoteip {
     # EL7+
     if [ -f /etc/apache2/conf/httpd.conf ]; then
         if [ "$RELEASE" -gt "7" ]; then
-            dnf -y remove ea-apache24-mod_remoteip
+            # Skip removing the package as in some installations (probably related to CloudLinux/Imunify packages)
+            # it causes Apache to be removed as well
+            #dnf -y remove ea-apache24-mod_remoteip
+            echo "[Note] Skipping removing ea-apache24-mod_remoteip package as it may cause issues with Apache."
         else
             yum -y remove ea-apache24-mod_remoteip
         fi

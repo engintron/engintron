@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.8
+#  * @version    2.9
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -16,10 +16,9 @@
 # Memory configuration documentation:
 # https://redis.io/topics/lru-cache
 
-INITSYS=$(cat /proc/1/comm)
-RELEASE=$(rpm -q --qf %{version} `rpm -q --whatprovides redhat-release` | cut -c 1)
+RELEASE=$(rpm -q --qf '%{version}' "$(rpm -q --whatprovides redhat-release)" | cut -c 1)
 
-CACHE_SIZE="2gb"
+CACHE_SIZE="4gb"
 if [[ $1 ]]; then
     CACHE_SIZE=$1
 fi
@@ -60,7 +59,7 @@ fi
 echo ""
 echo ""
 
-for php in $(whmapi1 php_get_installed_versions|grep -oE '\bea-php.*'); do
+for php in $(whmapi1 php_get_installed_versions | grep -oE '\bea-php.*'); do
     echo "************************************************"
     echo "*  Installing PHP PECL extension for \"$php\"  *"
     echo "************************************************"
@@ -76,7 +75,7 @@ for php in $(whmapi1 php_get_installed_versions|grep -oE '\bea-php.*'); do
 done
 
 # Restart Apache & PHP-FPM
-if [ "$(pstree | grep 'httpd')" ]; then
+if pstree | grep -q 'httpd'; then
     echo "~ Restarting Apache..."
     /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
@@ -86,7 +85,7 @@ if [ "$(pstree | grep 'httpd')" ]; then
 fi
 
 # Restart Nginx (if it's installed via Engintron)
-if [ "$(pstree | grep 'nginx')" ]; then
+if pstree | grep -q 'nginx'; then
     echo "~ Restarting Nginx..."
     service nginx restart
     sleep 1
@@ -100,7 +99,7 @@ cp -f /etc/redis.conf /etc/redis.conf.bak
 
 sed -i "s/tcp-backlog 511/tcp-backlog 65535/" /etc/redis.conf
 
-cat >> "/etc/redis.conf" <<EOF
+cat >>"/etc/redis.conf" <<EOF
 # Custom
 maxmemory $CACHE_SIZE
 maxmemory-policy allkeys-lru
@@ -163,7 +162,7 @@ echo "********** Redis PHP configuration **********"
 
 echo ""
 
-for php in $(whmapi1 php_get_installed_versions|grep -oE '\bea-php.*'); do
+for php in $(whmapi1 php_get_installed_versions | grep -oE '\bea-php.*'); do
     echo "~ Confirm installation for PHP $php..."
     /opt/cpanel/"$php"/root/usr/bin/php -i | grep "Redis Support"
     echo ""

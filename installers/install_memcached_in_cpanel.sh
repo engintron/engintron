@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.8
+#  * @version    2.9
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -15,13 +15,9 @@ if [[ $1 ]]; then
     CACHE_SIZE=$1
 fi
 
-INITSYS=$(cat /proc/1/comm)
 if [ -f "/etc/redhat-release" ]; then
-    DISTRO="el"
-    RELEASE=$(rpm -q --qf %{version} `rpm -q --whatprovides redhat-release` | cut -c 1)
+    RELEASE=$(rpm -q --qf '%{version}' "$(rpm -q --whatprovides redhat-release)" | cut -c 1)
 else
-    DISTRO="ubuntu"
-    CODENAME=$(lsb_release -c -s)
     RELEASE=$(lsb_release -r -s)
 fi
 
@@ -55,7 +51,7 @@ fi
 
 # Adjust its cache size to 512M & restart
 if [ -f "/etc/sysconfig/memcached" ]; then
-    sed -i 's/CACHESIZE=.*/CACHESIZE="'${CACHE_SIZE}'"/' /etc/sysconfig/memcached
+    sed -i 's/CACHESIZE=.*/CACHESIZE="'"${CACHE_SIZE}"'"/' /etc/sysconfig/memcached
 fi
 service memcached restart
 
@@ -93,7 +89,7 @@ echo ""
 service memcached restart
 
 # Restart Apache & PHP-FPM
-if [ "$(pstree | grep 'httpd')" ]; then
+if pstree | grep -q 'httpd'; then
     echo "Restarting Apache..."
     /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
@@ -101,7 +97,7 @@ if [ "$(pstree | grep 'httpd')" ]; then
 fi
 
 # Restart Nginx (if it's installed via Engintron)
-if [ "$(pstree | grep 'nginx')" ]; then
+if pstree | grep -q 'nginx'; then
     echo "Restarting Nginx..."
     service nginx restart
     echo ""

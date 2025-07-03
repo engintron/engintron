@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    2.8
+ * @version    2.9
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
@@ -41,10 +41,10 @@ define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
 define('CPANEL_VERSION', (int) CPANEL_RELEASE);
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec('nginx -v 2>&1'))));
 define('OS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
-define('PLG_BUILD', 'Build 20250605');
+define('PLG_BUILD', 'Build 20250703');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_NAME', 'Engintron for cPanel/WHM');
-define('PLG_VERSION', '2.8');
+define('PLG_VERSION', '2.9');
 
 if (file_exists("/opt/engintron/state.conf")) {
     define('ENGINTRON_STATE', trim(file_get_contents("/opt/engintron/state.conf")));

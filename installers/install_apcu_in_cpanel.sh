@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.8
+#  * @version    2.9
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -17,13 +17,9 @@ if [[ $1 ]]; then
     CACHE_SIZE=$1
 fi
 
-INITSYS=$(cat /proc/1/comm)
 if [ -f "/etc/redhat-release" ]; then
-    DISTRO="el"
-    RELEASE=$(rpm -q --qf %{version} `rpm -q --whatprovides redhat-release` | cut -c 1)
+    RELEASE=$(rpm -q --qf '%{version}' "$(rpm -q --whatprovides redhat-release)" | cut -c 1)
 else
-    DISTRO="ubuntu"
-    CODENAME=$(lsb_release -c -s)
     RELEASE=$(lsb_release -r -s)
 fi
 
@@ -52,7 +48,7 @@ if [ -f /opt/cpanel/ea-php56/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php56/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP5
     touch /opt/cpanel/ea-php56/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php56/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php56/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php56/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -79,7 +75,7 @@ if [ -f /opt/cpanel/ea-php70/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php70/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
     touch /opt/cpanel/ea-php70/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php70/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php70/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php70/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -106,7 +102,7 @@ if [ -f /opt/cpanel/ea-php71/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php71/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
     touch /opt/cpanel/ea-php71/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php71/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php71/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php71/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -133,7 +129,7 @@ if [ -f /opt/cpanel/ea-php72/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php72/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
     touch /opt/cpanel/ea-php72/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php72/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php72/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php72/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -160,7 +156,7 @@ if [ -f /opt/cpanel/ea-php73/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php73/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
     touch /opt/cpanel/ea-php73/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php73/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php73/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php73/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -187,7 +183,7 @@ if [ -f /opt/cpanel/ea-php74/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php74/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
     touch /opt/cpanel/ea-php74/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php74/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php74/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php74/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -214,7 +210,7 @@ if [ -f /opt/cpanel/ea-php80/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php80/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
     touch /opt/cpanel/ea-php80/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php80/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php80/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php80/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -241,7 +237,7 @@ if [ -f /opt/cpanel/ea-php81/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php81/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
     touch /opt/cpanel/ea-php81/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php81/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php81/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php81/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -268,7 +264,7 @@ if [ -f /opt/cpanel/ea-php82/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php82/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
     touch /opt/cpanel/ea-php82/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php82/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php82/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php82/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -295,7 +291,7 @@ if [ -f /opt/cpanel/ea-php83/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php83/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
     touch /opt/cpanel/ea-php83/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php83/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php83/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php83/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -322,7 +318,7 @@ if [ -f /opt/cpanel/ea-php84/root/usr/bin/pecl ]; then
 
     echo "\r" | /opt/cpanel/ea-php84/root/usr/bin/pecl install -f channel://pecl.php.net/$APCU_FOR_PHP7
     touch /opt/cpanel/ea-php84/root/etc/php.d/apcu.ini
-    cat > "/opt/cpanel/ea-php84/root/etc/php.d/apcu.ini" <<EOF
+    cat >"/opt/cpanel/ea-php84/root/etc/php.d/apcu.ini" <<EOF
 [apcu]
 extension=/opt/cpanel/ea-php84/root/usr/lib64/php/modules/apcu.so
 apc.enabled = 1
@@ -345,7 +341,7 @@ find /opt/cpanel/ -name "local.ini" | xargs grep -l "apcu.so" | xargs sed -i "s/
 find /opt/cpanel/ -name "*pecl.ini" | xargs grep -l "apcu.so" | xargs sed -i "s/.*\"apcu\.so\"//"
 
 # Restart Apache & PHP-FPM
-if [ "$(pstree | grep 'httpd')" ]; then
+if pstree | grep -q 'httpd'; then
     echo "Restarting Apache..."
     /scripts/restartsrv apache_php_fpm
     /scripts/restartsrv_httpd
@@ -353,7 +349,7 @@ if [ "$(pstree | grep 'httpd')" ]; then
 fi
 
 # Restart Nginx (if it's installed via Engintron)
-if [ "$(pstree | grep 'nginx')" ]; then
+if pstree | grep -q 'nginx'; then
     echo "Restarting Nginx..."
     service nginx restart
     echo ""

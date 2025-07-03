@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.8
+#  * @version    2.9
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -25,7 +25,7 @@ function generate_https_vhosts {
 while [ $COUNTER -lt 60 ]; do
     generate_https_vhosts
     sleep $INTERVAL
-    COUNTER=$[$COUNTER+$INTERVAL]
+    COUNTER=$((COUNTER + INTERVAL))
 done
 
 exit 0
