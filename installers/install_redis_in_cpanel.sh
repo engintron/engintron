@@ -169,6 +169,9 @@ for php in $(whmapi1 php_get_installed_versions | grep -oE '\bea-php.*'); do
     echo ""
 done
 
+# Disable the Redis modules by cPanel
+find /opt/cpanel/ea-php*/ -name "*redis.ini" | xargs sed -i "s/^extension = redis\.so/;extension = redis.so/"
+
 echo " ***********************************************"
 echo " *         Redis installation complete         *"
 echo " ***********************************************"
