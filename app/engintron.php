@@ -1,6 +1,6 @@
 <?php
 /**
- * @version    2.9
+ * @version    2.10
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
