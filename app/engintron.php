@@ -41,10 +41,9 @@ define('CPANEL_RELEASE', trim(shell_exec('/usr/local/cpanel/cpanel -V')));
 define('CPANEL_VERSION', (int) CPANEL_RELEASE);
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec('nginx -v 2>&1'))));
 define('OS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
-define('PLG_BUILD', 'Build 20250703');
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_NAME', 'Engintron for cPanel/WHM');
-define('PLG_VERSION', '2.9');
+define('PLG_VERSION', '2.10');
 
 if (file_exists("/opt/engintron/state.conf")) {
     define('ENGINTRON_STATE', trim(file_get_contents("/opt/engintron/state.conf")));
@@ -726,7 +725,7 @@ echo str_replace($output_find, $output_replace, $output);
     </div>
 
     <div id="ngFooter">
-        <p><a rel="noopener" target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> (<?php echo PLG_BUILD; ?>) | Copyright &copy; 2014 - <?php echo date('Y'); ?> <a rel="noopener" target="_blank" href="https://kodeka.io/">Kodeka OÜ.</a> Released under the <a rel="noopener" target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
+        <p><a rel="noopener" target="_blank" href="https://engintron.com/"><?php echo PLG_NAME; ?> - v<?php echo PLG_VERSION; ?></a> | Copyright &copy; 2014 - <?php echo date('Y'); ?> <a rel="noopener" target="_blank" href="https://kodeka.io/">Kodeka OÜ.</a> Released under the <a rel="noopener" target="_blank" href="https://www.gnu.org/licenses/gpl.html">GNU/GPL</a> license.</p>
     </div>
     <?php if ($message): ?>
     <div id="ngMessage"><div class="ngMsgState"></div><?php echo $message; ?></div>
