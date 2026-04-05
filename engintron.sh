@@ -344,10 +344,9 @@ EOFS
     fi
 
     if [ -f /etc/nginx/common_simple_protection.conf ]; then
-        cp -f $APP_PATH/nginx/common_simple_protection.conf /etc/nginx/common_simple_protection.conf.dist
-    else
-        cp -f $APP_PATH/nginx/common_simple_protection.conf /etc/nginx/
+        cp -f /etc/nginx/common_simple_protection.conf /etc/nginx/common_simple_protection.conf.bak
     fi
+    cp -f $APP_PATH/nginx/common_simple_protection.conf /etc/nginx/
 
     if [ -f /etc/nginx/proxy_params_common ]; then
         cp -f /etc/nginx/proxy_params_common /etc/nginx/proxy_params_common.bak
