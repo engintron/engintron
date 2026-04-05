@@ -684,25 +684,19 @@ install|update)
         echo -e "\033[36m=== Performing local installation from $APP_PATH... ===\033[0m"
     else
         # ~ Remote (production) installation ~
-        # Set Engintron installation path
-        if [ ! -d "$APP_PATH" ]; then
-            mkdir -p $APP_PATH
-        fi
-
-        # Get the files
-        cd $APP_PATH
-        wget --no-check-certificate -O engintron.zip https://github.com/engintron/engintron/archive/master.zip
-        unzip engintron.zip
-        cp -rf $APP_PATH/engintron-master/* $APP_PATH/
-        rm -rf $APP_PATH/engintron-master/*
-        rm -f $APP_PATH/engintron.zip
+        # Always fetch the latest engintron-installer from GitHub and exec into
+        # it. This runs as a completely separate process, so it can freely
+        # overwrite $APP_PATH without any self-replacement issues in this script.
+        wget --no-check-certificate -O /tmp/engintron-installer https://raw.githubusercontent.com/engintron/engintron/master/engintron-installer
+        chmod +x /tmp/engintron-installer
+        exec bash /tmp/engintron-installer "$1" "$2"
     fi
 
     echo ""
     echo ""
 
     install_basics
-    install_nginx $2
+    install_nginx $3
     install_mod_remoteip
     apache_change_port
     install_munin_patch

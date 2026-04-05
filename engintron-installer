@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# /**
+#  * @version    2.12
+#  * @package    Engintron for cPanel/WHM
+#  * @author     Fotis Evangelou (https://kodeka.io)
+#  * @url        https://engintron.com
+#  * @copyright  Copyright (c) 2014 - 2026 Kodeka OÜ. All rights reserved.
+#  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
+#  */
+
+# Constants
+APP_PATH="/opt/engintron"
+
+# Cleanup Engintron v1.x installation location
+if [ -f /engintron.sh ]; then
+	rm -f /engintron.sh
+fi
+if [ -d /usr/local/src/engintron ]; then
+	rm -rf /usr/local/src/engintron
+fi
+
+# ~ Remote (production) installation ~
+# Set Engintron installation path
+if [ ! -d "$APP_PATH" ]; then
+	mkdir -p $APP_PATH
+fi
+
+# Get the files
+cd $APP_PATH
+wget --no-check-certificate -O engintron.zip https://github.com/engintron/engintron/archive/master.zip
+unzip engintron.zip
+cp -rf $APP_PATH/engintron-master/* $APP_PATH/
+rm -rf $APP_PATH/engintron-master/*
+rm -f $APP_PATH/engintron.zip
+
+# Run the installer
+bash $APP_PATH/engintron.sh install local "$2"
