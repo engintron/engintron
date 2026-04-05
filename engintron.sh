@@ -699,14 +699,14 @@ install|update)
 
         # Hand off installation to the freshly downloaded script
         chmod +x $APP_PATH/engintron.sh
-        exec bash $APP_PATH/engintron.sh install local
+        exec bash $APP_PATH/engintron.sh install local "$2"
     fi
 
     echo ""
     echo ""
 
     install_basics
-    install_nginx $2
+    install_nginx $3
     install_mod_remoteip
     apache_change_port
     install_munin_patch
