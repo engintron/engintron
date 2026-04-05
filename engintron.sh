@@ -231,26 +231,6 @@ function apache_revert_port {
 
 function install_nginx {
 
-    # Disable Nginx from the EPEL repo
-    if [ -f /etc/yum.repos.d/epel.repo ]; then
-        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/epel.repo\00; then
-            if grep -Fq "#exclude=nginx*" /etc/yum.repos.d/epel.repo; then
-                sed -i "s/\#exclude=nginx\*/exclude=nginx\*/" /etc/yum.repos.d/epel.repo
-            else
-                sed -i "s/enabled=1/enabled=1\nexclude=nginx\*/" /etc/yum.repos.d/epel.repo
-            fi
-            if [ "$RELEASE" -gt "7" ]; then
-                dnf -y remove nginx
-                dnf clean all
-                dnf -y update
-            else
-                yum -y remove nginx
-                yum clean all
-                yum -y update
-            fi
-        fi
-    fi
-
     # Disable Nginx from the Amazon Linux repo
     if [ -f /etc/yum.repos.d/amzn-main.repo ]; then
         if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/amzn-main.repo\00; then
@@ -259,14 +239,28 @@ function install_nginx {
             else
                 sed -i "s/enabled=1/enabled=1\nexclude=nginx\*/" /etc/yum.repos.d/amzn-main.repo
             fi
+        fi
+    fi
+
+    # Disable Nginx from the EPEL repo
+    if [ -f /etc/yum.repos.d/epel.repo ]; then
+        if ! grep -q "^exclude=nginx\*" /etc/yum.repos.d/epel.repo\00; then
+            if grep -Fq "#exclude=nginx*" /etc/yum.repos.d/epel.repo; then
+                sed -i "s/\#exclude=nginx\*/exclude=nginx\*/" /etc/yum.repos.d/epel.repo
+            else
+                sed -i "s/enabled=1/enabled=1\nexclude=nginx\*/" /etc/yum.repos.d/epel.repo
+            fi
+        fi
+    fi
+
+    # Remove Nginx if it's not installed from the official (nginx.org) repo
+    if rpm -q nginx &>/dev/null; then
+        if ! rpm -q --queryformat '%{RELEASE}\n' nginx 2>/dev/null | grep -q '\.ngx$'; then
+            echo "=== Removing Nginx (installed from a non-official repo) ==="
             if [ "$RELEASE" -gt "7" ]; then
                 dnf -y remove nginx
-                dnf clean all
-                dnf -y update
             else
                 yum -y remove nginx
-                yum clean all
-                yum -y update
             fi
         fi
     fi
@@ -321,6 +315,14 @@ gpgkey=https://nginx.org/keys/nginx_signing.key
 module_hotfixes=true
 
 EOFS
+    fi
+
+    if [ "$RELEASE" -gt "7" ]; then
+        dnf clean all
+        dnf -y update
+    else
+        yum clean all
+        yum -y update
     fi
 
     # Install Nginx
