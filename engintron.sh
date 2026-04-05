@@ -696,6 +696,10 @@ install|update)
         cp -rf $APP_PATH/engintron-master/* $APP_PATH/
         rm -rf $APP_PATH/engintron-master/*
         rm -f $APP_PATH/engintron.zip
+
+        # Hand off installation to the freshly downloaded script
+        chmod +x $APP_PATH/engintron.sh
+        exec bash $APP_PATH/engintron.sh install local
     fi
 
     echo ""
