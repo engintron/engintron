@@ -1,10 +1,10 @@
 <?php
 /**
- * @version    2.11
+ * @version    2.12
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
- * @copyright  Copyright (c) 2014 - 2025 Kodeka OÜ. All rights reserved.
+ * @copyright  Copyright (c) 2014 - 2026 Kodeka OÜ. All rights reserved.
  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 
@@ -43,7 +43,7 @@ define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec
 define('OS_RELEASE', trim(shell_exec('rpm -q --qf "%{VERSION}" $(rpm -q --whatprovides redhat-release)')));
 define('PLG_NAME_SHORT', 'Engintron');
 define('PLG_NAME', 'Engintron for cPanel/WHM');
-define('PLG_VERSION', '2.11');
+define('PLG_VERSION', '2.12');
 
 if (file_exists("/opt/engintron/state.conf")) {
     define('ENGINTRON_STATE', trim(file_get_contents("/opt/engintron/state.conf")));

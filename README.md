@@ -4,7 +4,7 @@ _Engintron for cPanel/WHM is the easiest way to integrate Nginx on your cPanel/W
 
 ---
 
-### Engintron v2.11 / Updated on August 19th, 2025
+### Engintron v2.12 / Updated on April 5th, 2026
 
 **Please have a look at the [CHANGELOG](https://engintron.com/docs/#/pages/Changelog) for additional information.**
 
@@ -111,4 +111,4 @@ As such, we also provide further system optimization guides in the Engintron doc
 
 ---
 
-**Copyright &copy; 2014 - 2025 [Kodeka OÜ](https://kodeka.io)**
+**Copyright &copy; 2014 - 2026 [Kodeka OÜ](https://kodeka.io)**

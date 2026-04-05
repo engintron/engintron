@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.11
+#  * @version    2.12
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
-#  * @copyright  Copyright (c) 2014 - 2025 Kodeka OÜ. All rights reserved.
+#  * @copyright  Copyright (c) 2014 - 2026 Kodeka OÜ. All rights reserved.
 #  * @license    GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
 #  */
 
