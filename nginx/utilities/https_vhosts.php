@@ -2,7 +2,7 @@
 <?php
 
 /**
- * @version    2.12
+ * @version    2.13
  * @package    Engintron for cPanel/WHM
  * @author     Fotis Evangelou (https://kodeka.io)
  * @url        https://engintron.com
@@ -26,18 +26,19 @@ define('NGINX_DEFAULT_HTTPS_VHOST', '/etc/nginx/conf.d/default_https.conf');
 //ini_set('display_errors', 0);
 //error_reporting(0);
 
-$osDistro = '';
+$osDistro  = '';
 $osRelease = '';
 if (file_exists('/etc/redhat-release') && is_readable('/etc/redhat-release')) {
-    $osDistro = 'el';
+    $osDistro  = 'el';
     $osRelease = shell_exec('rpm -q --qf %{version} `rpm -q --whatprovides redhat-release` | cut -c 1');
 } else {
-    $osDistro = 'ubuntu';
+    $osDistro  = 'ubuntu';
     $osRelease = shell_exec('lsb_release -r -s');
 }
 define('DISTRO', $osDistro);
 define('RELEASE', $osRelease);
 define('NGINX_VERSION', trim(str_replace('nginx version: nginx/', '', shell_exec('nginx -v 2>&1'))));
+
 
 function generate_https_vhosts()
 {
@@ -60,7 +61,7 @@ function generate_https_vhosts()
     // Initialize the output for default_https.conf
     $output = '
 # /**
-#  * @version    2.12
+#  * @version    2.13
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -132,15 +133,18 @@ server {
                 $vhostDomainsForNginx = implode(PHP_EOL.'        ', $vhostDomainsForNginx);
                 $vhostDomainsAsComment = str_split($vhostDomains, 250);
                 $vhostDomainsAsComment = implode(PHP_EOL.'# ', $vhostDomainsAsComment);
-                $vhostCertFile = $certfile[1];
-                $vhostCertKeyFile = $certkeyfile[1];
+                $vhostCertFile = (!empty($certfile[1])) ? $certfile[1] : '';
+                $vhostCertKeyFile = (!empty($certkeyfile[1])) ? $certkeyfile[1] : '';
+
+                $ocspStapling = '';
+
                 if (strpos($vhostCertFile, '/combined') !== false) {
                     $fullChainCertName = $vhostCertFile;
                     $vhostCertKeyFile = $vhostCertFile;
                 } else {
                     $fullChainCertName = str_replace('/var/cpanel/ssl/installed/certs/', '/etc/ssl/engintron/', $vhostCertFile);
                     if ($certcafile[1]) {
-                        $vhostCertCAFile = $certcafile[1];
+                        $vhostCertCAFile = (!empty($certcafile[1])) ? $certcafile[1] : '';
                         $vhostFullChainCert = file_get_contents($vhostCertFile)."\n".file_get_contents($vhostCertCAFile);
                         $ocspStapling = '
     # OCSP Stapling
@@ -150,7 +154,6 @@ server {
                     ';
                     } else {
                         $vhostFullChainCert = file_get_contents($vhostCertFile);
-                        $ocspStapling = '';
                     }
                     file_put_contents($fullChainCertName, $vhostFullChainCert);
                 }

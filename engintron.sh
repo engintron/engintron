@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # /**
-#  * @version    2.12
+#  * @version    2.13
 #  * @package    Engintron for cPanel/WHM
 #  * @author     Fotis Evangelou (https://kodeka.io)
 #  * @url        https://engintron.com
@@ -11,8 +11,8 @@
 
 # Constants
 APP_PATH="/opt/engintron"
-APP_VERSION="2.12"
-APP_RELEASE_DATE="April 5th, 2026"
+APP_VERSION="2.13"
+APP_RELEASE_DATE="August 14th, 2026"
 
 CPANEL_PLG_PATH="/usr/local/cpanel/whostmgr/docroot/cgi"
 
