@@ -397,11 +397,11 @@ EOFS
 include overrides/ratelimit.conf;
 
 # Force disable rate limiting globally - COMMENT THE LINE BELOW TO ENABLE RATE LIMITING
-set $ratelimit 0;
+set \$ratelimit 0;
 
 # Custom - Disable for any domain like so
-# if ($host !~* "domain-to-exclude-here.tld") {
-#    set $ratelimit 0;
+# if (\$host !~* "domain-to-exclude-here.tld") {
+#    set \$ratelimit 0;
 # }
 
 EOF
