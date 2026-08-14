@@ -385,8 +385,7 @@ EOFS
     if [ ! -d /etc/nginx/overrides ]; then
         mkdir -p /etc/nginx/overrides/before
         mkdir -p /etc/nginx/overrides/after
-        touch /etc/nginx/overrides/readme.txt
-        echo "Place your overrides in the respective folder as .conf files, e.g. before.conf inside the before/ folder. Overrides in the folder 'before' will be executed before Nginx vhosts are loaded and overrides in the folder 'after' will be executed after the Nginx vhosts are loaded (last to be exact). Any files you place in these two folders will never be overwritten or deleted if you update Engintron." > /etc/nginx/overrides/readme.txt
+		rsync -av $APP_PATH/nginx/overrides/ /etc/nginx/overrides/
     fi
 
     if [ ! -d /etc/nginx/utilities ]; then

@@ -119,7 +119,30 @@
 
 
 
-# === COMMON PROTECTION FROM USELESS/BAD BOTS ===
+# Set your shared cPanel IP here
+# ------------------------------------------------------------ #
+
+# set $PROXY_DOMAIN_OR_IP "XXX.XXX.XXX.XXX";
+
+
+
+# IP Blocking
+# ------------------------------------------------------------ #
+
+# ~ Determine IPs with most connections...
+# Check access log file:
+# $ cat /var/log/nginx/access.log | cut -f1 -d ' ' | sort | uniq -c | sort -g
+#
+# ~ Tool to use for IP range to CIDR: https://www.ipaddressguide.com/cidr
+#
+# Add IPs to block following this format:
+# deny 1.2.3.4;
+
+
+
+# Common bad bot protection
+# ------------------------------------------------------------ #
+
 # Comment out the following line to enable common bot protection
 # include common_simple_protection.conf;
 
@@ -131,12 +154,15 @@
 
 
 
-# === IP BLOCKING ===
-# ~ Determine IPs with most connections...
-# Check access log file:
-# $ cat /var/log/nginx/access.log | cut -f1 -d ' ' | sort | uniq -c | sort -g
-#
-# ~ Tool to use for IP range to CIDR: https://www.ipaddressguide.com/cidr
-#
-# Add IPs to block following this format:
-# deny 1.2.3.4;
+# Rate limiting
+# ------------------------------------------------------------ #
+
+include overrides/ratelimit.conf;
+
+# Force disable rate limiting globally - COMMENT THE LINE BELOW TO ENABLE RATE LIMITING
+set $ratelimit 0;
+
+# Custom - Disable for any domain like so
+# if ($host !~* "domain-to-exclude-here.tld") {
+#    set $ratelimit 0;
+# }
