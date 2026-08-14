@@ -385,8 +385,8 @@ EOFS
     if [ ! -d /etc/nginx/overrides ]; then
         mkdir -p /etc/nginx/overrides/before
         mkdir -p /etc/nginx/overrides/after
-		rsync -av $APP_PATH/nginx/overrides/ /etc/nginx/overrides/
     fi
+	rsync -av $APP_PATH/nginx/overrides/ /etc/nginx/overrides/
 
     if [ ! -d /etc/nginx/utilities ]; then
         mkdir -p /etc/nginx/utilities
